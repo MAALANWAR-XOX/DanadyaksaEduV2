@@ -431,7 +431,7 @@
                   DanadyaksaEdu - Membangun Generasi Cerdas
                 </span>
                 <h1 class="text-xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-2 sm:mt-3">
-                  Halo, <span id="dash-user-name" class="text-emerald-600 dark:text-cyan-400">Siswa</span>    👋
+                  Halo, <span id="dash-user-name" class="text-emerald-600 dark:text-cyan-400">Siswa</span>👋
                 </h1>
                 <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
                   Selamat datang di DanadyaksaEdu! Portal edukasi terpadu yang menghubungkan Siswa dan Guru dalam satu ekosistem digital yang cerdas dan fleksibel.
@@ -609,7 +609,7 @@
                 </div>
                 <div class="glass-card p-3 sm:p-4 rounded-xl border border-emerald-500/20 dark:border-slate-800">
                   <span class="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium block">Tingkat Kelas</span>
-                  <span class="text-lg sm:text-xl font-black text-cyan-500 mt-0.5 block">10, 11, 12</span>
+                  <span id="stat-unique-classes" class="text-lg sm:text-xl font-black text-cyan-500 mt-0.5 block">-</span>
                 </div>
               </div>
               <button onclick="openAddStudentModal()" class="w-full md:w-auto px-4 py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2 shrink-0 focus:outline-none">
@@ -624,12 +624,22 @@
                 </span>
                 <input type="text" id="student-search-input" onkeyup="filterStudentTable()" placeholder="Cari nama atau NISN..." class="w-full pl-9 pr-4 py-2 bg-white dark:bg-slate-900 border border-emerald-500/30 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-amber-500">
               </div>
-              <div class="flex items-center space-x-2 w-full md:w-auto">
+              <div class="flex items-center gap-2 w-full md:w-auto flex-wrap">
+                <!-- FILTER STATUS -->
                 <select id="student-status-filter" onchange="filterStudentTable()" class="w-full md:w-auto px-3 py-2 bg-white dark:bg-slate-900 border border-emerald-500/30 dark:border-slate-700 rounded-xl text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-amber-500">
                   <option value="ALL">Semua Status</option>
                   <option value="Aktif">Aktif</option>
                   <option value="Perlu Perhatian">Perlu Perhatian</option>
                 </select>
+                <!-- FILTER KELAS -->
+                <select id="student-class-filter" onchange="filterStudentTable()" class="w-full md:w-auto px-3 py-2 bg-white dark:bg-slate-900 border border-amber-500/30 dark:border-slate-700 rounded-xl text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-amber-500">
+                  <option value="ALL">Semua Kelas</option>
+                </select>
+                <!-- TOMBOL RESET FILTER -->
+                <button type="button" onclick="resetStudentFilters()" title="Reset Semua Filter" class="px-3 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-400 border border-amber-500/30 rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition-all">
+                  <i class="fa-solid fa-rotate-left"></i>
+                  <span>Reset</span>
+                </button>
               </div>
             </div>
             <div class="glass-card rounded-2xl border border-emerald-500/20 dark:border-slate-800 overflow-hidden shadow-xl">
@@ -658,11 +668,21 @@
                   </h3>
                   <p class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5">Pantauan peringkat seluruh siswa secara real-time.</p>
                 </div>
-                <div class="flex items-center space-x-2 w-full sm:w-auto">
-                  <label class="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap">Filter:</label>
-                  <select id="leaderboard-module-filter" onchange="renderTeacherLeaderboard()" class="w-full sm:w-auto px-3 py-2 bg-white dark:bg-slate-900 border border-amber-500/30 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-amber-500">
-                    <option value="ALL">Semua Modul (Rata-rata)</option>
-                  </select>
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+                  <!-- FILTER KELAS LEADERBOARD (BARU) -->
+                  <div class="flex items-center space-x-2">
+                    <label class="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap">Kelas:</label>
+                    <select id="leaderboard-class-filter" onchange="renderTeacherLeaderboard()" class="w-full sm:w-auto px-3 py-2 bg-white dark:bg-slate-900 border border-amber-500/30 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-amber-500">
+                      <option value="ALL">Semua Kelas</option>
+                    </select>
+                  </div>
+                  <!-- FILTER MODUL LEADERBOARD -->
+                  <div class="flex items-center space-x-2">
+                    <label class="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap">Modul:</label>
+                    <select id="leaderboard-module-filter" onchange="renderTeacherLeaderboard()" class="w-full sm:w-auto px-3 py-2 bg-white dark:bg-slate-900 border border-amber-500/30 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-amber-500">
+                      <option value="ALL">Semua Modul (Rata-rata)</option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <div class="overflow-x-auto">
@@ -683,11 +703,20 @@
               </div>
             </div>
             <div class="glass-card rounded-2xl p-4 sm:p-6 border border-emerald-500/20 dark:border-slate-800 space-y-4">
-              <div class="flex items-center justify-between">
-                <h3 class="font-extrabold text-xs sm:text-base text-slate-900 dark:text-white flex items-center">
-                  <i class="fa-solid fa-square-poll-vertical text-emerald-600 dark:text-cyan-400 mr-2"></i> Rekapitulasi Kuis Siswa
-                </h3>
-                <span class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400">Real-Time</span>
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="flex items-center">
+                  <h3 class="font-extrabold text-xs sm:text-base text-slate-900 dark:text-white flex items-center">
+                    <i class="fa-solid fa-square-poll-vertical text-emerald-600 dark:text-cyan-400 mr-2"></i> Rekapitulasi Kuis Siswa
+                  </h3>
+                  <span class="ml-2 px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">Real-Time</span>
+                </div>
+                <!-- FILTER KELAS REKAPITULASI (BARU) -->
+                <div class="flex items-center space-x-2">
+                  <label class="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap">Filter Kelas:</label>
+                  <select id="quiz-recap-class-filter" onchange="renderTeacherQuizResultsTable()" class="w-full sm:w-auto px-3 py-2 bg-white dark:bg-slate-900 border border-emerald-500/30 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-emerald-500">
+                    <option value="ALL">Semua Kelas</option>
+                  </select>
+                </div>
               </div>
               <div id="teacher-quiz-grouped-container" class="space-y-4 sm:space-y-6"></div>
             </div>
@@ -1156,7 +1185,7 @@
     let taskSubmissions = [];
     let quizResults = [];
     let currentUser = null;
-    let authRole = 'siswa'; 
+    let authRole = 'siswa';
     let authIsRegister = false;
     let uploadedFileContent = "";
     let activeQuizState = {
@@ -1224,6 +1253,7 @@
           if (currentUser.role === 'guru') {
             renderStudentTable();
             renderTeacherLeaderboard();
+            populateAllClassFilters(); // BARU - sinkronkan semua filter kelas
           }
         }
       });
@@ -1478,6 +1508,7 @@
         renderManageModulesList();
         renderManageTaskContainer();
         populateModuleDropdown();
+        populateAllClassFilters(); // BARU - populate semua filter kelas saat login
       } else {
         badge.textContent = 'SISWA';
         badge.className = "px-1.5 py-0.2 text-[8px] sm:text-[9px] font-bold uppercase rounded-full bg-emerald-500/20 text-emerald-700 dark:text-cyan-300 border border-emerald-500/30";
@@ -1612,18 +1643,64 @@
     function populateLeaderboardFilter() {
       const select = document.getElementById('leaderboard-module-filter');
       if (!select) return;
+      const currentValue = select.value;
       select.innerHTML = `<option value="ALL">Semua Modul (Rata-rata)</option>` + courseModules.map(m => `
         <option value="${m.id}">${m.badge} - ${m.title}</option>
       `).join('');
+      if (currentValue && select.querySelector(`option[value="${currentValue}"]`)) {
+        select.value = currentValue;
+      }
+    }
+    // ==========================================================
+    // FILTER KELAS DINAMIS - POPULATE SEMUA FILTER SEKALIGUS (BARU)
+    // ==========================================================
+    function populateAllClassFilters() {
+      const students = accounts.filter(a => a.role === 'siswa');
+      // Ambil daftar kelas unik
+      const uniqueClasses = [...new Set(students.map(s => s.grade || "Kelas 10 (Sepuluh)"))];
+      // Urutkan kelas secara natural (10, 11, 12)
+      uniqueClasses.sort((a, b) => {
+        const numA = parseInt(a.match(/\d+/)?.[0] || 0);
+        const numB = parseInt(b.match(/\d+/)?.[0] || 0);
+        return numA - numB;
+      });
+      // Update stat unique classes
+      const statUniqueClasses = document.getElementById('stat-unique-classes');
+      if (statUniqueClasses) {
+        statUniqueClasses.textContent = uniqueClasses.length > 0 ? uniqueClasses.join(', ').replace(/Kelas (\d+).*/g, '$1') : '-';
+      }
+      // Helper untuk populate satu select
+      const populateSelect = (selectId, labelPrefix = 'Semua Kelas') => {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+        const currentValue = select.value;
+        const countText = uniqueClasses.length > 0 ? ` (${uniqueClasses.length})` : '';
+        select.innerHTML = `<option value="ALL">${labelPrefix}${countText}</option>` +
+          uniqueClasses.map(cls => `<option value="${cls}">${cls}</option>`).join('');
+        // Pertahankan pilihan sebelumnya jika masih ada
+        if (currentValue && (currentValue === 'ALL' || uniqueClasses.includes(currentValue))) {
+          select.value = currentValue;
+        }
+      };
+      // Populate 3 filter kelas
+      populateSelect('student-class-filter', 'Semua Kelas');
+      populateSelect('leaderboard-class-filter', 'Semua Kelas');
+      populateSelect('quiz-recap-class-filter', 'Semua Kelas');
     }
     function renderTeacherLeaderboard() {
       const tbody = document.getElementById('leaderboard-table-body');
       if (!tbody) return;
-      const filterEl = document.getElementById('leaderboard-module-filter');
-      const selectedMod = filterEl ? filterEl.value : 'ALL';
-      const students = accounts.filter(a => a.role === 'siswa');
+      const filterModEl = document.getElementById('leaderboard-module-filter');
+      const filterClassEl = document.getElementById('leaderboard-class-filter'); // BARU
+      const selectedMod = filterModEl ? filterModEl.value : 'ALL';
+      const selectedClass = filterClassEl ? filterClassEl.value : 'ALL'; // BARU
+      let students = accounts.filter(a => a.role === 'siswa');
+      // FILTER KELAS (BARU)
+      if (selectedClass !== 'ALL') {
+        students = students.filter(s => (s.grade || "Kelas 10 (Sepuluh)") === selectedClass);
+      }
       if (students.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-slate-500 italic">Belum ada akun siswa.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-slate-500 italic">${selectedClass !== 'ALL' ? 'Tidak ada siswa di kelas ini.' : 'Belum ada akun siswa.'}</td></tr>`;
         return;
       }
       const leaderboardData = students.map(s => {
@@ -1691,12 +1768,27 @@
     function renderTeacherQuizResultsTable() {
       const container = document.getElementById('teacher-quiz-grouped-container');
       if (!container) return;
+      const filterClassEl = document.getElementById('quiz-recap-class-filter'); // BARU
+      const selectedClass = filterClassEl ? filterClassEl.value : 'ALL'; // BARU
       if (quizResults.length === 0) {
         container.innerHTML = `<p class="text-center text-slate-500 text-xs italic py-4">Belum ada siswa yang menyelesaikan kuis.</p>`;
         return;
       }
+      // Filter quiz results berdasarkan kelas (BARU)
+      let filteredResults = quizResults;
+      if (selectedClass !== 'ALL') {
+        filteredResults = quizResults.filter(q => {
+          const studentAcc = accounts.find(a => a.id === q.studentId);
+          const studentGrade = studentAcc && studentAcc.grade ? studentAcc.grade : "Kelas Umum / Lainnya";
+          return studentGrade === selectedClass;
+        });
+        if (filteredResults.length === 0) {
+          container.innerHTML = `<p class="text-center text-slate-500 text-xs italic py-4">Belum ada hasil kuis untuk <strong class="text-amber-600 dark:text-amber-400">${selectedClass}</strong>.</p>`;
+          return;
+        }
+      }
       const grouped = {};
-      quizResults.forEach(q => {
+      filteredResults.forEach(q => {
         const studentAcc = accounts.find(a => a.id === q.studentId);
         const grade = studentAcc && studentAcc.grade ? studentAcc.grade : "Kelas Umum / Lainnya";
         if (!grouped[grade]) {
@@ -1704,7 +1796,13 @@
         }
         grouped[grade].push(q);
       });
-      container.innerHTML = Object.keys(grouped).map(grade => {
+      // Urutkan kelas secara natural
+      const sortedGrades = Object.keys(grouped).sort((a, b) => {
+        const numA = parseInt(a.match(/\d+/)?.[0] || 0);
+        const numB = parseInt(b.match(/\d+/)?.[0] || 0);
+        return numA - numB;
+      });
+      container.innerHTML = sortedGrades.map(grade => {
         const results = grouped[grade];
         return `
           <div class="space-y-2">
@@ -1781,6 +1879,7 @@
           renderManageModulesList();
           renderManageTaskContainer();
           populateModuleDropdown();
+          populateAllClassFilters(); // BARU
         } else {
           guruPengelolaanBtn.className = "side-tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold transition-all duration-200 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 border border-amber-500/30 mt-4 focus:outline-none focus:ring-0";
         }
@@ -1804,6 +1903,7 @@
         contentSiswa.classList.remove('hidden');
         btnSiswa.className = "flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 bg-amber-500 text-slate-950 shadow-md flex items-center justify-center space-x-2 focus:outline-none";
         renderTeacherLeaderboard();
+        renderTeacherQuizResultsTable();
       } else if (subKey === 'sub-modul') {
         contentModul.classList.remove('hidden');
         btnModul.className = "flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 bg-cyan-500 text-slate-950 shadow-md flex items-center justify-center space-x-2 focus:outline-none";
@@ -2055,8 +2155,8 @@
           <div class="space-y-1 w-full">
             <div class="flex items-center justify-between sm:justify-start sm:space-x-2">
               <span class="font-extrabold text-amber-600 dark:text-amber-400">${s.studentName}</span>
-              ${s.score !== null && s.score !== undefined 
-                ? `<span class="px-2 py-0.5 rounded text-[9px] bg-emerald-500/20 text-emerald-700 dark:text-cyan-300 font-bold">NILAI: ${s.score}/100</span>` 
+              ${s.score !== null && s.score !== undefined
+                ? `<span class="px-2 py-0.5 rounded text-[9px] bg-emerald-500/20 text-emerald-700 dark:text-cyan-300 font-bold">NILAI: ${s.score}/100</span>`
                 : `<span class="px-2 py-0.5 rounded text-[9px] bg-amber-500/20 text-amber-700 font-bold">MENUNGGU</span>`
               }
             </div>
@@ -2281,8 +2381,8 @@
               const isSelected = selectedOpt === idx;
               return `
                 <button onclick="selectQuizAnswer(${qIdx}, ${idx})" class="w-full text-left p-2.5 sm:p-3 rounded-xl text-xs transition-all border ${
-                  isSelected 
-                    ? 'bg-emerald-500/20 dark:bg-cyan-500/20 border-emerald-500 text-emerald-800 dark:text-cyan-300 font-bold' 
+                  isSelected
+                    ? 'bg-emerald-500/20 dark:bg-cyan-500/20 border-emerald-500 text-emerald-800 dark:text-cyan-300 font-bold'
                     : 'bg-white dark:bg-slate-800/80 hover:bg-emerald-500/10 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border-emerald-500/20 dark:border-slate-700'
                 }">
                   ${String.fromCharCode(65 + idx)}. ${opt}
@@ -2294,7 +2394,7 @@
             <button onclick="prevQuizQuestion()" ${qIdx === 0 ? 'disabled class="opacity-40 cursor-not-allowed text-xs py-2 px-3 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400"' : 'class="text-xs py-2 px-3 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-700"'}>
               <i class="fa-solid fa-chevron-left mr-1"></i> Sebelum
             </button>
-            ${qIdx < questions.length - 1 
+            ${qIdx < questions.length - 1
               ? `<button onclick="nextQuizQuestion()" class="text-xs py-2 px-3.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold">
                    Lanjut <i class="fa-solid fa-chevron-right ml-1"></i>
                  </button>`
@@ -2510,16 +2610,32 @@
           </tr>
         `;
       }).join('');
+      populateAllClassFilters(); // BARU - perbarui semua filter kelas setelah tabel di-render
+    }
+    function resetStudentFilters() {
+      const searchInput = document.getElementById('student-search-input');
+      const statusFilter = document.getElementById('student-status-filter');
+      const classFilter = document.getElementById('student-class-filter');
+      if (searchInput) searchInput.value = "";
+      if (statusFilter) statusFilter.value = "ALL";
+      if (classFilter) classFilter.value = "ALL";
+      filterStudentTable();
+      showToast("Filter direset", "info");
     }
     function filterStudentTable() {
       const query = document.getElementById('student-search-input').value.toLowerCase();
       const filterStatus = document.getElementById('student-status-filter').value;
+      const filterClass = document.getElementById('student-class-filter').value;
       const rows = document.getElementById('student-table-body').getElementsByTagName('tr');
+      let visibleCount = 0;
       Array.from(rows).forEach(row => {
         const text = row.innerText.toLowerCase();
         const matchesQuery = text.includes(query);
         const matchesStatus = filterStatus === 'ALL' || text.includes(filterStatus.toLowerCase());
-        row.style.display = (matchesQuery && matchesStatus) ? '' : 'none';
+        const matchesClass = filterClass === 'ALL' || text.includes(filterClass.toLowerCase());
+        const isVisible = matchesQuery && matchesStatus && matchesClass;
+        row.style.display = isVisible ? '' : 'none';
+        if (isVisible) visibleCount++;
       });
     }
     function openAddStudentModal() {
@@ -2567,6 +2683,7 @@
         showToast("Data siswa diperbarui!", "success");
       }
       saveToFirebase('accounts', accounts);
+      populateAllClassFilters(); // BARU - perbarui semua filter kelas setelah data berubah
       closeStudentModal();
     }
     function resetStudentPassword(index) {
@@ -2578,6 +2695,7 @@
       const studentName = accounts[index].name;
       accounts.splice(index, 1);
       saveToFirebase('accounts', accounts);
+      populateAllClassFilters(); // BARU
       showToast(`Siswa ${studentName} dihapus.`, "warning");
     }
     function closeStudentModal() {
