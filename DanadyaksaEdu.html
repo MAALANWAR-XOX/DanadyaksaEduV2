@@ -415,7 +415,7 @@
                   DanadyaksaEdu - Membangun Generasi Cerdas
                 </span>
                 <h1 class="text-xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-2 sm:mt-3">
-                  Halo, <span id="dash-user-name" class="text-emerald-600 dark:text-cyan-400">Siswa</span>👋
+                  Halo, <span id="dash-user-name" class="text-emerald-600 dark:text-cyan-400">Siswa</span> 👋
                 </h1>
                 <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
                   Selamat datang di DanadyaksaEdu! Portal edukasi terpadu yang menghubungkan Siswa dan Guru dalam satu ekosistem digital yang cerdas dan fleksibel.
@@ -656,7 +656,6 @@
                       <option value="ALL">Semua Modul (Rata-rata)</option>
                     </select>
                   </div>
-                  <!-- TOMBOL DOWNLOAD LEADERBOARD (BARU) -->
                   <button type="button" onclick="downloadLeaderboardExcel()" title="Download Leaderboard (Excel)" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 dark:bg-cyan-600 dark:hover:bg-cyan-500 text-white rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition-all shadow-md focus:outline-none">
                     <i class="fa-solid fa-file-excel"></i>
                     <span>Unduh Excel</span>
@@ -695,7 +694,6 @@
                       <option value="ALL">Semua Kelas</option>
                     </select>
                   </div>
-                  <!-- TOMBOL DOWNLOAD REKAPITULASI (BARU) -->
                   <button type="button" onclick="downloadQuizRecapExcel()" title="Download Rekapitulasi Kuis (Excel)" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 dark:bg-cyan-600 dark:hover:bg-cyan-500 text-white rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition-all shadow-md focus:outline-none">
                     <i class="fa-solid fa-file-excel"></i>
                     <span>Unduh Excel</span>
@@ -1144,8 +1142,12 @@
       firebase.initializeApp(firebaseConfig);
     }
     const db = firebase.database();
+    // ==========================================================
+    // PERBAIKAN 1: Ubah grade akun default guru menjadi "Guru"
+    // agar tidak tercampur dengan filter kelas siswa
+    // ==========================================================
     const DEFAULT_ACCOUNTS = [
-      { name: "Muhammad Hilman Fasya, S.Pd.", id: "hilmanfasya90@gmail.com", pass: "guru123", role: "guru", status: "Aktif", grade: "Kelas 12 (Dua Belas)", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Guru" }
+      { name: "Muhammad Hilman Fasya, S.Pd.", id: "hilmanfasya90@gmail.com", pass: "guru123", role: "guru", status: "Aktif", grade: "Guru", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Guru" }
     ];
     let accounts = [];
     let courseModules = [];
@@ -1705,18 +1707,30 @@
         `;
       }).join('');
     }
+    // ==========================================================
+    // PERBAIKAN 2: Fungsi renderTeacherQuizResultsTable
+    // Tambahkan validasi role === 'siswa' agar data guru tidak ikut
+    // ==========================================================
     function renderTeacherQuizResultsTable() {
       const container = document.getElementById('teacher-quiz-grouped-container');
       if (!container) return;
       const filterClassEl = document.getElementById('quiz-recap-class-filter');
       const selectedClass = filterClassEl ? filterClassEl.value : 'ALL';
-      if (quizResults.length === 0) {
+      
+      // Filter awal: HANYA ambil hasil kuis dari akun siswa
+      const studentOnlyResults = quizResults.filter(q => {
+        const studentAcc = accounts.find(a => a.id === q.studentId);
+        return studentAcc && studentAcc.role === 'siswa';
+      });
+      
+      if (studentOnlyResults.length === 0) {
         container.innerHTML = `<p class="text-center text-slate-500 text-xs italic py-4">Belum ada siswa yang menyelesaikan kuis.</p>`;
         return;
       }
-      let filteredResults = quizResults;
+      
+      let filteredResults = studentOnlyResults;
       if (selectedClass !== 'ALL') {
-        filteredResults = quizResults.filter(q => {
+        filteredResults = studentOnlyResults.filter(q => {
           const studentAcc = accounts.find(a => a.id === q.studentId);
           const studentGrade = studentAcc && studentAcc.grade ? studentAcc.grade : "Kelas Umum / Lainnya";
           return studentGrade === selectedClass;
@@ -1726,20 +1740,26 @@
           return;
         }
       }
+      
       const grouped = {};
       filteredResults.forEach(q => {
         const studentAcc = accounts.find(a => a.id === q.studentId);
+        // Validasi tambahan: pastikan role siswa
+        if (!studentAcc || studentAcc.role !== 'siswa') return;
+        
         const grade = studentAcc && studentAcc.grade ? studentAcc.grade : "Kelas Umum / Lainnya";
         if (!grouped[grade]) {
           grouped[grade] = [];
         }
         grouped[grade].push(q);
       });
+      
       const sortedGrades = Object.keys(grouped).sort((a, b) => {
         const numA = parseInt(a.match(/\d+/)?.[0] || 0);
         const numB = parseInt(b.match(/\d+/)?.[0] || 0);
         return numA - numB;
       });
+      
       container.innerHTML = sortedGrades.map(grade => {
         const results = grouped[grade];
         return `
@@ -1801,7 +1821,6 @@
         showToast("Tidak ada data untuk diunduh!", "warning");
         return;
       }
-      // Ambil nama modul jika filter modul aktif
       let modulLabel = "Semua Modul (Rata-rata)";
       if (selectedMod !== 'ALL') {
         const mod = courseModules.find(m => m.id === selectedMod);
@@ -1839,7 +1858,6 @@
         const scoreB = typeof b.nilaiSkor === 'number' ? b.nilaiSkor : -1;
         return scoreB - scoreA || b.kuisSelesai - a.kuisSelesai;
       });
-      // Tambahkan kolom peringkat
       const finalData = leaderboardData.map((item, idx) => ({
         "Peringkat": idx + 1,
         "Nama Siswa": item.nama,
@@ -1849,21 +1867,17 @@
         "Nilai Skor": item.nilaiSkor,
         "Predikat": item.predikat
       }));
-      // Buat worksheet
       const ws = XLSX.utils.json_to_sheet(finalData);
-      // Atur lebar kolom
       ws['!cols'] = [
-        { wch: 10 }, // Peringkat
-        { wch: 30 }, // Nama
-        { wch: 25 }, // Username
-        { wch: 22 }, // Kelas
-        { wch: 13 }, // Kuis Selesai
-        { wch: 12 }, // Nilai
-        { wch: 14 }  // Predikat
+        { wch: 10 },
+        { wch: 30 },
+        { wch: 25 },
+        { wch: 22 },
+        { wch: 13 },
+        { wch: 12 },
+        { wch: 14 }
       ];
-      // Buat workbook dengan metadata
       const wb = XLSX.utils.book_new();
-      // Sheet info header (metadata)
       const infoData = [
         ["DANADYAKSA EDU - LEADERBOARD BELAJAR SISWA"],
         [""],
@@ -1877,7 +1891,6 @@
       ];
       const wsInfo = XLSX.utils.aoa_to_sheet(infoData);
       wsInfo['!cols'] = [{ wch: 20 }, { wch: 50 }];
-      // Gabungkan info + data di sheet utama
       const combinedData = [...infoData, ...finalData.map(row => [
         row["Peringkat"],
         row["Nama Siswa"],
@@ -1897,52 +1910,67 @@
         { wch: 12 },
         { wch: 14 }
       ];
-      // Merge header title
       wsFinal['!merges'] = [
-        { s: { r: 0, c: 0 }, e: { r: 0, c: 6 } } // Judul merge 7 kolom
+        { s: { r: 0, c: 0 }, e: { r: 0, c: 6 } }
       ];
       XLSX.utils.book_append_sheet(wb, wsFinal, "Leaderboard");
-      // Nama file
       const classLabel = selectedClass === 'ALL' ? 'Semua_Kelas' : selectedClass.replace(/\s+/g, '_');
       const fileName = `Leaderboard_${classLabel}_${getDownloadTimestamp()}.xlsx`;
       XLSX.writeFile(wb, fileName);
       showToast(`Leaderboard berhasil diunduh! (${finalData.length} siswa)`, "success");
     }
+    // ==========================================================
+    // PERBAIKAN 3: Fungsi downloadQuizRecapExcel
+    // Tambahkan validasi role === 'siswa' agar data guru tidak ikut
+    // ==========================================================
     function downloadQuizRecapExcel() {
       const filterClassEl = document.getElementById('quiz-recap-class-filter');
       const selectedClass = filterClassEl ? filterClassEl.value : 'ALL';
-      if (quizResults.length === 0) {
+      
+      // Filter awal: HANYA ambil hasil kuis dari akun siswa
+      const studentOnlyResults = quizResults.filter(q => {
+        const studentAcc = accounts.find(a => a.id === q.studentId);
+        return studentAcc && studentAcc.role === 'siswa';
+      });
+      
+      if (studentOnlyResults.length === 0) {
         showToast("Belum ada data kuis untuk diunduh!", "warning");
         return;
       }
-      let filteredResults = quizResults;
+      
+      let filteredResults = studentOnlyResults;
       if (selectedClass !== 'ALL') {
-        filteredResults = quizResults.filter(q => {
+        filteredResults = studentOnlyResults.filter(q => {
           const studentAcc = accounts.find(a => a.id === q.studentId);
           const studentGrade = studentAcc && studentAcc.grade ? studentAcc.grade : "Kelas Umum / Lainnya";
           return studentGrade === selectedClass;
         });
       }
+      
       if (filteredResults.length === 0) {
         showToast("Tidak ada data kuis untuk filter ini!", "warning");
         return;
       }
+      
       // Group by kelas
       const grouped = {};
       filteredResults.forEach(q => {
         const studentAcc = accounts.find(a => a.id === q.studentId);
+        // Validasi tambahan: pastikan role siswa
+        if (!studentAcc || studentAcc.role !== 'siswa') return;
+        
         const grade = studentAcc && studentAcc.grade ? studentAcc.grade : "Kelas Umum / Lainnya";
         if (!grouped[grade]) grouped[grade] = [];
         grouped[grade].push(q);
       });
+      
       const sortedGrades = Object.keys(grouped).sort((a, b) => {
         const numA = parseInt(a.match(/\d+/)?.[0] || 0);
         const numB = parseInt(b.match(/\d+/)?.[0] || 0);
         return numA - numB;
       });
-      // Build combined data dengan header per kelas
+      
       const combinedData = [];
-      // Metadata header
       combinedData.push(["DANADYAKSA EDU - REKAPITULASI KUIS SISWA"]);
       combinedData.push([""]);
       combinedData.push(["Tanggal Unduh", new Date().toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'short' })]);
@@ -1950,15 +1978,12 @@
       combinedData.push(["Total Hasil Kuis", filteredResults.length]);
       combinedData.push(["Diunduh Oleh", currentUser ? currentUser.name : "-"]);
       combinedData.push([""]);
-      // Per kelas
+      
       sortedGrades.forEach(grade => {
         const results = grouped[grade];
-        // Header kelas
         combinedData.push([`=== ${grade.toUpperCase()} === (${results.length} Kuis)`]);
         combinedData.push([""]);
-        // Table header
         combinedData.push(["No", "Nama Siswa", "Username", "Modul", "Skor", "Jawaban Benar", "Total Soal", "Persentase", "Waktu Pengerjaan"]);
-        // Data rows
         results.forEach((q, idx) => {
           const percentage = q.totalQuestions > 0 ? Math.round((q.correctCount / q.totalQuestions) * 100) + '%' : '0%';
           combinedData.push([
@@ -1973,7 +1998,6 @@
             q.timestamp
           ]);
         });
-        // Statistik kelas
         const scores = results.map(r => r.score);
         const avgScore = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1);
         const maxScore = Math.max(...scores);
@@ -1983,17 +2007,18 @@
         combinedData.push([""]);
         combinedData.push([""]);
       });
+      
       const ws = XLSX.utils.aoa_to_sheet(combinedData);
       ws['!cols'] = [
-        { wch: 6 },   // No
-        { wch: 30 },  // Nama
-        { wch: 25 },  // Username
-        { wch: 30 },  // Modul
-        { wch: 10 },  // Skor
-        { wch: 14 },  // Jawaban Benar
-        { wch: 12 },  // Total Soal
-        { wch: 12 },  // Persentase
-        { wch: 20 }   // Waktu
+        { wch: 6 },
+        { wch: 30 },
+        { wch: 25 },
+        { wch: 30 },
+        { wch: 10 },
+        { wch: 14 },
+        { wch: 12 },
+        { wch: 12 },
+        { wch: 20 }
       ];
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Rekapitulasi Kuis");
@@ -2665,7 +2690,7 @@
       container.innerHTML = assignments.map(a => {
         const mySub = currentUser ? taskSubmissions.find(s => s.studentId === currentUser.id && s.taskId === a.id) : null;
         let statusBadge = `<span class="px-2 py-0.5 rounded text-[9px] bg-amber-500/20 text-amber-700 dark:text-amber-400 font-bold">BELUM DIKIRIM</span>`;
-        let actionBtn = `<button onclick="openUploadModal('${a.id}')" class="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-all flex items-center justify-center shadow-md focus:outline-none"><i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Unggah Tugas</button>`;
+        let actionBtn = `<button onclick="openUploadModal('${a.id}')" class="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-all flex  items-center justify-center shadow-md focus:outline-none"><i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Unggah Tugas</button>`;
         if (mySub) {
           if (mySub.score !== null && mySub.score !== undefined) {
             statusBadge = `<span class="px-2 py-0.5 rounded text-[9px] bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 font-bold">DINILAI: ${mySub.score}/100</span>`;
