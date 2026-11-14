@@ -38,6 +38,8 @@
   <!-- Firebase SDKs (Compatibility Version) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  <!-- SheetJS untuk Export Excel -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -116,9 +118,6 @@
     ::-webkit-scrollbar-thumb:hover {
       background: #0891b2;
     }
-    /* ============================================ */
-    /* FITUR COLLAPSE SIDEBAR (DITAMBAHKAN)         */
-    /* ============================================ */
     #app-sidebar {
       transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -163,7 +162,6 @@
     #sidebar-collapse-btn i {
       transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    /* Tooltip saat collapsed */
     #app-sidebar.collapsed .side-tab-btn {
       position: relative;
     }
@@ -195,14 +193,12 @@
     #app-sidebar.collapsed .side-tab-btn:hover::after {
       opacity: 1;
     }
-    /* Floating expand button */
     #sidebar-expand-float {
       transition: opacity 0.3s ease, transform 0.3s ease;
     }
     #sidebar-expand-float:hover {
       transform: scale(1.05);
     }
-    /* Smooth transition untuk main wrapper */
     #main-wrapper {
       transition: padding-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -214,7 +210,6 @@
     <div>
       <div class="h-20 px-2 flex items-center justify-between border-b border-emerald-500/20 dark:border-slate-800/80">
         <div class="flex items-center space-x-3 sidebar-header-inner overflow-hidden min-w-0">
-          <!-- LOGO UTAMA SIDEBAR -->
           <div class="w-10 h-10 rounded-xl overflow-hidden shadow-lg shadow-cyan-500/20 shrink-0 border border-cyan-500/30">
             <img src="DanadyaksaEdu.jpg" alt="Logo DanadyaksaEdu" class="w-full h-full object-cover">
           </div>
@@ -225,7 +220,6 @@
             <span class="block text-[7px] tracking-wider uppercase font-semibold text-emerald-600 dark:text-cyan-400/80">Portal Edukasi Terpadu</span>
           </div>
         </div>
-        <!-- TOMBOL COLLAPSE (DITAMBAHKAN) -->
         <button id="sidebar-collapse-btn" onclick="toggleSidebar()" title="Sembunyikan Menu" class="p-2 rounded-lg text-slate-400 hover:text-emerald-500 dark:hover:text-cyan-400 hover:bg-emerald-500/10 transition-all focus:outline-none shrink-0">
           <i class="fa-solid fa-chevron-left text-xs"></i>
         </button>
@@ -251,7 +245,6 @@
           <i class="fa-solid fa-user-gear w-5 text-base"></i>
           <span>Edit Profil</span>
         </button>
-        <!-- KHUSUS GURU: MENU PENGELOLAAN TERPADU -->
         <button onclick="switchTab('pengelolaan')" id="side-tab-pengelolaan" data-label="Pengelolaan Portal" class="side-tab-btn hidden w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold transition-all duration-200 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 border border-amber-500/30 mt-4 focus:outline-none focus:ring-0">
           <i class="fa-solid fa-sliders w-5 text-base"></i>
           <span>Pengelolaan Portal</span>
@@ -265,11 +258,9 @@
       </div>
     </div>
   </aside>
-  <!-- FLOATING EXPAND BUTTON (DITAMBAHKAN - saat sidebar collapsed) -->
   <button id="sidebar-expand-float" onclick="toggleSidebar()" title="Tampilkan Menu" class="hidden fixed top-3 left-3 z-30 p-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 dark:bg-cyan-600 dark:hover:bg-cyan-500 text-white shadow-lg shadow-emerald-500/20 transition-all focus:outline-none">
     <i class="fa-solid fa-bars text-xs"></i>
   </button>
-  <!-- MOBILE OVERLAY SIDEBAR DRAWER -->
   <div id="mobile-sidebar-backdrop" onclick="toggleMobileMenu()" class="fixed inset-0 z-40 bg-slate-950/70 backdrop-blur-sm hidden transition-opacity"></div>
   <div id="mobile-sidebar" class="fixed top-0 left-0 bottom-0 z-50 w-72 glass-sidebar p-4 space-y-4 flex flex-col justify-between -translate-x-full transition-transform duration-300 ease-in-out">
     <div>
@@ -310,13 +301,10 @@
       <p>Muhammad Hilman Fasya, S.Pd.</p>
     </div>
   </div>
-  <!-- MAIN WRAPPER -->
   <div id="main-wrapper" class="flex-1 flex flex-col min-w-0">
-    <!-- HEADER NAVBAR -->
     <header id="app-header" class="hidden sticky top-0 z-30 glass-header h-16 sm:h-20 px-3 sm:px-8 items-center justify-between">
       <div class="hidden sm:flex items-center space-x-2 text-xs text-slate-600 dark:text-slate-400">
         <i class="fa-solid text-emerald-600 dark:text-cyan-400"></i>
-        <!-- Realtime Status Indicator -->
         <span id="firebase-sync-status" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-600 border border-amber-500/30 flex items-center gap-1">
           <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span> Connecting Realtime...
         </span>
@@ -342,9 +330,7 @@
       </div>
     </header>
     <div id="toast-container" class="fixed bottom-4 right-4 left-4 sm:left-auto z-50 space-y-3 pointer-events-none"></div>
-    <!-- MAIN CONTENT AREA -->
     <main class="flex-grow p-3 sm:p-8 max-w-7xl w-full mx-auto flex flex-col justify-center">
-      <!-- SECTION 1: AUTHENTICATION -->
       <section id="auth-section" class="flex items-center justify-center min-h-[85vh] py-4 sm:py-8 relative">
         <div class="absolute top-0 right-0 p-2 sm:p-4">
           <button onclick="toggleDarkMode()" title="Ubah Mode Tampilan" class="p-2.5 sm:p-3 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-cyan-400 bg-white/80 dark:bg-slate-900/80 border border-emerald-500/20 dark:border-slate-800 rounded-full shadow-lg transition-all flex items-center justify-center focus:outline-none">
@@ -420,9 +406,7 @@
           </div>
         </div>
       </section>
-      <!-- APP DASHBOARD & CONTENT PAGES -->
       <div id="app-content" class="hidden space-y-6 sm:space-y-8">
-        <!-- 1. DASHBOARD TAB -->
         <div id="tab-content-dashboard" class="space-y-4 sm:space-y-6">
           <div class="glass-card rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-emerald-500/20 dark:border-slate-800 relative overflow-hidden bg-gradient-to-r from-emerald-50 via-teal-100/40 to-emerald-50 dark:from-slate-900 dark:via-indigo-950/40 dark:to-slate-900">
             <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6">
@@ -524,7 +508,6 @@
             </div>
           </div>
         </div>
-        <!-- 2. MODUL & MATERI TAB -->
         <div id="tab-content-modul" class="hidden space-y-4 sm:space-y-6">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-4">
             <div>
@@ -534,7 +517,6 @@
           </div>
           <div id="modules-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6"></div>
         </div>
-        <!-- 3. TUGAS & PROYEK TAB -->
         <div id="tab-content-tugas" class="hidden space-y-4 sm:space-y-6">
           <div>
             <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Tugas & Proyek Praktikum</h2>
@@ -544,7 +526,6 @@
             <div class="space-y-3 sm:space-y-4" id="assignment-list"></div>
           </div>
         </div>
-        <!-- 4. CAPAIAN NILAI TAB -->
         <div id="tab-content-nilai" class="hidden space-y-4 sm:space-y-6">
           <div>
             <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Transkrip Nilai & Capaian Belajar</h2>
@@ -566,7 +547,6 @@
             </div>
           </div>
         </div>
-        <!-- 5. MENU UTAMA PENGELOLAAN TERPADU (GURU KHUSUS) -->
         <div id="tab-content-pengelolaan" class="hidden space-y-4 sm:space-y-6">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 sm:gap-4">
             <div>
@@ -576,7 +556,6 @@
               <p class="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 mt-0.5">Kelola data siswa, rekapitulasi nilai, modul, tugas, pengumuman, dan jadwal.</p>
             </div>
           </div>
-          <!-- SUB-TAB NAVIGATION BAR -->
           <div class="flex flex-col sm:flex-row rounded-2xl bg-white/80 dark:bg-slate-900/80 p-1.5 border border-emerald-500/20 dark:border-slate-800 gap-1.5 sm:gap-2">
             <button onclick="switchSubManagementTab('sub-siswa')" id="sub-btn-siswa" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 bg-amber-500 text-slate-950 shadow-md flex items-center justify-center space-x-2 focus:outline-none">
               <i class="fa-solid fa-users-gear"></i>
@@ -591,7 +570,6 @@
               <span>Tugas, Info & Jadwal</span>
             </button>
           </div>
-          <!-- SUB-TAB 1: KELOLA SISWA & REKAPITULASI NILAI -->
           <div id="sub-content-siswa" class="space-y-4 sm:space-y-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
               <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4 w-full">
@@ -625,17 +603,14 @@
                 <input type="text" id="student-search-input" onkeyup="filterStudentTable()" placeholder="Cari nama atau NISN..." class="w-full pl-9 pr-4 py-2 bg-white dark:bg-slate-900 border border-emerald-500/30 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-amber-500">
               </div>
               <div class="flex items-center gap-2 w-full md:w-auto flex-wrap">
-                <!-- FILTER STATUS -->
                 <select id="student-status-filter" onchange="filterStudentTable()" class="w-full md:w-auto px-3 py-2 bg-white dark:bg-slate-900 border border-emerald-500/30 dark:border-slate-700 rounded-xl text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-amber-500">
                   <option value="ALL">Semua Status</option>
                   <option value="Aktif">Aktif</option>
                   <option value="Perlu Perhatian">Perlu Perhatian</option>
                 </select>
-                <!-- FILTER KELAS -->
                 <select id="student-class-filter" onchange="filterStudentTable()" class="w-full md:w-auto px-3 py-2 bg-white dark:bg-slate-900 border border-amber-500/30 dark:border-slate-700 rounded-xl text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-amber-500">
                   <option value="ALL">Semua Kelas</option>
                 </select>
-                <!-- TOMBOL RESET FILTER -->
                 <button type="button" onclick="resetStudentFilters()" title="Reset Semua Filter" class="px-3 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-400 border border-amber-500/30 rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition-all">
                   <i class="fa-solid fa-rotate-left"></i>
                   <span>Reset</span>
@@ -669,20 +644,23 @@
                   <p class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5">Pantauan peringkat seluruh siswa secara real-time.</p>
                 </div>
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
-                  <!-- FILTER KELAS LEADERBOARD (BARU) -->
                   <div class="flex items-center space-x-2">
                     <label class="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap">Kelas:</label>
                     <select id="leaderboard-class-filter" onchange="renderTeacherLeaderboard()" class="w-full sm:w-auto px-3 py-2 bg-white dark:bg-slate-900 border border-amber-500/30 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-amber-500">
                       <option value="ALL">Semua Kelas</option>
                     </select>
                   </div>
-                  <!-- FILTER MODUL LEADERBOARD -->
                   <div class="flex items-center space-x-2">
                     <label class="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap">Modul:</label>
                     <select id="leaderboard-module-filter" onchange="renderTeacherLeaderboard()" class="w-full sm:w-auto px-3 py-2 bg-white dark:bg-slate-900 border border-amber-500/30 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-amber-500">
                       <option value="ALL">Semua Modul (Rata-rata)</option>
                     </select>
                   </div>
+                  <!-- TOMBOL DOWNLOAD LEADERBOARD (BARU) -->
+                  <button type="button" onclick="downloadLeaderboardExcel()" title="Download Leaderboard (Excel)" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 dark:bg-cyan-600 dark:hover:bg-cyan-500 text-white rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition-all shadow-md focus:outline-none">
+                    <i class="fa-solid fa-file-excel"></i>
+                    <span>Unduh Excel</span>
+                  </button>
                 </div>
               </div>
               <div class="overflow-x-auto">
@@ -710,18 +688,23 @@
                   </h3>
                   <span class="ml-2 px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">Real-Time</span>
                 </div>
-                <!-- FILTER KELAS REKAPITULASI (BARU) -->
-                <div class="flex items-center space-x-2">
-                  <label class="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap">Filter Kelas:</label>
-                  <select id="quiz-recap-class-filter" onchange="renderTeacherQuizResultsTable()" class="w-full sm:w-auto px-3 py-2 bg-white dark:bg-slate-900 border border-emerald-500/30 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-emerald-500">
-                    <option value="ALL">Semua Kelas</option>
-                  </select>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <div class="flex items-center space-x-2">
+                    <label class="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap">Filter Kelas:</label>
+                    <select id="quiz-recap-class-filter" onchange="renderTeacherQuizResultsTable()" class="w-full sm:w-auto px-3 py-2 bg-white dark:bg-slate-900 border border-emerald-500/30 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-emerald-500">
+                      <option value="ALL">Semua Kelas</option>
+                    </select>
+                  </div>
+                  <!-- TOMBOL DOWNLOAD REKAPITULASI (BARU) -->
+                  <button type="button" onclick="downloadQuizRecapExcel()" title="Download Rekapitulasi Kuis (Excel)" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 dark:bg-cyan-600 dark:hover:bg-cyan-500 text-white rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition-all shadow-md focus:outline-none">
+                    <i class="fa-solid fa-file-excel"></i>
+                    <span>Unduh Excel</span>
+                  </button>
                 </div>
               </div>
               <div id="teacher-quiz-grouped-container" class="space-y-4 sm:space-y-6"></div>
             </div>
           </div>
-          <!-- SUB-TAB 2: KELOLA MODUL & SOAL -->
           <div id="sub-content-modul" class="hidden space-y-6 sm:space-y-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
               <div class="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-8 border border-cyan-500/30 shadow-xl">
@@ -822,7 +805,6 @@
               <div id="manage-modules-list" class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4"></div>
             </div>
           </div>
-          <!-- SUB-TAB 3: KELOLA INFO, TUGAS & JADWAL -->
           <div id="sub-content-info" class="hidden space-y-6 sm:space-y-8">
             <div class="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-8 border border-teal-500/30 shadow-xl">
               <div class="flex items-center space-x-3 mb-4 sm:mb-5 pb-3 border-b border-teal-500/20">
@@ -855,7 +837,6 @@
               </form>
               <div class="mt-4 sm:mt-6 border-t border-teal-500/20 pt-4 space-y-2.5" id="task-manage-list"></div>
             </div>
-            <!-- DAFTAR PENGUMPULAN TUGAS SISWA -->
             <div class="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-8 border border-amber-500/30 shadow-xl">
               <div class="flex items-center space-x-3 mb-4 sm:mb-5 pb-3 border-b border-amber-500/20">
                 <div class="p-2 sm:p-2.5 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
@@ -950,7 +931,6 @@
             </div>
           </div>
         </div>
-        <!-- 6. EDIT PROFIL TAB -->
         <div id="tab-content-profil" class="hidden space-y-4 sm:space-y-6 max-w-2xl mx-auto">
           <div>
             <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Pengaturan Profil Akun</h2>
@@ -1017,7 +997,6 @@
       <div id="module-modal-content"></div>
     </div>
   </div>
-  <!-- MODAL EDIT MODUL (GURU) -->
   <div id="edit-module-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm hidden">
     <div class="glass-modal w-full max-w-xl max-h-[90vh] rounded-2xl sm:rounded-3xl p-4 sm:p-8 overflow-y-auto shadow-2xl relative">
       <div class="flex items-center justify-between mb-3 sm:mb-4 border-b border-cyan-500/20 pb-3">
@@ -1067,7 +1046,6 @@
       </form>
     </div>
   </div>
-  <!-- MODAL UPLOAD TUGAS -->
   <div id="upload-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm hidden">
     <div class="glass-modal w-full max-w-md rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-emerald-500/30 shadow-2xl relative">
       <div class="flex items-center justify-between mb-3 border-b border-emerald-500/20 dark:border-slate-800 pb-3">
@@ -1095,7 +1073,6 @@
       </form>
     </div>
   </div>
-  <!-- MODAL RIWAYAT AKTIVITAS -->
   <div id="activity-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm hidden">
     <div class="glass-modal w-full max-w-lg max-h-[85vh] rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl relative flex flex-col">
       <div class="flex items-center justify-between mb-3 border-b border-amber-500/20 pb-3">
@@ -1110,7 +1087,6 @@
       </div>
     </div>
   </div>
-  <!-- MODAL EDIT / TAMBAH SISWA (GURU) -->
   <div id="student-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm hidden">
     <div class="glass-modal w-full max-w-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-amber-500/30 shadow-2xl relative">
       <div class="flex items-center justify-between mb-3 border-b border-emerald-500/20 dark:border-slate-800 pb-3">
@@ -1153,11 +1129,7 @@
       </form>
     </div>
   </div>
-  <!-- JAVASCRIPT LOGIC WITH FIREBASE SYNC & MULTI-GURU ISOLATED DASHBOARD -->
   <script>
-    // -------------------------------------------------------------------
-    // 1. FIREBASE CONFIGURATION
-    // -------------------------------------------------------------------
     const firebaseConfig = {
       apiKey: "AIzaSyBg46Ijb5JgDNYeDfoCtWwIytonvjpPG6s",
       authDomain: "danadyaksaedu.firebaseapp.com",
@@ -1172,11 +1144,9 @@
       firebase.initializeApp(firebaseConfig);
     }
     const db = firebase.database();
-    // Default Seed Data
     const DEFAULT_ACCOUNTS = [
       { name: "Muhammad Hilman Fasya, S.Pd.", id: "hilmanfasya90@gmail.com", pass: "guru123", role: "guru", status: "Aktif", grade: "Kelas 12 (Dua Belas)", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Guru" }
     ];
-    // Global State
     let accounts = [];
     let courseModules = [];
     let announcements = [];
@@ -1193,9 +1163,6 @@
       currentQuestionIndex: 0,
       userAnswers: {}
     };
-    // -------------------------------------------------------------------
-    // FITUR COLLAPSE SIDEBAR (DITAMBAHKAN)
-    // -------------------------------------------------------------------
     let sidebarCollapsed = false;
     const SIDEBAR_STATE_KEY = 'inf12_sidebar_collapsed';
     function initSidebarState() {
@@ -1224,9 +1191,6 @@
         if (expandFloat) expandFloat.classList.add('hidden');
       }
     }
-    // -------------------------------------------------------------------
-    // 2. REALTIME LISTENERS & ISOLASI DATA GURU
-    // -------------------------------------------------------------------
     window.onload = function() {
       initTheme();
       initSidebarState();
@@ -1243,7 +1207,6 @@
           syncStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-400"></span> Disconnected`;
         }
       });
-      // Accounts Sync
       db.ref('danadyaksa/accounts').on('value', (snapshot) => {
         const val = snapshot.val();
         accounts = val ? (Array.isArray(val) ? val : Object.values(val)) : DEFAULT_ACCOUNTS;
@@ -1253,11 +1216,10 @@
           if (currentUser.role === 'guru') {
             renderStudentTable();
             renderTeacherLeaderboard();
-            populateAllClassFilters(); // BARU - sinkronkan semua filter kelas
+            populateAllClassFilters();
           }
         }
       });
-      // Modules Sync
       db.ref('danadyaksa/modules').on('value', (snapshot) => {
         const val = snapshot.val();
         courseModules = val ? (Array.isArray(val) ? val : Object.values(val)) : [];
@@ -1266,19 +1228,16 @@
         populateModuleDropdown();
         populateLeaderboardFilter();
       });
-      // Announcements Sync
       db.ref('danadyaksa/announcements').on('value', (snapshot) => {
         const val = snapshot.val();
         announcements = val ? (Array.isArray(val) ? val : Object.values(val)) : [];
         renderAnnouncementsAndSchedules();
       });
-      // Schedules Sync
       db.ref('danadyaksa/schedules').on('value', (snapshot) => {
         const val = snapshot.val();
         schedules = val ? (Array.isArray(val) ? val : Object.values(val)) : [];
         renderAnnouncementsAndSchedules();
       });
-      // Assignments Sync
       db.ref('danadyaksa/assignments').on('value', (snapshot) => {
         const val = snapshot.val();
         assignments = val ? (Array.isArray(val) ? val : Object.values(val)) : [];
@@ -1286,7 +1245,6 @@
         renderManageTaskContainer();
         updateDashboardTaskStats();
       });
-      // Task Submissions Sync
       db.ref('danadyaksa/taskSubmissions').on('value', (snapshot) => {
         const val = snapshot.val();
         taskSubmissions = val ? (Array.isArray(val) ? val : Object.values(val)) : [];
@@ -1296,7 +1254,6 @@
           renderTeacherSubmissions();
         }
       });
-      // Quiz Results Sync
       db.ref('danadyaksa/quizResults').on('value', (snapshot) => {
         const val = snapshot.val();
         quizResults = val ? (Array.isArray(val) ? val : Object.values(val)) : [];
@@ -1315,9 +1272,6 @@
         showToast("Gagal menyimpan perubahan ke server Realtime", "error");
       });
     }
-    // -------------------------------------------------------------------
-    // 3. FILTER DATA BERDASARKAN GURU LOGIN
-    // -------------------------------------------------------------------
     function getMyModules() {
       if (!currentUser || currentUser.role !== 'guru') return courseModules;
       return courseModules.filter(m => !m.teacherId || m.teacherId === currentUser.id);
@@ -1334,9 +1288,6 @@
       if (!currentUser || currentUser.role !== 'guru') return schedules;
       return schedules.filter(s => !s.teacherId || s.teacherId === currentUser.id);
     }
-    // -------------------------------------------------------------------
-    // 4. UI & SYSTEM FUNCTIONS
-    // -------------------------------------------------------------------
     function toggleDarkMode() {
       const htmlEl = document.documentElement;
       const themeIcon = document.getElementById('theme-icon');
@@ -1481,7 +1432,6 @@
       sidebar.classList.add('md:flex');
       header.classList.remove('hidden');
       header.classList.add('flex');
-      // Padding disesuaikan berdasarkan state collapse
       if (sidebarCollapsed) {
         mainWrapper.style.paddingLeft = '68px';
       } else {
@@ -1508,7 +1458,7 @@
         renderManageModulesList();
         renderManageTaskContainer();
         populateModuleDropdown();
-        populateAllClassFilters(); // BARU - populate semua filter kelas saat login
+        populateAllClassFilters();
       } else {
         badge.textContent = 'SISWA';
         badge.className = "px-1.5 py-0.2 text-[8px] sm:text-[9px] font-bold uppercase rounded-full bg-emerald-500/20 text-emerald-700 dark:text-cyan-300 border border-emerald-500/30";
@@ -1651,25 +1601,18 @@
         select.value = currentValue;
       }
     }
-    // ==========================================================
-    // FILTER KELAS DINAMIS - POPULATE SEMUA FILTER SEKALIGUS (BARU)
-    // ==========================================================
     function populateAllClassFilters() {
       const students = accounts.filter(a => a.role === 'siswa');
-      // Ambil daftar kelas unik
       const uniqueClasses = [...new Set(students.map(s => s.grade || "Kelas 10 (Sepuluh)"))];
-      // Urutkan kelas secara natural (10, 11, 12)
       uniqueClasses.sort((a, b) => {
         const numA = parseInt(a.match(/\d+/)?.[0] || 0);
         const numB = parseInt(b.match(/\d+/)?.[0] || 0);
         return numA - numB;
       });
-      // Update stat unique classes
       const statUniqueClasses = document.getElementById('stat-unique-classes');
       if (statUniqueClasses) {
         statUniqueClasses.textContent = uniqueClasses.length > 0 ? uniqueClasses.join(', ').replace(/Kelas (\d+).*/g, '$1') : '-';
       }
-      // Helper untuk populate satu select
       const populateSelect = (selectId, labelPrefix = 'Semua Kelas') => {
         const select = document.getElementById(selectId);
         if (!select) return;
@@ -1677,12 +1620,10 @@
         const countText = uniqueClasses.length > 0 ? ` (${uniqueClasses.length})` : '';
         select.innerHTML = `<option value="ALL">${labelPrefix}${countText}</option>` +
           uniqueClasses.map(cls => `<option value="${cls}">${cls}</option>`).join('');
-        // Pertahankan pilihan sebelumnya jika masih ada
         if (currentValue && (currentValue === 'ALL' || uniqueClasses.includes(currentValue))) {
           select.value = currentValue;
         }
       };
-      // Populate 3 filter kelas
       populateSelect('student-class-filter', 'Semua Kelas');
       populateSelect('leaderboard-class-filter', 'Semua Kelas');
       populateSelect('quiz-recap-class-filter', 'Semua Kelas');
@@ -1691,11 +1632,10 @@
       const tbody = document.getElementById('leaderboard-table-body');
       if (!tbody) return;
       const filterModEl = document.getElementById('leaderboard-module-filter');
-      const filterClassEl = document.getElementById('leaderboard-class-filter'); // BARU
+      const filterClassEl = document.getElementById('leaderboard-class-filter');
       const selectedMod = filterModEl ? filterModEl.value : 'ALL';
-      const selectedClass = filterClassEl ? filterClassEl.value : 'ALL'; // BARU
+      const selectedClass = filterClassEl ? filterClassEl.value : 'ALL';
       let students = accounts.filter(a => a.role === 'siswa');
-      // FILTER KELAS (BARU)
       if (selectedClass !== 'ALL') {
         students = students.filter(s => (s.grade || "Kelas 10 (Sepuluh)") === selectedClass);
       }
@@ -1768,13 +1708,12 @@
     function renderTeacherQuizResultsTable() {
       const container = document.getElementById('teacher-quiz-grouped-container');
       if (!container) return;
-      const filterClassEl = document.getElementById('quiz-recap-class-filter'); // BARU
-      const selectedClass = filterClassEl ? filterClassEl.value : 'ALL'; // BARU
+      const filterClassEl = document.getElementById('quiz-recap-class-filter');
+      const selectedClass = filterClassEl ? filterClassEl.value : 'ALL';
       if (quizResults.length === 0) {
         container.innerHTML = `<p class="text-center text-slate-500 text-xs italic py-4">Belum ada siswa yang menyelesaikan kuis.</p>`;
         return;
       }
-      // Filter quiz results berdasarkan kelas (BARU)
       let filteredResults = quizResults;
       if (selectedClass !== 'ALL') {
         filteredResults = quizResults.filter(q => {
@@ -1796,7 +1735,6 @@
         }
         grouped[grade].push(q);
       });
-      // Urutkan kelas secara natural
       const sortedGrades = Object.keys(grouped).sort((a, b) => {
         const numA = parseInt(a.match(/\d+/)?.[0] || 0);
         const numB = parseInt(b.match(/\d+/)?.[0] || 0);
@@ -1837,6 +1775,232 @@
           </div>
         `;
       }).join('');
+    }
+    // ==========================================================
+    // FITUR DOWNLOAD EXCEL - LEADERBOARD & REKAPITULASI
+    // ==========================================================
+    function getDownloadTimestamp() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      const h = String(now.getHours()).padStart(2, '0');
+      const min = String(now.getMinutes()).padStart(2, '0');
+      return `${y}${m}${d}_${h}${min}`;
+    }
+    function downloadLeaderboardExcel() {
+      const filterModEl = document.getElementById('leaderboard-module-filter');
+      const filterClassEl = document.getElementById('leaderboard-class-filter');
+      const selectedMod = filterModEl ? filterModEl.value : 'ALL';
+      const selectedClass = filterClassEl ? filterClassEl.value : 'ALL';
+      let students = accounts.filter(a => a.role === 'siswa');
+      if (selectedClass !== 'ALL') {
+        students = students.filter(s => (s.grade || "Kelas 10 (Sepuluh)") === selectedClass);
+      }
+      if (students.length === 0) {
+        showToast("Tidak ada data untuk diunduh!", "warning");
+        return;
+      }
+      // Ambil nama modul jika filter modul aktif
+      let modulLabel = "Semua Modul (Rata-rata)";
+      if (selectedMod !== 'ALL') {
+        const mod = courseModules.find(m => m.id === selectedMod);
+        if (mod) modulLabel = `${mod.badge} - ${mod.title}`;
+      }
+      const leaderboardData = students.map(s => {
+        let studentQuizzes = quizResults.filter(q => q.studentId === s.id);
+        if (selectedMod !== 'ALL') {
+          studentQuizzes = studentQuizzes.filter(q => q.moduleId === selectedMod);
+        }
+        let totalScore = 0;
+        let avgScore = 0;
+        let quizzesDoneCount = studentQuizzes.length;
+        if (quizzesDoneCount > 0) {
+          totalScore = studentQuizzes.reduce((sum, q) => sum + q.score, 0);
+          avgScore = parseFloat((totalScore / quizzesDoneCount).toFixed(1));
+        }
+        let predikat = "Belum Kuis";
+        if (quizzesDoneCount > 0) {
+          if (avgScore >= 85) predikat = "Predikat A";
+          else if (avgScore >= 75) predikat = "Predikat B";
+          else predikat = "Predikat C";
+        }
+        return {
+          nama: s.name,
+          username: s.id,
+          kelas: s.grade || "Kelas 10 (Sepuluh)",
+          kuisSelesai: quizzesDoneCount,
+          nilaiSkor: quizzesDoneCount > 0 ? avgScore : "-",
+          predikat: predikat
+        };
+      });
+      leaderboardData.sort((a, b) => {
+        const scoreA = typeof a.nilaiSkor === 'number' ? a.nilaiSkor : -1;
+        const scoreB = typeof b.nilaiSkor === 'number' ? b.nilaiSkor : -1;
+        return scoreB - scoreA || b.kuisSelesai - a.kuisSelesai;
+      });
+      // Tambahkan kolom peringkat
+      const finalData = leaderboardData.map((item, idx) => ({
+        "Peringkat": idx + 1,
+        "Nama Siswa": item.nama,
+        "Username": item.username,
+        "Kelas": item.kelas,
+        "Kuis Selesai": item.kuisSelesai,
+        "Nilai Skor": item.nilaiSkor,
+        "Predikat": item.predikat
+      }));
+      // Buat worksheet
+      const ws = XLSX.utils.json_to_sheet(finalData);
+      // Atur lebar kolom
+      ws['!cols'] = [
+        { wch: 10 }, // Peringkat
+        { wch: 30 }, // Nama
+        { wch: 25 }, // Username
+        { wch: 22 }, // Kelas
+        { wch: 13 }, // Kuis Selesai
+        { wch: 12 }, // Nilai
+        { wch: 14 }  // Predikat
+      ];
+      // Buat workbook dengan metadata
+      const wb = XLSX.utils.book_new();
+      // Sheet info header (metadata)
+      const infoData = [
+        ["DANADYAKSA EDU - LEADERBOARD BELAJAR SISWA"],
+        [""],
+        ["Tanggal Unduh", new Date().toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'short' })],
+        ["Filter Kelas", selectedClass === 'ALL' ? 'Semua Kelas' : selectedClass],
+        ["Filter Modul", modulLabel],
+        ["Total Siswa", students.length],
+        ["Diunduh Oleh", currentUser ? currentUser.name : "-"],
+        [""],
+        ["PERINGKAT BELAJAR SISWA"]
+      ];
+      const wsInfo = XLSX.utils.aoa_to_sheet(infoData);
+      wsInfo['!cols'] = [{ wch: 20 }, { wch: 50 }];
+      // Gabungkan info + data di sheet utama
+      const combinedData = [...infoData, ...finalData.map(row => [
+        row["Peringkat"],
+        row["Nama Siswa"],
+        row["Username"],
+        row["Kelas"],
+        row["Kuis Selesai"],
+        row["Nilai Skor"],
+        row["Predikat"]
+      ])];
+      const wsFinal = XLSX.utils.aoa_to_sheet(combinedData);
+      wsFinal['!cols'] = [
+        { wch: 12 },
+        { wch: 35 },
+        { wch: 28 },
+        { wch: 22 },
+        { wch: 14 },
+        { wch: 12 },
+        { wch: 14 }
+      ];
+      // Merge header title
+      wsFinal['!merges'] = [
+        { s: { r: 0, c: 0 }, e: { r: 0, c: 6 } } // Judul merge 7 kolom
+      ];
+      XLSX.utils.book_append_sheet(wb, wsFinal, "Leaderboard");
+      // Nama file
+      const classLabel = selectedClass === 'ALL' ? 'Semua_Kelas' : selectedClass.replace(/\s+/g, '_');
+      const fileName = `Leaderboard_${classLabel}_${getDownloadTimestamp()}.xlsx`;
+      XLSX.writeFile(wb, fileName);
+      showToast(`Leaderboard berhasil diunduh! (${finalData.length} siswa)`, "success");
+    }
+    function downloadQuizRecapExcel() {
+      const filterClassEl = document.getElementById('quiz-recap-class-filter');
+      const selectedClass = filterClassEl ? filterClassEl.value : 'ALL';
+      if (quizResults.length === 0) {
+        showToast("Belum ada data kuis untuk diunduh!", "warning");
+        return;
+      }
+      let filteredResults = quizResults;
+      if (selectedClass !== 'ALL') {
+        filteredResults = quizResults.filter(q => {
+          const studentAcc = accounts.find(a => a.id === q.studentId);
+          const studentGrade = studentAcc && studentAcc.grade ? studentAcc.grade : "Kelas Umum / Lainnya";
+          return studentGrade === selectedClass;
+        });
+      }
+      if (filteredResults.length === 0) {
+        showToast("Tidak ada data kuis untuk filter ini!", "warning");
+        return;
+      }
+      // Group by kelas
+      const grouped = {};
+      filteredResults.forEach(q => {
+        const studentAcc = accounts.find(a => a.id === q.studentId);
+        const grade = studentAcc && studentAcc.grade ? studentAcc.grade : "Kelas Umum / Lainnya";
+        if (!grouped[grade]) grouped[grade] = [];
+        grouped[grade].push(q);
+      });
+      const sortedGrades = Object.keys(grouped).sort((a, b) => {
+        const numA = parseInt(a.match(/\d+/)?.[0] || 0);
+        const numB = parseInt(b.match(/\d+/)?.[0] || 0);
+        return numA - numB;
+      });
+      // Build combined data dengan header per kelas
+      const combinedData = [];
+      // Metadata header
+      combinedData.push(["DANADYAKSA EDU - REKAPITULASI KUIS SISWA"]);
+      combinedData.push([""]);
+      combinedData.push(["Tanggal Unduh", new Date().toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'short' })]);
+      combinedData.push(["Filter Kelas", selectedClass === 'ALL' ? 'Semua Kelas' : selectedClass]);
+      combinedData.push(["Total Hasil Kuis", filteredResults.length]);
+      combinedData.push(["Diunduh Oleh", currentUser ? currentUser.name : "-"]);
+      combinedData.push([""]);
+      // Per kelas
+      sortedGrades.forEach(grade => {
+        const results = grouped[grade];
+        // Header kelas
+        combinedData.push([`=== ${grade.toUpperCase()} === (${results.length} Kuis)`]);
+        combinedData.push([""]);
+        // Table header
+        combinedData.push(["No", "Nama Siswa", "Username", "Modul", "Skor", "Jawaban Benar", "Total Soal", "Persentase", "Waktu Pengerjaan"]);
+        // Data rows
+        results.forEach((q, idx) => {
+          const percentage = q.totalQuestions > 0 ? Math.round((q.correctCount / q.totalQuestions) * 100) + '%' : '0%';
+          combinedData.push([
+            idx + 1,
+            q.studentName,
+            q.studentId,
+            q.moduleTitle,
+            q.score,
+            q.correctCount,
+            q.totalQuestions,
+            percentage,
+            q.timestamp
+          ]);
+        });
+        // Statistik kelas
+        const scores = results.map(r => r.score);
+        const avgScore = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1);
+        const maxScore = Math.max(...scores);
+        const minScore = Math.min(...scores);
+        combinedData.push([""]);
+        combinedData.push(["STATISTIK KELAS", `Rata-rata: ${avgScore}`, `Tertinggi: ${maxScore}`, `Terendah: ${minScore}`]);
+        combinedData.push([""]);
+        combinedData.push([""]);
+      });
+      const ws = XLSX.utils.aoa_to_sheet(combinedData);
+      ws['!cols'] = [
+        { wch: 6 },   // No
+        { wch: 30 },  // Nama
+        { wch: 25 },  // Username
+        { wch: 30 },  // Modul
+        { wch: 10 },  // Skor
+        { wch: 14 },  // Jawaban Benar
+        { wch: 12 },  // Total Soal
+        { wch: 12 },  // Persentase
+        { wch: 20 }   // Waktu
+      ];
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Rekapitulasi Kuis");
+      const classLabel = selectedClass === 'ALL' ? 'Semua_Kelas' : selectedClass.replace(/\s+/g, '_');
+      const fileName = `Rekapitulasi_Kuis_${classLabel}_${getDownloadTimestamp()}.xlsx`;
+      XLSX.writeFile(wb, fileName);
+      showToast(`Rekapitulasi kuis berhasil diunduh! (${filteredResults.length} data)`, "success");
     }
     function switchTab(tabKey) {
       const tabs = ['dashboard', 'modul', 'tugas', 'nilai', 'pengelolaan', 'profil'];
@@ -1879,7 +2043,7 @@
           renderManageModulesList();
           renderManageTaskContainer();
           populateModuleDropdown();
-          populateAllClassFilters(); // BARU
+          populateAllClassFilters();
         } else {
           guruPengelolaanBtn.className = "side-tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold transition-all duration-200 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 border border-amber-500/30 mt-4 focus:outline-none focus:ring-0";
         }
@@ -2610,7 +2774,7 @@
           </tr>
         `;
       }).join('');
-      populateAllClassFilters(); // BARU - perbarui semua filter kelas setelah tabel di-render
+      populateAllClassFilters();
     }
     function resetStudentFilters() {
       const searchInput = document.getElementById('student-search-input');
@@ -2683,7 +2847,7 @@
         showToast("Data siswa diperbarui!", "success");
       }
       saveToFirebase('accounts', accounts);
-      populateAllClassFilters(); // BARU - perbarui semua filter kelas setelah data berubah
+      populateAllClassFilters();
       closeStudentModal();
     }
     function resetStudentPassword(index) {
@@ -2695,7 +2859,7 @@
       const studentName = accounts[index].name;
       accounts.splice(index, 1);
       saveToFirebase('accounts', accounts);
-      populateAllClassFilters(); // BARU
+      populateAllClassFilters();
       showToast(`Siswa ${studentName} dihapus.`, "warning");
     }
     function closeStudentModal() {
