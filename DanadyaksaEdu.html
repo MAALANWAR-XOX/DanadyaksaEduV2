@@ -202,6 +202,101 @@
     #main-wrapper {
       transition: padding-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
+    /* ============================================ */
+    /* INTERAKTIF STAT CARD - ANIMASI & HOVER */
+    /* ============================================ */
+    .stat-interactive-card {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+    .stat-interactive-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+    .stat-interactive-card:hover::before {
+      opacity: 1;
+    }
+    .stat-interactive-card:hover {
+      transform: translateY(-4px) scale(1.02);
+    }
+    .stat-interactive-card:active {
+      transform: translateY(-2px) scale(0.98);
+    }
+    .stat-interactive-card .stat-icon-wrapper {
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .stat-interactive-card:hover .stat-icon-wrapper {
+      transform: rotate(-8deg) scale(1.15);
+    }
+    .stat-interactive-card .stat-value {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .stat-interactive-card:hover .stat-value {
+      transform: scale(1.08);
+    }
+    .stat-interactive-card.active-filter {
+      transform: translateY(-4px) scale(1.03);
+    }
+    @keyframes pulseBadge {
+      0%, 100% { box-shadow: 0 2px 8px rgba(16, 185, 129, 0.5); }
+      50% { box-shadow: 0 2px 16px rgba(16, 185, 129, 0.9); }
+    }
+    @keyframes countUp {
+      from { opacity: 0; transform: translateY(10px) scale(0.8); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .stat-value-animate {
+      animation: countUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    .stat-shimmer {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      transition: left 0.8s ease;
+      pointer-events: none;
+    }
+    .stat-interactive-card:hover .stat-shimmer {
+      left: 100%;
+    }
+    .stat-tooltip {
+      position: absolute;
+      bottom: -28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: rgba(15, 23, 42, 0.95);
+      color: rgb(16, 185, 129);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 9px;
+      font-weight: 700;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      z-index: 20;
+    }
+    html:not(.dark) .stat-tooltip {
+      background: white;
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+    .stat-interactive-card:hover .stat-tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 antialiased selection:bg-cyan-500 selection:text-white">
@@ -415,7 +510,7 @@
                   DanadyaksaEdu - Membangun Generasi Cerdas
                 </span>
                 <h1 class="text-xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-2 sm:mt-3">
-                  Halo, <span id="dash-user-name" class="text-emerald-600 dark:text-cyan-400">Siswa</span> 👋
+                  Halo, <span id="dash-user-name" class="text-emerald-600 dark:text-cyan-400">Siswa</span>  👋
                 </h1>
                 <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
                   Selamat datang di DanadyaksaEdu! Portal edukasi terpadu yang menghubungkan Siswa dan Guru dalam satu ekosistem digital yang cerdas dan fleksibel.
@@ -572,22 +667,69 @@
           </div>
           <div id="sub-content-siswa" class="space-y-4 sm:space-y-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
+              <!-- ============================================ -->
+              <!-- CARD STATISTIK INTERAKTIF - SUDAH DIPERBAHARUI -->
+              <!-- ============================================ -->
               <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4 w-full">
-                <div class="glass-card p-3 sm:p-4 rounded-xl border border-emerald-500/20 dark:border-slate-800">
-                  <span class="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium block">Total Terdaftar</span>
-                  <span id="stat-total-siswa" class="text-lg sm:text-xl font-black text-slate-900 dark:text-white mt-0.5 block">0</span>
+                <!-- Card 1: Total Terdaftar -->
+                <div onclick="filterByStatCard('all')" id="stat-card-all" class="stat-interactive-card glass-card p-3 sm:p-4 rounded-xl border border-emerald-500/20 dark:border-slate-800 hover:border-emerald-500/60 hover:shadow-lg hover:shadow-emerald-500/20 dark:hover:shadow-emerald-500/10 relative group">
+                  <div class="stat-shimmer"></div>
+                  <div class="flex items-start justify-between relative z-10">
+                    <div class="flex-1 min-w-0">
+                      <span class="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium block">Total Terdaftar</span>
+                      <span id="stat-total-siswa" class="stat-value text-lg sm:text-xl font-black text-slate-900 dark:text-white mt-0.5 block">0</span>
+                      <span class="text-[9px] text-emerald-600 dark:text-emerald-400 font-bold mt-0.5 block">Semua Siswa</span>
+                    </div>
+                    <div class="stat-icon-wrapper w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 dark:from-emerald-500/30 dark:to-teal-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
+                      <i class="fa-solid fa-users text-sm sm:text-base"></i>
+                    </div>
+                  </div>
+                  <div class="stat-tooltip"><i class="fa-solid fa-filter mr-1"></i> Klik untuk tampilkan semua</div>
                 </div>
-                <div class="glass-card p-3 sm:p-4 rounded-xl border border-emerald-500/20 dark:border-slate-800">
-                  <span class="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium block">Status Aktif</span>
-                  <span id="stat-aktif-siswa" class="text-lg sm:text-xl font-black text-emerald-600 dark:text-emerald-400 mt-0.5 block">0</span>
+                <!-- Card 2: Status Aktif -->
+                <div onclick="filterByStatCard('aktif')" id="stat-card-aktif" class="stat-interactive-card glass-card p-3 sm:p-4 rounded-xl border border-emerald-500/20 dark:border-slate-800 hover:border-emerald-500/60 hover:shadow-lg hover:shadow-emerald-500/20 dark:hover:shadow-emerald-500/10 relative group">
+                  <div class="stat-shimmer"></div>
+                  <div class="flex items-start justify-between relative z-10">
+                    <div class="flex-1 min-w-0">
+                      <span class="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium block">Status Aktif</span>
+                      <span id="stat-aktif-siswa" class="stat-value text-lg sm:text-xl font-black text-emerald-600 dark:text-emerald-400 mt-0.5 block">0</span>
+                      <span class="text-[9px] text-emerald-600 dark:text-emerald-400 font-bold mt-0.5 block">Sedang Belajar</span>
+                    </div>
+                    <div class="stat-icon-wrapper w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-green-500/20 dark:from-emerald-500/30 dark:to-green-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
+                      <i class="fa-solid fa-user-check text-sm sm:text-base"></i>
+                    </div>
+                  </div>
+                  <div class="stat-tooltip"><i class="fa-solid fa-filter mr-1"></i> Klik untuk filter siswa aktif</div>
                 </div>
-                <div class="glass-card p-3 sm:p-4 rounded-xl border border-emerald-500/20 dark:border-slate-800">
-                  <span class="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium block">Perlu Perhatian</span>
-                  <span id="stat-warning-siswa" class="text-lg sm:text-xl font-black text-amber-600 dark:text-amber-400 mt-0.5 block">0</span>
+                <!-- Card 3: Perlu Perhatian -->
+                <div onclick="filterByStatCard('perhatian')" id="stat-card-perhatian" class="stat-interactive-card glass-card p-3 sm:p-4 rounded-xl border border-amber-500/20 dark:border-slate-800 hover:border-amber-500/60 hover:shadow-lg hover:shadow-amber-500/20 dark:hover:shadow-amber-500/10 relative group">
+                  <div class="stat-shimmer"></div>
+                  <div class="flex items-start justify-between relative z-10">
+                    <div class="flex-1 min-w-0">
+                      <span class="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium block">Perlu Perhatian</span>
+                      <span id="stat-warning-siswa" class="stat-value text-lg sm:text-xl font-black text-amber-600 dark:text-amber-400 mt-0.5 block">0</span>
+                      <span class="text-[9px] text-amber-600 dark:text-amber-400 font-bold mt-0.5 block">Butuh Bimbingan</span>
+                    </div>
+                    <div class="stat-icon-wrapper w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 dark:from-amber-500/30 dark:to-orange-500/30 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30">
+                      <i class="fa-solid fa-triangle-exclamation text-sm sm:text-base"></i>
+                    </div>
+                  </div>
+                  <div class="stat-tooltip"><i class="fa-solid fa-filter mr-1"></i> Klik untuk filter perlu perhatian</div>
                 </div>
-                <div class="glass-card p-3 sm:p-4 rounded-xl border border-emerald-500/20 dark:border-slate-800">
-                  <span class="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium block">Tingkat Kelas</span>
-                  <span id="stat-unique-classes" class="text-lg sm:text-xl font-black text-cyan-500 mt-0.5 block">-</span>
+                <!-- Card 4: Tingkat Kelas -->
+                <div onclick="filterByStatCard('kelas')" id="stat-card-kelas" class="stat-interactive-card glass-card p-3 sm:p-4 rounded-xl border border-cyan-500/20 dark:border-slate-800 hover:border-cyan-500/60 hover:shadow-lg hover:shadow-cyan-500/20 dark:hover:shadow-cyan-500/10 relative group">
+                  <div class="stat-shimmer"></div>
+                  <div class="flex items-start justify-between relative z-10">
+                    <div class="flex-1 min-w-0">
+                      <span class="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium block">Tingkat Kelas</span>
+                      <span id="stat-unique-classes" class="stat-value text-lg sm:text-xl font-black text-cyan-500 dark:text-cyan-400 mt-0.5 block">-</span>
+                      <span class="text-[9px] text-cyan-600 dark:text-cyan-400 font-bold mt-0.5 block">Jumlah Kelas</span>
+                    </div>
+                    <div class="stat-icon-wrapper w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-indigo-500/20 dark:from-cyan-500/30 dark:to-indigo-500/30 text-cyan-600 dark:text-cyan-400 flex items-center justify-center shrink-0 border border-cyan-500/30">
+                      <i class="fa-solid fa-school text-sm sm:text-base"></i>
+                    </div>
+                  </div>
+                  <div class="stat-tooltip"><i class="fa-solid fa-filter mr-1"></i> Klik untuk pilih kelas</div>
                 </div>
               </div>
               <button onclick="openAddStudentModal()" class="w-full md:w-auto px-4 py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2 shrink-0 focus:outline-none">
@@ -1142,10 +1284,6 @@
       firebase.initializeApp(firebaseConfig);
     }
     const db = firebase.database();
-    // ==========================================================
-    // PERBAIKAN 1: Ubah grade akun default guru menjadi "Guru"
-    // agar tidak tercampur dengan filter kelas siswa
-    // ==========================================================
     const DEFAULT_ACCOUNTS = [
       { name: "Muhammad Hilman Fasya, S.Pd.", id: "hilmanfasya90@gmail.com", pass: "guru123", role: "guru", status: "Aktif", grade: "Guru", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Guru" }
     ];
@@ -1613,7 +1751,9 @@
       });
       const statUniqueClasses = document.getElementById('stat-unique-classes');
       if (statUniqueClasses) {
-        statUniqueClasses.textContent = uniqueClasses.length > 0 ? uniqueClasses.join(', ').replace(/Kelas (\d+).*/g, '$1') : '-';
+        statUniqueClasses.textContent = uniqueClasses.length > 0 ? uniqueClasses.length : '-';
+        // Animasi count-up
+        animateCounter(statUniqueClasses, parseInt(statUniqueClasses.textContent) || 0);
       }
       const populateSelect = (selectId, labelPrefix = 'Semua Kelas') => {
         const select = document.getElementById(selectId);
@@ -1707,27 +1847,19 @@
         `;
       }).join('');
     }
-    // ==========================================================
-    // PERBAIKAN 2: Fungsi renderTeacherQuizResultsTable
-    // Tambahkan validasi role === 'siswa' agar data guru tidak ikut
-    // ==========================================================
     function renderTeacherQuizResultsTable() {
       const container = document.getElementById('teacher-quiz-grouped-container');
       if (!container) return;
       const filterClassEl = document.getElementById('quiz-recap-class-filter');
       const selectedClass = filterClassEl ? filterClassEl.value : 'ALL';
-      
-      // Filter awal: HANYA ambil hasil kuis dari akun siswa
       const studentOnlyResults = quizResults.filter(q => {
         const studentAcc = accounts.find(a => a.id === q.studentId);
         return studentAcc && studentAcc.role === 'siswa';
       });
-      
       if (studentOnlyResults.length === 0) {
         container.innerHTML = `<p class="text-center text-slate-500 text-xs italic py-4">Belum ada siswa yang menyelesaikan kuis.</p>`;
         return;
       }
-      
       let filteredResults = studentOnlyResults;
       if (selectedClass !== 'ALL') {
         filteredResults = studentOnlyResults.filter(q => {
@@ -1740,26 +1872,21 @@
           return;
         }
       }
-      
       const grouped = {};
       filteredResults.forEach(q => {
         const studentAcc = accounts.find(a => a.id === q.studentId);
-        // Validasi tambahan: pastikan role siswa
         if (!studentAcc || studentAcc.role !== 'siswa') return;
-        
         const grade = studentAcc && studentAcc.grade ? studentAcc.grade : "Kelas Umum / Lainnya";
         if (!grouped[grade]) {
           grouped[grade] = [];
         }
         grouped[grade].push(q);
       });
-      
       const sortedGrades = Object.keys(grouped).sort((a, b) => {
         const numA = parseInt(a.match(/\d+/)?.[0] || 0);
         const numB = parseInt(b.match(/\d+/)?.[0] || 0);
         return numA - numB;
       });
-      
       container.innerHTML = sortedGrades.map(grade => {
         const results = grouped[grade];
         return `
@@ -1796,9 +1923,6 @@
         `;
       }).join('');
     }
-    // ==========================================================
-    // FITUR DOWNLOAD EXCEL - LEADERBOARD & REKAPITULASI
-    // ==========================================================
     function getDownloadTimestamp() {
       const now = new Date();
       const y = now.getFullYear();
@@ -1867,18 +1991,7 @@
         "Nilai Skor": item.nilaiSkor,
         "Predikat": item.predikat
       }));
-      const ws = XLSX.utils.json_to_sheet(finalData);
-      ws['!cols'] = [
-        { wch: 10 },
-        { wch: 30 },
-        { wch: 25 },
-        { wch: 22 },
-        { wch: 13 },
-        { wch: 12 },
-        { wch: 14 }
-      ];
-      const wb = XLSX.utils.book_new();
-      const infoData = [
+      const combinedData = [
         ["DANADYAKSA EDU - LEADERBOARD BELAJAR SISWA"],
         [""],
         ["Tanggal Unduh", new Date().toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'short' })],
@@ -1889,9 +2002,7 @@
         [""],
         ["PERINGKAT BELAJAR SISWA"]
       ];
-      const wsInfo = XLSX.utils.aoa_to_sheet(infoData);
-      wsInfo['!cols'] = [{ wch: 20 }, { wch: 50 }];
-      const combinedData = [...infoData, ...finalData.map(row => [
+      const finalCombined = [...combinedData, ...finalData.map(row => [
         row["Peringkat"],
         row["Nama Siswa"],
         row["Username"],
@@ -1900,7 +2011,7 @@
         row["Nilai Skor"],
         row["Predikat"]
       ])];
-      const wsFinal = XLSX.utils.aoa_to_sheet(combinedData);
+      const wsFinal = XLSX.utils.aoa_to_sheet(finalCombined);
       wsFinal['!cols'] = [
         { wch: 12 },
         { wch: 35 },
@@ -1913,31 +2024,24 @@
       wsFinal['!merges'] = [
         { s: { r: 0, c: 0 }, e: { r: 0, c: 6 } }
       ];
+      const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, wsFinal, "Leaderboard");
       const classLabel = selectedClass === 'ALL' ? 'Semua_Kelas' : selectedClass.replace(/\s+/g, '_');
       const fileName = `Leaderboard_${classLabel}_${getDownloadTimestamp()}.xlsx`;
       XLSX.writeFile(wb, fileName);
       showToast(`Leaderboard berhasil diunduh! (${finalData.length} siswa)`, "success");
     }
-    // ==========================================================
-    // PERBAIKAN 3: Fungsi downloadQuizRecapExcel
-    // Tambahkan validasi role === 'siswa' agar data guru tidak ikut
-    // ==========================================================
     function downloadQuizRecapExcel() {
       const filterClassEl = document.getElementById('quiz-recap-class-filter');
       const selectedClass = filterClassEl ? filterClassEl.value : 'ALL';
-      
-      // Filter awal: HANYA ambil hasil kuis dari akun siswa
       const studentOnlyResults = quizResults.filter(q => {
         const studentAcc = accounts.find(a => a.id === q.studentId);
         return studentAcc && studentAcc.role === 'siswa';
       });
-      
       if (studentOnlyResults.length === 0) {
         showToast("Belum ada data kuis untuk diunduh!", "warning");
         return;
       }
-      
       let filteredResults = studentOnlyResults;
       if (selectedClass !== 'ALL') {
         filteredResults = studentOnlyResults.filter(q => {
@@ -1946,30 +2050,23 @@
           return studentGrade === selectedClass;
         });
       }
-      
       if (filteredResults.length === 0) {
         showToast("Tidak ada data kuis untuk filter ini!", "warning");
         return;
       }
-      
-      // Group by kelas
       const grouped = {};
       filteredResults.forEach(q => {
         const studentAcc = accounts.find(a => a.id === q.studentId);
-        // Validasi tambahan: pastikan role siswa
         if (!studentAcc || studentAcc.role !== 'siswa') return;
-        
         const grade = studentAcc && studentAcc.grade ? studentAcc.grade : "Kelas Umum / Lainnya";
         if (!grouped[grade]) grouped[grade] = [];
         grouped[grade].push(q);
       });
-      
       const sortedGrades = Object.keys(grouped).sort((a, b) => {
         const numA = parseInt(a.match(/\d+/)?.[0] || 0);
         const numB = parseInt(b.match(/\d+/)?.[0] || 0);
         return numA - numB;
       });
-      
       const combinedData = [];
       combinedData.push(["DANADYAKSA EDU - REKAPITULASI KUIS SISWA"]);
       combinedData.push([""]);
@@ -1978,7 +2075,6 @@
       combinedData.push(["Total Hasil Kuis", filteredResults.length]);
       combinedData.push(["Diunduh Oleh", currentUser ? currentUser.name : "-"]);
       combinedData.push([""]);
-      
       sortedGrades.forEach(grade => {
         const results = grouped[grade];
         combinedData.push([`=== ${grade.toUpperCase()} === (${results.length} Kuis)`]);
@@ -2007,7 +2103,6 @@
         combinedData.push([""]);
         combinedData.push([""]);
       });
-      
       const ws = XLSX.utils.aoa_to_sheet(combinedData);
       ws['!cols'] = [
         { wch: 6 },
@@ -2758,12 +2853,95 @@
       closeUploadModal();
       showToast("Tugas dikirim ke server Realtime!", "success");
     }
+    // ============================================================
+    // FUNGSI BARU: FILTER BY STAT CARD (INTERAKTIF)
+    // ============================================================
+    function filterByStatCard(type) {
+      const searchInput = document.getElementById('student-search-input');
+      const statusFilter = document.getElementById('student-status-filter');
+      const classFilter = document.getElementById('student-class-filter');
+      
+      // Reset semua card active state
+      document.querySelectorAll('.stat-interactive-card').forEach(c => c.classList.remove('active-filter'));
+      
+      if (type === 'all') {
+        if (searchInput) searchInput.value = "";
+        if (statusFilter) statusFilter.value = "ALL";
+        if (classFilter) classFilter.value = "ALL";
+        document.getElementById('stat-card-all').classList.add('active-filter');
+        showToast("Menampilkan semua siswa", "info");
+      } else if (type === 'aktif') {
+        if (searchInput) searchInput.value = "";
+        if (statusFilter) statusFilter.value = "Aktif";
+        if (classFilter) classFilter.value = "ALL";
+        document.getElementById('stat-card-aktif').classList.add('active-filter');
+        showToast("Filter: Siswa Aktif", "success");
+      } else if (type === 'perhatian') {
+        if (searchInput) searchInput.value = "";
+        if (statusFilter) statusFilter.value = "Perlu Perhatian";
+        if (classFilter) classFilter.value = "ALL";
+        document.getElementById('stat-card-perhatian').classList.add('active-filter');
+        showToast("Filter: Perlu Perhatian", "warning");
+      } else if (type === 'kelas') {
+        // Buka dropdown kelas untuk memilih
+        if (classFilter) {
+          classFilter.focus();
+          // Jika hanya ada 1 kelas, langsung filter
+          if (classFilter.options.length === 2) {
+            classFilter.value = classFilter.options[1].value;
+          }
+        }
+        document.getElementById('stat-card-kelas').classList.add('active-filter');
+        showToast("Pilih kelas dari dropdown", "info");
+      }
+      
+      filterStudentTable();
+      
+      // Scroll ke tabel
+      const table = document.getElementById('student-table-body');
+      if (table) {
+        table.closest('.glass-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+    
+    // ============================================================
+    // FUNGSI BARU: ANIMASI COUNTER
+    // ============================================================
+    function animateCounter(element, targetValue) {
+      const duration = 800;
+      const startTime = performance.now();
+      const startValue = 0;
+      
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeProgress = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+        const currentValue = Math.floor(startValue + (targetValue - startValue) * easeProgress);
+        element.textContent = currentValue;
+        
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          element.textContent = targetValue;
+          element.classList.add('stat-value-animate');
+        }
+      }
+      requestAnimationFrame(update);
+    }
+    
     function renderStudentTable() {
       const students = accounts.filter(a => a.role === 'siswa');
       const tbody = document.getElementById('student-table-body');
-      document.getElementById('stat-total-siswa').textContent = students.length;
-      document.getElementById('stat-aktif-siswa').textContent = students.filter(s => s.status === 'Aktif').length;
-      document.getElementById('stat-warning-siswa').textContent = students.filter(s => s.status === 'Perlu Perhatian').length;
+      
+      // Animasi counter untuk semua stat card
+      const totalEl = document.getElementById('stat-total-siswa');
+      const aktifEl = document.getElementById('stat-aktif-siswa');
+      const warningEl = document.getElementById('stat-warning-siswa');
+      
+      if (totalEl) animateCounter(totalEl, students.length);
+      if (aktifEl) animateCounter(aktifEl, students.filter(s => s.status === 'Aktif').length);
+      if (warningEl) animateCounter(warningEl, students.filter(s => s.status === 'Perlu Perhatian').length);
+      
       tbody.innerHTML = students.map((s) => {
         const actualIndex = accounts.findIndex(a => a.id === s.id);
         const sAvatar = s.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(s.name)}`;
@@ -2808,6 +2986,8 @@
       if (searchInput) searchInput.value = "";
       if (statusFilter) statusFilter.value = "ALL";
       if (classFilter) classFilter.value = "ALL";
+      // Reset active state pada card
+      document.querySelectorAll('.stat-interactive-card').forEach(c => c.classList.remove('active-filter'));
       filterStudentTable();
       showToast("Filter direset", "info");
     }
