@@ -202,9 +202,6 @@
     #main-wrapper {
       transition: padding-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    /* ============================================ */
-    /* INTERAKTIF STAT CARD - ANIMASI & HOVER */
-    /* ============================================ */
     .stat-interactive-card {
       position: relative;
       overflow: hidden;
@@ -512,7 +509,7 @@
                   DanadyaksaEdu - Membangun Generasi Cerdas
                 </span>
                 <h1 class="text-xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-2 sm:mt-3">
-                  Halo, <span id="dash-user-name" class="text-emerald-600 dark:text-cyan-400">Siswa</span>   👋
+                  Halo, <span id="dash-user-name" class="text-emerald-600 dark:text-cyan-400">Siswa</span>    👋
                 </h1>
                 <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
                   Selamat datang di DanadyaksaEdu! Portal edukasi terpadu yang menghubungkan Siswa dan Guru dalam satu ekosistem digital yang cerdas dan fleksibel.
@@ -669,11 +666,7 @@
           </div>
           <div id="sub-content-siswa" class="space-y-4 sm:space-y-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
-              <!-- ============================================ -->
-              <!-- CARD STATISTIK INTERAKTIF - SUDAH DIPERBAHARUI -->
-              <!-- ============================================ -->
               <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4 w-full">
-                <!-- Card 1: Total Terdaftar -->
                 <div onclick="filterByStatCard('all')" id="stat-card-all" class="stat-interactive-card glass-card p-3 sm:p-4 rounded-xl border border-emerald-500/20 dark:border-slate-800 hover:border-emerald-500/60 hover:shadow-lg hover:shadow-emerald-500/20 dark:hover:shadow-emerald-500/10 relative group">
                   <div class="stat-shimmer"></div>
                   <div class="flex items-start justify-between relative z-10">
@@ -688,7 +681,6 @@
                   </div>
                   <div class="stat-tooltip"><i class="fa-solid fa-filter mr-1"></i> Klik untuk tampilkan semua</div>
                 </div>
-                <!-- Card 2: Status Aktif -->
                 <div onclick="filterByStatCard('aktif')" id="stat-card-aktif" class="stat-interactive-card glass-card p-3 sm:p-4 rounded-xl border border-emerald-500/20 dark:border-slate-800 hover:border-emerald-500/60 hover:shadow-lg hover:shadow-emerald-500/20 dark:hover:shadow-emerald-500/10 relative group">
                   <div class="stat-shimmer"></div>
                   <div class="flex items-start justify-between relative z-10">
@@ -703,7 +695,6 @@
                   </div>
                   <div class="stat-tooltip"><i class="fa-solid fa-filter mr-1"></i> Klik untuk filter siswa aktif</div>
                 </div>
-                <!-- Card 3: Perlu Perhatian -->
                 <div onclick="filterByStatCard('perhatian')" id="stat-card-perhatian" class="stat-interactive-card glass-card p-3 sm:p-4 rounded-xl border border-amber-500/20 dark:border-slate-800 hover:border-amber-500/60 hover:shadow-lg hover:shadow-amber-500/20 dark:hover:shadow-amber-500/10 relative group">
                   <div class="stat-shimmer"></div>
                   <div class="flex items-start justify-between relative z-10">
@@ -718,7 +709,6 @@
                   </div>
                   <div class="stat-tooltip"><i class="fa-solid fa-filter mr-1"></i> Klik untuk filter perlu perhatian</div>
                 </div>
-                <!-- Card 4: Tingkat Kelas -->
                 <div onclick="filterByStatCard('kelas')" id="stat-card-kelas" class="stat-interactive-card glass-card p-3 sm:p-4 rounded-xl border border-cyan-500/20 dark:border-slate-800 hover:border-cyan-500/60 hover:shadow-lg hover:shadow-cyan-500/20 dark:hover:shadow-cyan-500/10 relative group">
                   <div class="stat-shimmer"></div>
                   <div class="flex items-start justify-between relative z-10">
@@ -778,7 +768,6 @@
                 </table>
               </div>
             </div>
-            <!-- LEADERBOARD GURU -->
             <div class="glass-card rounded-2xl p-4 sm:p-6 border border-amber-500/30 shadow-2xl space-y-3 sm:space-y-4">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-amber-500/20 pb-3 sm:pb-4">
                 <div>
@@ -862,7 +851,7 @@
                 <form id="form-create-module" onsubmit="handleCreateModule(event)" class="space-y-3.5 text-xs">
                   <div>
                     <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Judul Modul</label>
-                    <input type="text" id="new-mod-title" required placeholder="Contoh: Pemrograman Web Lanjutan" class="w-full px-3 py-2.5 bg-white dark:bg-slate-900 border border-cyan-500/30 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:border-cyan-500">
+                    <input type="text" id="new-mod-title" required placeholder="Contoh: Pemrograman Web Lanjutan" class="w-full px-3 py-2.5 bg-white dark:bg-slate-900 border border-cyan-500/30  dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:border-cyan-500">
                   </div>
                   <div class="grid grid-cols-2 gap-2.5">
                     <div>
@@ -1229,6 +1218,7 @@
       </div>
     </div>
   </div>
+  <!-- MODAL SISWA - SUDAH DIPERBAIKI: menggunakan ID unik bukan indeks -->
   <div id="student-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm hidden">
     <div class="glass-modal w-full max-w-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-amber-500/30 shadow-2xl relative">
       <div class="flex items-center justify-between mb-3 border-b border-emerald-500/20 dark:border-slate-800 pb-3">
@@ -1240,14 +1230,15 @@
         </button>
       </div>
       <form id="form-student-modal" onsubmit="saveStudentForm(event)" class="space-y-3.5 text-xs">
-        <input type="hidden" id="modal-student-index">
+        <!-- Hidden field untuk menyimpan ID asli (untuk referensi edit) -->
+        <input type="hidden" id="modal-student-id-data">
         <div>
           <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Nama Lengkap</label>
           <input type="text" id="modal-student-name" required class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-emerald-500/30 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none">
         </div>
         <div>
           <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Username</label>
-          <input type="text" id="modal-student-id" required class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-emerald-500/30 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none">
+          <input type="text" id="modal-student-id-input" required class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-emerald-500/30 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none">
         </div>
         <div>
           <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Status Keaktifan</label>
@@ -1299,7 +1290,8 @@
     let currentUser = null;
     let authRole = 'siswa';
     let authIsRegister = false;
-    let uploadedFileContent = "";
+    // BUG FIX: Gunakan unique marker untuk konten file upload
+    let currentUploadMarker = "";
     let activeQuizState = {
       moduleId: null,
       currentQuestionIndex: 0,
@@ -1349,16 +1341,23 @@
           syncStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-400"></span> Disconnected`;
         }
       });
+      // BUG FIX: Sinkronisasi sesi - logout otomatis jika akun dihapus dari Firebase
       db.ref('danadyaksa/accounts').on('value', (snapshot) => {
         const val = snapshot.val();
         accounts = val ? (Array.isArray(val) ? val : Object.values(val)) : DEFAULT_ACCOUNTS;
         if (currentUser) {
           const found = accounts.find(a => a.id === currentUser.id);
-          if (found) currentUser = found;
-          if (currentUser.role === 'guru') {
-            renderStudentTable();
-            renderTeacherLeaderboard();
-            populateAllClassFilters();
+          if (found) {
+            currentUser = found;
+            if (currentUser.role === 'guru') {
+              renderStudentTable();
+              renderTeacherLeaderboard();
+              populateAllClassFilters();
+            }
+          } else {
+            // Akun dihapus oleh admin lain saat user masih login
+            logout();
+            showToast("Akun Anda telah dinonaktifkan atau dihapus oleh pengelola.", "warning");
           }
         }
       });
@@ -2231,7 +2230,6 @@
       if (file) {
         if (file.size > 2 * 1024 * 1024) {
           showToast("Ukuran foto maksimal 2MB!", "error");
-          // BUG FIX: Reset input value agar user bisa upload ulang file yang sama
           event.target.value = "";
           return;
         }
@@ -2256,18 +2254,12 @@
       const newName = document.getElementById('profile-input-name').value.trim();
       const newId = document.getElementById('profile-input-id').value.trim();
       const newPass = document.getElementById('profile-input-pass').value;
-      
-      // BUG FIX: Simpan oldId sebelum update untuk pencarian yang benar
       const oldId = currentUser.id;
-      
-      // Cek apakah username baru sudah digunakan akun LAIN
       const existingAccount = accounts.find(a => a.id === newId && a.id !== oldId);
       if (existingAccount) {
         showToast("Username sudah digunakan akun lain!", "error");
         return;
       }
-      
-      // BUG FIX: Cari berdasarkan oldId, bukan kondisi OR yang ambigu
       const accountIndex = accounts.findIndex(a => a.id === oldId);
       if (accountIndex !== -1) {
         accounts[accountIndex].name = newName;
@@ -2278,7 +2270,6 @@
         accounts[accountIndex].avatar = tempAvatarBase64;
         currentUser = accounts[accountIndex];
       } else {
-        // Fallback: jika tidak ditemukan berdasarkan oldId, cari berdasarkan nama
         const nameIndex = accounts.findIndex(a => a.name === currentUser.name && a.role === currentUser.role);
         if (nameIndex !== -1) {
           accounts[nameIndex].name = newName;
@@ -2622,7 +2613,6 @@
     function openModuleReader(moduleId) {
       const mod = courseModules.find(m => m.id === moduleId);
       if (!mod) return;
-      // BUG FIX: Reset quiz state setiap kali membuka modul baru
       activeQuizState = {
         moduleId: moduleId,
         currentQuestionIndex: 0,
@@ -2759,7 +2749,6 @@
         showToast("Modul ini belum memiliki soal kuis!", "warning");
         return;
       }
-      // Cek apakah semua soal sudah dijawab
       const unanswered = questions.filter((_, idx) => activeQuizState.userAnswers[idx] === undefined);
       if (unanswered.length > 0) {
         if (!confirm(`Masih ada ${unanswered.length} soal belum dijawab. Tetap kirim?`)) {
@@ -2883,14 +2872,10 @@
       closeUploadModal();
       showToast("Tugas dikirim ke server Realtime!", "success");
     }
-    // ============================================================
-    // FUNGSI BARU: FILTER BY STAT CARD (INTERAKTIF)
-    // ============================================================
     function filterByStatCard(type) {
       const searchInput = document.getElementById('student-search-input');
       const statusFilter = document.getElementById('student-status-filter');
       const classFilter = document.getElementById('student-class-filter');
-      // Reset semua card active state
       document.querySelectorAll('.stat-interactive-card').forEach(c => c.classList.remove('active-filter'));
       if (type === 'all') {
         if (searchInput) searchInput.value = "";
@@ -2911,10 +2896,8 @@
         document.getElementById('stat-card-perhatian').classList.add('active-filter');
         showToast("Filter: Perlu Perhatian", "warning");
       } else if (type === 'kelas') {
-        // Buka dropdown kelas untuk memilih
         if (classFilter) {
           classFilter.focus();
-          // Jika hanya ada 1 kelas, langsung filter
           if (classFilter.options.length === 2) {
             classFilter.value = classFilter.options[1].value;
           }
@@ -2923,18 +2906,14 @@
         showToast("Pilih kelas dari dropdown", "info");
       }
       filterStudentTable();
-      // Scroll ke tabel
       const table = document.getElementById('student-table-body');
       if (table) {
         const card = table.closest('.glass-card');
         if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
-    // ============================================================
-    // FUNGSI BARU: ANIMASI COUNTER
-    // ============================================================
     function animateCounter(element, targetValue) {
-      if (!element) return; // BUG FIX: Guard untuk element null
+      if (!element) return;
       const duration = 800;
       const startTime = performance.now();
       const startValue = 0;
@@ -2942,7 +2921,7 @@
       function update(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        const easeProgress = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
         const currentValue = Math.floor(startValue + (safeTarget - startValue) * easeProgress);
         element.textContent = currentValue;
         if (progress < 1) {
@@ -2954,24 +2933,19 @@
       }
       requestAnimationFrame(update);
     }
+    // BUG FIX: Menggunakan ID unik (s.id) sebagai referensi, bukan indeks array
     function renderStudentTable() {
       const students = accounts.filter(a => a.role === 'siswa');
       const tbody = document.getElementById('student-table-body');
-      // Animasi counter untuk semua stat card
       const totalEl = document.getElementById('stat-total-siswa');
       const aktifEl = document.getElementById('stat-aktif-siswa');
       const warningEl = document.getElementById('stat-warning-siswa');
       if (totalEl) animateCounter(totalEl, students.length);
       if (aktifEl) animateCounter(aktifEl, students.filter(s => s.status === 'Aktif').length);
       if (warningEl) animateCounter(warningEl, students.filter(s => s.status === 'Perlu Perhatian').length);
-      
-      // BUG FIX: Gunakan index langsung dari loop accounts untuk menghindari masalah findIndex
       tbody.innerHTML = students.map((s) => {
-        const actualIndex = accounts.indexOf(s); // Lebih aman daripada findIndex dengan id
         const sAvatar = s.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(s.name)}`;
         const studentGrade = s.grade || "Kelas 10 (Sepuluh)";
-        // BUG FIX: Tampilkan "Perlu Perhatian" agar konsisten dengan filter value
-        const statusDisplay = s.status === 'Aktif' ? 'Aktif' : 'Perlu Perhatian';
         return `
           <tr class="hover:bg-emerald-500/5 dark:hover:bg-slate-900/50 transition-colors" data-status="${s.status || 'Aktif'}" data-class="${studentGrade}">
             <td class="py-3 px-4 font-bold text-slate-800 dark:text-slate-200 flex items-center space-x-2">
@@ -2990,13 +2964,13 @@
             </td>
             <td class="py-3 px-4 font-bold text-indigo-600 dark:text-indigo-400">${studentGrade}</td>
             <td class="py-3 px-4 text-right space-x-1">
-              <button onclick="openEditStudentModal(${actualIndex})" title="Edit Data Siswa" class="p-1.5 bg-emerald-500/10 dark:bg-slate-800 hover:bg-amber-500/20 text-slate-500 dark:text-slate-400 rounded-lg focus:outline-none">
+              <button onclick="openEditStudentModal('${s.id}')" title="Edit Data Siswa" class="p-1.5 bg-emerald-500/10 dark:bg-slate-800 hover:bg-amber-500/20 text-slate-500 dark:text-slate-400 rounded-lg focus:outline-none">
                 <i class="fa-solid fa-pen-to-square"></i>
               </button>
-              <button onclick="resetStudentPassword(${actualIndex})" title="Reset Password" class="p-1.5 bg-emerald-500/10 dark:bg-slate-800 hover:bg-emerald-500/20 text-slate-500 dark:text-slate-400 rounded-lg focus:outline-none">
+              <button onclick="resetStudentPassword('${s.id}')" title="Reset Password" class="p-1.5 bg-emerald-500/10 dark:bg-slate-800 hover:bg-emerald-500/20 text-slate-500 dark:text-slate-400 rounded-lg focus:outline-none">
                 <i class="fa-solid fa-key"></i>
               </button>
-              <button onclick="deleteStudent(${actualIndex})" title="Hapus Siswa" class="p-1.5 bg-emerald-500/10 dark:bg-slate-800 hover:bg-rose-500/20 text-slate-500 dark:text-slate-400 rounded-lg focus:outline-none">
+              <button onclick="deleteStudent('${s.id}')" title="Hapus Siswa" class="p-1.5 bg-emerald-500/10 dark:bg-slate-800 hover:bg-rose-500/20 text-slate-500 dark:text-slate-400 rounded-lg focus:outline-none">
                 <i class="fa-solid fa-trash"></i>
               </button>
             </td>
@@ -3004,7 +2978,6 @@
         `;
       }).join('');
       populateAllClassFilters();
-      // Terapkan filter yang sedang aktif setelah render ulang
       filterStudentTable();
     }
     function resetStudentFilters() {
@@ -3014,7 +2987,6 @@
       if (searchInput) searchInput.value = "";
       if (statusFilter) statusFilter.value = "ALL";
       if (classFilter) classFilter.value = "ALL";
-      // Reset active state pada card
       document.querySelectorAll('.stat-interactive-card').forEach(c => c.classList.remove('active-filter'));
       filterStudentTable();
       showToast("Filter direset", "info");
@@ -3029,9 +3001,7 @@
         const text = row.innerText.toLowerCase();
         const rowStatus = row.getAttribute('data-status') || '';
         const rowClass = row.getAttribute('data-class') || '';
-        
         const matchesQuery = text.includes(query);
-        // BUG FIX: Gunakan data attribute untuk filter status yang lebih akurat
         const matchesStatus = filterStatus === 'ALL' || rowStatus === filterStatus;
         const matchesClass = filterClass === 'ALL' || rowClass === filterClass;
         const isVisible = matchesQuery && matchesStatus && matchesClass;
@@ -3039,53 +3009,50 @@
         if (isVisible) visibleCount++;
       });
     }
+    // BUG FIX: Menggunakan ID unik untuk referensi
     function openAddStudentModal() {
       document.getElementById('student-modal-title').innerHTML = `<i class="fa-solid fa-user-plus mr-2"></i> Tambah Siswa`;
-      document.getElementById('modal-student-index').value = "-1";
+      document.getElementById('modal-student-id-data').value = "-1";
       document.getElementById('modal-student-name').value = "";
-      document.getElementById('modal-student-id').value = "";
+      document.getElementById('modal-student-id-input').value = "";
       document.getElementById('modal-student-status').value = "Aktif";
       document.getElementById('modal-student-grade').value = "Kelas 10 (Sepuluh)";
       document.getElementById('student-modal').classList.remove('hidden');
     }
-    function openEditStudentModal(accountIndex) {
-      const s = accounts[accountIndex];
+    function openEditStudentModal(studentId) {
+      const s = accounts.find(a => a.id === studentId);
       if (!s) {
         showToast("Data siswa tidak ditemukan!", "error");
         return;
       }
       document.getElementById('student-modal-title').innerHTML = `<i class="fa-solid fa-user-pen mr-2"></i> Edit Siswa`;
-      document.getElementById('modal-student-index').value = accountIndex;
+      document.getElementById('modal-student-id-data').value = s.id;
       document.getElementById('modal-student-name').value = s.name;
-      document.getElementById('modal-student-id').value = s.id;
+      document.getElementById('modal-student-id-input').value = s.id;
       document.getElementById('modal-student-status').value = s.status || "Aktif";
       document.getElementById('modal-student-grade').value = s.grade || "Kelas 10 (Sepuluh)";
       document.getElementById('student-modal').classList.remove('hidden');
     }
     function saveStudentForm(e) {
       e.preventDefault();
-      const index = parseInt(document.getElementById('modal-student-index').value);
+      const originalId = document.getElementById('modal-student-id-data').value;
       const name = document.getElementById('modal-student-name').value.trim();
-      const id = document.getElementById('modal-student-id').value.trim();
+      const newId = document.getElementById('modal-student-id-input').value.trim();
       const status = document.getElementById('modal-student-status').value;
       const grade = document.getElementById('modal-student-grade').value;
-      
-      // BUG FIX: Cek duplikasi username saat edit
-      const duplicateAccount = accounts.find(a => a.id === id && accounts.indexOf(a) !== index);
+      const duplicateAccount = accounts.find(a => a.id === newId && a.id !== originalId);
       if (duplicateAccount) {
         showToast("Username sudah digunakan akun lain!", "error");
         return;
       }
-      
-      if (index === -1) {
-        // Cek duplikasi saat tambah baru
-        if (accounts.some(a => a.id === id)) {
+      if (originalId === "-1") {
+        if (accounts.some(a => a.id === newId)) {
           showToast("Username sudah terdaftar!", "error");
           return;
         }
         accounts.push({
           name: name,
-          id: id,
+          id: newId,
           pass: "siswa123",
           role: "siswa",
           status: status,
@@ -3094,35 +3061,40 @@
         });
         showToast("Siswa ditambahkan!", "success");
       } else {
-        accounts[index].name = name;
-        accounts[index].id = id;
-        accounts[index].status = status;
-        accounts[index].grade = grade;
-        showToast("Data siswa diperbarui!", "success");
+        const idx = accounts.findIndex(a => a.id === originalId);
+        if (idx !== -1) {
+          accounts[idx].name = name;
+          accounts[idx].id = newId;
+          accounts[idx].status = status;
+          accounts[idx].grade = grade;
+          showToast("Data siswa diperbarui!", "success");
+        }
       }
       saveToFirebase('accounts', accounts);
       populateAllClassFilters();
       closeStudentModal();
     }
-    function resetStudentPassword(index) {
-      if (!accounts[index]) {
+    function resetStudentPassword(studentId) {
+      const idx = accounts.findIndex(a => a.id === studentId);
+      if (idx === -1) {
         showToast("Data siswa tidak ditemukan!", "error");
         return;
       }
-      accounts[index].pass = "siswa123";
+      accounts[idx].pass = "siswa123";
       saveToFirebase('accounts', accounts);
-      showToast(`Password ${accounts[index].name} di-reset ke 'siswa123'`, "info");
+      showToast(`Password ${accounts[idx].name} di-reset ke 'siswa123'`, "info");
     }
-    function deleteStudent(index) {
-      if (!accounts[index]) {
+    function deleteStudent(studentId) {
+      const idx = accounts.findIndex(a => a.id === studentId);
+      if (idx === -1) {
         showToast("Data siswa tidak ditemukan!", "error");
         return;
       }
-      const studentName = accounts[index].name;
+      const studentName = accounts[idx].name;
       if (!confirm(`Hapus siswa "${studentName}"? Tindakan ini tidak dapat dibatalkan.`)) {
         return;
       }
-      accounts.splice(index, 1);
+      accounts.splice(idx, 1);
       saveToFirebase('accounts', accounts);
       populateAllClassFilters();
       showToast(`Siswa ${studentName} dihapus.`, "warning");
@@ -3142,7 +3114,6 @@
       select.innerHTML = myMods.map(m => `
         <option value="${m.id}">${m.badge} - ${m.title}</option>
       `).join('');
-      // BUG FIX: Pertahankan value sebelumnya jika masih ada
       if (currentValue && select.querySelector(`option[value="${currentValue}"]`)) {
         select.value = currentValue;
       }
@@ -3190,19 +3161,19 @@
       const defaultIcons = ['fa-laptop-code', 'fa-book-open', 'fa-graduation-cap', 'fa-microchip', 'fa-cubes'];
       return defaultIcons[Math.floor(Math.random() * defaultIcons.length)];
     }
+    // BUG FIX: Menggunakan unique marker untuk konten file upload
     function handleModuleFileUpload(event) {
       const file = event.target.files[0];
       const statusBox = document.getElementById('file-upload-status');
       const statusText = document.getElementById('file-upload-status-text');
       const textarea = document.getElementById('new-mod-content');
       if (!file) {
-        uploadedFileContent = "";
+        currentUploadMarker = "";
         if (statusBox) statusBox.classList.add('hidden');
         return;
       }
       if (file.size > 20 * 1024 * 1024) {
         showToast("Maksimal berkas 20MB!", "error");
-        // BUG FIX: Reset input value agar user bisa upload ulang file yang sama
         event.target.value = "";
         return;
       }
@@ -3210,15 +3181,16 @@
       const fileExt = fileName.split('.').pop().toLowerCase();
       const reader = new FileReader();
       reader.onload = function(e) {
-        const fileData = e.target.result;
-        if (uploadedFileContent && textarea.value.includes(uploadedFileContent)) {
-          textarea.value = textarea.value.replace(uploadedFileContent, '').trim();
+        if (currentUploadMarker && textarea.value.includes(currentUploadMarker)) {
+          textarea.value = textarea.value.replace(currentUploadMarker, '').trim();
         }
+        const fileData = e.target.result;
+        let contentToInsert = "";
         if (['txt', 'html', 'htm', 'md', 'json'].includes(fileExt)) {
-          uploadedFileContent = fileData;
+          contentToInsert = fileData;
           showToast(`File teks ${fileName} diimpor.`, "success");
         } else if (['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp'].includes(fileExt)) {
-          uploadedFileContent = `<div class="my-4 text-center"><img src="${fileData}" alt="${fileName}" class="max-w-full h-auto rounded-xl mx-auto shadow-md border border-cyan-500/20"><p class="text-[10px] text-slate-500 mt-1">Gambar: ${fileName}</p></div>`;
+          contentToInsert = `<div class="my-4 text-center"><img src="${fileData}" alt="${fileName}" class="max-w-full h-auto rounded-xl mx-auto shadow-md border border-cyan-500/20"><p class="text-[10px] text-slate-500 mt-1">Gambar: ${fileName}</p></div>`;
           showToast(`Gambar ${fileName} dilampirkan.`, "success");
         } else {
           let iconClass = "fa-file-pdf text-rose-500";
@@ -3230,7 +3202,7 @@
             iconClass = "fa-file-powerpoint text-amber-500";
             fileDesc = "Berkas PPT";
           }
-          uploadedFileContent = `
+          contentToInsert = `
             <div class="p-3 sm:p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/30 my-3 flex items-center justify-between gap-2">
               <div class="flex items-center space-x-2.5 overflow-hidden">
                 <i class="fa-solid ${iconClass} text-xl shrink-0"></i>
@@ -3246,7 +3218,8 @@
           `;
           showToast(`Berkas ${fileName} dilampirkan.`, "success");
         }
-        textarea.value = textarea.value ? (textarea.value + "\n\n" + uploadedFileContent) : uploadedFileContent;
+        currentUploadMarker = `\n\n<!-- UNIQUE_FILE_UPLOAD_${Date.now()}_${Math.random().toString(36).substring(7)} -->\n${contentToInsert}\n<!-- END_UNIQUE_FILE_UPLOAD -->\n\n`;
+        textarea.value = textarea.value ? (textarea.value + currentUploadMarker) : currentUploadMarker;
         if (statusBox) statusBox.classList.remove('hidden');
         if (statusText) statusText.textContent = `"${fileName}" dimuat!`;
       };
@@ -3266,10 +3239,10 @@
       const textarea = document.getElementById('new-mod-content');
       if (fileInput) fileInput.value = "";
       if (statusBox) statusBox.classList.add('hidden');
-      if (uploadedFileContent && textarea && textarea.value.includes(uploadedFileContent)) {
-        textarea.value = textarea.value.replace(uploadedFileContent, '').trim();
+      if (currentUploadMarker && textarea && textarea.value.includes(currentUploadMarker)) {
+        textarea.value = textarea.value.replace(currentUploadMarker, '').trim();
       }
-      uploadedFileContent = "";
+      currentUploadMarker = "";
       showToast("File lampiran dihapus.", "warning");
     }
     function handleCreateModule(e) {
@@ -3291,10 +3264,9 @@
       saveToFirebase('modules', courseModules);
       showToast(`Modul baru berhasil ditambahkan!`, "success");
       e.target.reset();
-      // BUG FIX: Reset file input dan uploadedFileContent secara manual
       const fileInput = document.getElementById('new-mod-file');
       if (fileInput) fileInput.value = "";
-      uploadedFileContent = "";
+      currentUploadMarker = "";
       const statusBox = document.getElementById('file-upload-status');
       if (statusBox) statusBox.classList.add('hidden');
     }
