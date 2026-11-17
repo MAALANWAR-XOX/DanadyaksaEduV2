@@ -246,6 +246,8 @@
     }
     .stat-interactive-card.active-filter {
       transform: translateY(-4px) scale(1.03);
+      border-color: rgba(16, 185, 129, 0.6) !important;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.3) !important;
     }
     @keyframes pulseBadge {
       0%, 100% { box-shadow: 0 2px 8px rgba(16, 185, 129, 0.5); }
@@ -510,7 +512,7 @@
                   DanadyaksaEdu - Membangun Generasi Cerdas
                 </span>
                 <h1 class="text-xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-2 sm:mt-3">
-                  Halo, <span id="dash-user-name" class="text-emerald-600 dark:text-cyan-400">Siswa</span>  👋
+                  Halo, <span id="dash-user-name" class="text-emerald-600 dark:text-cyan-400">Siswa</span>   👋
                 </h1>
                 <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
                   Selamat datang di DanadyaksaEdu! Portal edukasi terpadu yang menghubungkan Siswa dan Guru dalam satu ekosistem digital yang cerdas dan fleksibel.
@@ -857,7 +859,7 @@
                     <p class="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400">Tambahkan modul ajar baru</p>
                   </div>
                 </div>
-                <form onsubmit="handleCreateModule(event)" class="space-y-3.5 text-xs">
+                <form id="form-create-module" onsubmit="handleCreateModule(event)" class="space-y-3.5 text-xs">
                   <div>
                     <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Judul Modul</label>
                     <input type="text" id="new-mod-title" required placeholder="Contoh: Pemrograman Web Lanjutan" class="w-full px-3 py-2.5 bg-white dark:bg-slate-900 border border-cyan-500/30 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:border-cyan-500">
@@ -1751,9 +1753,8 @@
       });
       const statUniqueClasses = document.getElementById('stat-unique-classes');
       if (statUniqueClasses) {
-        statUniqueClasses.textContent = uniqueClasses.length > 0 ? uniqueClasses.length : '-';
-        // Animasi count-up
-        animateCounter(statUniqueClasses, parseInt(statUniqueClasses.textContent) || 0);
+        const classCount = uniqueClasses.length > 0 ? uniqueClasses.length : 0;
+        animateCounter(statUniqueClasses, classCount);
       }
       const populateSelect = (selectId, labelPrefix = 'Semua Kelas') => {
         const select = document.getElementById(selectId);
@@ -2230,6 +2231,8 @@
       if (file) {
         if (file.size > 2 * 1024 * 1024) {
           showToast("Ukuran foto maksimal 2MB!", "error");
+          // BUG FIX: Reset input value agar user bisa upload ulang file yang sama
+          event.target.value = "";
           return;
         }
         const reader = new FileReader();
@@ -2253,12 +2256,19 @@
       const newName = document.getElementById('profile-input-name').value.trim();
       const newId = document.getElementById('profile-input-id').value.trim();
       const newPass = document.getElementById('profile-input-pass').value;
-      const existingAccount = accounts.find(a => a.id === newId && a.id !== currentUser.id);
+      
+      // BUG FIX: Simpan oldId sebelum update untuk pencarian yang benar
+      const oldId = currentUser.id;
+      
+      // Cek apakah username baru sudah digunakan akun LAIN
+      const existingAccount = accounts.find(a => a.id === newId && a.id !== oldId);
       if (existingAccount) {
         showToast("Username sudah digunakan akun lain!", "error");
         return;
       }
-      const accountIndex = accounts.findIndex(a => a.id === currentUser.id || a.name === currentUser.name);
+      
+      // BUG FIX: Cari berdasarkan oldId, bukan kondisi OR yang ambigu
+      const accountIndex = accounts.findIndex(a => a.id === oldId);
       if (accountIndex !== -1) {
         accounts[accountIndex].name = newName;
         accounts[accountIndex].id = newId;
@@ -2268,13 +2278,20 @@
         accounts[accountIndex].avatar = tempAvatarBase64;
         currentUser = accounts[accountIndex];
       } else {
-        currentUser.name = newName;
-        currentUser.id = newId;
-        if (newPass && newPass.trim() !== "") {
-          currentUser.pass = newPass;
+        // Fallback: jika tidak ditemukan berdasarkan oldId, cari berdasarkan nama
+        const nameIndex = accounts.findIndex(a => a.name === currentUser.name && a.role === currentUser.role);
+        if (nameIndex !== -1) {
+          accounts[nameIndex].name = newName;
+          accounts[nameIndex].id = newId;
+          if (newPass && newPass.trim() !== "") {
+            accounts[nameIndex].pass = newPass;
+          }
+          accounts[nameIndex].avatar = tempAvatarBase64;
+          currentUser = accounts[nameIndex];
+        } else {
+          showToast("Akun tidak ditemukan di database!", "error");
+          return;
         }
-        currentUser.avatar = tempAvatarBase64;
-        accounts.push(currentUser);
       }
       saveToFirebase('accounts', accounts);
       localStorage.setItem('inf12_current_user', JSON.stringify(currentUser));
@@ -2605,6 +2622,12 @@
     function openModuleReader(moduleId) {
       const mod = courseModules.find(m => m.id === moduleId);
       if (!mod) return;
+      // BUG FIX: Reset quiz state setiap kali membuka modul baru
+      activeQuizState = {
+        moduleId: moduleId,
+        currentQuestionIndex: 0,
+        userAnswers: {}
+      };
       if (currentUser && currentUser.role === 'siswa') {
         const alreadyDone = quizResults.find(q => q.studentId === currentUser.id && q.moduleId === moduleId);
         if (alreadyDone) {
@@ -2612,11 +2635,6 @@
           return;
         }
       }
-      activeQuizState = {
-        moduleId: moduleId,
-        currentQuestionIndex: 0,
-        userAnswers: {}
-      };
       renderModuleReaderContent();
       document.getElementById('module-modal').classList.remove('hidden');
     }
@@ -2712,7 +2730,7 @@
     }
     function nextQuizQuestion() {
       const mod = courseModules.find(m => m.id === activeQuizState.moduleId);
-      if (activeQuizState.currentQuestionIndex < (mod.quizQuestions.length - 1)) {
+      if (mod && activeQuizState.currentQuestionIndex < (mod.quizQuestions.length - 1)) {
         activeQuizState.currentQuestionIndex++;
         renderModuleReaderContent();
       }
@@ -2729,6 +2747,7 @@
         return;
       }
       const mod = courseModules.find(m => m.id === activeQuizState.moduleId);
+      if (!mod) return;
       const alreadyDone = quizResults.find(q => q.studentId === currentUser.id && q.moduleId === mod.id);
       if (alreadyDone) {
         showToast("Anda sudah mengerjakan kuis ini!", "error");
@@ -2736,6 +2755,17 @@
         return;
       }
       const questions = mod.quizQuestions || [];
+      if (questions.length === 0) {
+        showToast("Modul ini belum memiliki soal kuis!", "warning");
+        return;
+      }
+      // Cek apakah semua soal sudah dijawab
+      const unanswered = questions.filter((_, idx) => activeQuizState.userAnswers[idx] === undefined);
+      if (unanswered.length > 0) {
+        if (!confirm(`Masih ada ${unanswered.length} soal belum dijawab. Tetap kirim?`)) {
+          return;
+        }
+      }
       let correctCount = 0;
       questions.forEach((q, idx) => {
         if (activeQuizState.userAnswers[idx] === q.correct) {
@@ -2860,10 +2890,8 @@
       const searchInput = document.getElementById('student-search-input');
       const statusFilter = document.getElementById('student-status-filter');
       const classFilter = document.getElementById('student-class-filter');
-      
       // Reset semua card active state
       document.querySelectorAll('.stat-interactive-card').forEach(c => c.classList.remove('active-filter'));
-      
       if (type === 'all') {
         if (searchInput) searchInput.value = "";
         if (statusFilter) statusFilter.value = "ALL";
@@ -2894,60 +2922,58 @@
         document.getElementById('stat-card-kelas').classList.add('active-filter');
         showToast("Pilih kelas dari dropdown", "info");
       }
-      
       filterStudentTable();
-      
       // Scroll ke tabel
       const table = document.getElementById('student-table-body');
       if (table) {
-        table.closest('.glass-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const card = table.closest('.glass-card');
+        if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
-    
     // ============================================================
     // FUNGSI BARU: ANIMASI COUNTER
     // ============================================================
     function animateCounter(element, targetValue) {
+      if (!element) return; // BUG FIX: Guard untuk element null
       const duration = 800;
       const startTime = performance.now();
       const startValue = 0;
-      
+      const safeTarget = isNaN(targetValue) ? 0 : targetValue;
       function update(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const easeProgress = 1 - Math.pow(1 - progress, 3); // easeOutCubic
-        const currentValue = Math.floor(startValue + (targetValue - startValue) * easeProgress);
+        const currentValue = Math.floor(startValue + (safeTarget - startValue) * easeProgress);
         element.textContent = currentValue;
-        
         if (progress < 1) {
           requestAnimationFrame(update);
         } else {
-          element.textContent = targetValue;
+          element.textContent = safeTarget;
           element.classList.add('stat-value-animate');
         }
       }
       requestAnimationFrame(update);
     }
-    
     function renderStudentTable() {
       const students = accounts.filter(a => a.role === 'siswa');
       const tbody = document.getElementById('student-table-body');
-      
       // Animasi counter untuk semua stat card
       const totalEl = document.getElementById('stat-total-siswa');
       const aktifEl = document.getElementById('stat-aktif-siswa');
       const warningEl = document.getElementById('stat-warning-siswa');
-      
       if (totalEl) animateCounter(totalEl, students.length);
       if (aktifEl) animateCounter(aktifEl, students.filter(s => s.status === 'Aktif').length);
       if (warningEl) animateCounter(warningEl, students.filter(s => s.status === 'Perlu Perhatian').length);
       
+      // BUG FIX: Gunakan index langsung dari loop accounts untuk menghindari masalah findIndex
       tbody.innerHTML = students.map((s) => {
-        const actualIndex = accounts.findIndex(a => a.id === s.id);
+        const actualIndex = accounts.indexOf(s); // Lebih aman daripada findIndex dengan id
         const sAvatar = s.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(s.name)}`;
         const studentGrade = s.grade || "Kelas 10 (Sepuluh)";
+        // BUG FIX: Tampilkan "Perlu Perhatian" agar konsisten dengan filter value
+        const statusDisplay = s.status === 'Aktif' ? 'Aktif' : 'Perlu Perhatian';
         return `
-          <tr class="hover:bg-emerald-500/5 dark:hover:bg-slate-900/50 transition-colors">
+          <tr class="hover:bg-emerald-500/5 dark:hover:bg-slate-900/50 transition-colors" data-status="${s.status || 'Aktif'}" data-class="${studentGrade}">
             <td class="py-3 px-4 font-bold text-slate-800 dark:text-slate-200 flex items-center space-x-2">
               <img src="${sAvatar}" class="w-5 h-5 rounded-full bg-slate-800 object-cover shrink-0">
               <span class="truncate max-w-[120px] sm:max-w-none">${s.name}</span>
@@ -2959,7 +2985,7 @@
             <td class="py-3 px-4">
               ${s.status === 'Aktif'
                 ? '<span class="px-2 py-0.5 rounded text-[9px] font-bold bg-emerald-500/20 text-emerald-700 dark:text-emerald-400">Aktif</span>'
-                : '<span class="px-2 py-0.5 rounded text-[9px] font-bold bg-amber-500/20 text-amber-700 dark:text-amber-400">Perhatian</span>'
+                : '<span class="px-2 py-0.5 rounded text-[9px] font-bold bg-amber-500/20 text-amber-700 dark:text-amber-400">Perlu Perhatian</span>'
               }
             </td>
             <td class="py-3 px-4 font-bold text-indigo-600 dark:text-indigo-400">${studentGrade}</td>
@@ -2978,6 +3004,8 @@
         `;
       }).join('');
       populateAllClassFilters();
+      // Terapkan filter yang sedang aktif setelah render ulang
+      filterStudentTable();
     }
     function resetStudentFilters() {
       const searchInput = document.getElementById('student-search-input');
@@ -2999,9 +3027,13 @@
       let visibleCount = 0;
       Array.from(rows).forEach(row => {
         const text = row.innerText.toLowerCase();
+        const rowStatus = row.getAttribute('data-status') || '';
+        const rowClass = row.getAttribute('data-class') || '';
+        
         const matchesQuery = text.includes(query);
-        const matchesStatus = filterStatus === 'ALL' || text.includes(filterStatus.toLowerCase());
-        const matchesClass = filterClass === 'ALL' || text.includes(filterClass.toLowerCase());
+        // BUG FIX: Gunakan data attribute untuk filter status yang lebih akurat
+        const matchesStatus = filterStatus === 'ALL' || rowStatus === filterStatus;
+        const matchesClass = filterClass === 'ALL' || rowClass === filterClass;
         const isVisible = matchesQuery && matchesStatus && matchesClass;
         row.style.display = isVisible ? '' : 'none';
         if (isVisible) visibleCount++;
@@ -3018,6 +3050,10 @@
     }
     function openEditStudentModal(accountIndex) {
       const s = accounts[accountIndex];
+      if (!s) {
+        showToast("Data siswa tidak ditemukan!", "error");
+        return;
+      }
       document.getElementById('student-modal-title').innerHTML = `<i class="fa-solid fa-user-pen mr-2"></i> Edit Siswa`;
       document.getElementById('modal-student-index').value = accountIndex;
       document.getElementById('modal-student-name').value = s.name;
@@ -3033,7 +3069,20 @@
       const id = document.getElementById('modal-student-id').value.trim();
       const status = document.getElementById('modal-student-status').value;
       const grade = document.getElementById('modal-student-grade').value;
+      
+      // BUG FIX: Cek duplikasi username saat edit
+      const duplicateAccount = accounts.find(a => a.id === id && accounts.indexOf(a) !== index);
+      if (duplicateAccount) {
+        showToast("Username sudah digunakan akun lain!", "error");
+        return;
+      }
+      
       if (index === -1) {
+        // Cek duplikasi saat tambah baru
+        if (accounts.some(a => a.id === id)) {
+          showToast("Username sudah terdaftar!", "error");
+          return;
+        }
         accounts.push({
           name: name,
           id: id,
@@ -3056,12 +3105,23 @@
       closeStudentModal();
     }
     function resetStudentPassword(index) {
+      if (!accounts[index]) {
+        showToast("Data siswa tidak ditemukan!", "error");
+        return;
+      }
       accounts[index].pass = "siswa123";
       saveToFirebase('accounts', accounts);
       showToast(`Password ${accounts[index].name} di-reset ke 'siswa123'`, "info");
     }
     function deleteStudent(index) {
+      if (!accounts[index]) {
+        showToast("Data siswa tidak ditemukan!", "error");
+        return;
+      }
       const studentName = accounts[index].name;
+      if (!confirm(`Hapus siswa "${studentName}"? Tindakan ini tidak dapat dibatalkan.`)) {
+        return;
+      }
       accounts.splice(index, 1);
       saveToFirebase('accounts', accounts);
       populateAllClassFilters();
@@ -3074,6 +3134,7 @@
       const select = document.getElementById('quiz-target-module');
       if (!select) return;
       const myMods = getMyModules();
+      const currentValue = select.value;
       if (myMods.length === 0) {
         select.innerHTML = `<option value="">-- Tidak ada modul buatan Anda --</option>`;
         return;
@@ -3081,6 +3142,10 @@
       select.innerHTML = myMods.map(m => `
         <option value="${m.id}">${m.badge} - ${m.title}</option>
       `).join('');
+      // BUG FIX: Pertahankan value sebelumnya jika masih ada
+      if (currentValue && select.querySelector(`option[value="${currentValue}"]`)) {
+        select.value = currentValue;
+      }
     }
     function renderManageModulesList() {
       const listContainer = document.getElementById('manage-modules-list');
@@ -3137,6 +3202,7 @@
       }
       if (file.size > 20 * 1024 * 1024) {
         showToast("Maksimal berkas 20MB!", "error");
+        // BUG FIX: Reset input value agar user bisa upload ulang file yang sama
         event.target.value = "";
         return;
       }
@@ -3184,6 +3250,10 @@
         if (statusBox) statusBox.classList.remove('hidden');
         if (statusText) statusText.textContent = `"${fileName}" dimuat!`;
       };
+      reader.onerror = function() {
+        showToast("Gagal membaca file!", "error");
+        event.target.value = "";
+      };
       if (['txt', 'html', 'htm', 'md', 'json'].includes(fileExt)) {
         reader.readAsText(file);
       } else {
@@ -3196,7 +3266,7 @@
       const textarea = document.getElementById('new-mod-content');
       if (fileInput) fileInput.value = "";
       if (statusBox) statusBox.classList.add('hidden');
-      if (uploadedFileContent && textarea.value.includes(uploadedFileContent)) {
+      if (uploadedFileContent && textarea && textarea.value.includes(uploadedFileContent)) {
         textarea.value = textarea.value.replace(uploadedFileContent, '').trim();
       }
       uploadedFileContent = "";
@@ -3221,6 +3291,9 @@
       saveToFirebase('modules', courseModules);
       showToast(`Modul baru berhasil ditambahkan!`, "success");
       e.target.reset();
+      // BUG FIX: Reset file input dan uploadedFileContent secara manual
+      const fileInput = document.getElementById('new-mod-file');
+      if (fileInput) fileInput.value = "";
       uploadedFileContent = "";
       const statusBox = document.getElementById('file-upload-status');
       if (statusBox) statusBox.classList.add('hidden');
@@ -3259,6 +3332,9 @@
     function deleteModule(modId) {
       const targetMod = courseModules.find(m => m.id === modId);
       if (!targetMod) return;
+      if (!confirm(`Hapus modul "${targetMod.title}"? Semua soal kuis terkait juga akan terhapus.`)) {
+        return;
+      }
       courseModules = courseModules.filter(m => m.id !== modId);
       saveToFirebase('modules', courseModules);
       showToast(`Modul "${targetMod.title}" dihapus!`, "warning");
@@ -3360,19 +3436,27 @@
         return;
       }
       const newQuestions = [];
-      items.forEach(item => {
+      let hasError = false;
+      items.forEach((item, idx) => {
         const qText = item.querySelector('.quiz-q-text').value.trim();
         const optA = item.querySelector('.quiz-opt-a').value.trim();
         const optB = item.querySelector('.quiz-opt-b').value.trim();
         const optC = item.querySelector('.quiz-opt-c').value.trim();
         const optD = item.querySelector('.quiz-opt-d').value.trim();
         const correctIdx = parseInt(item.querySelector('.quiz-correct-idx').value);
+        if (!qText || !optA || !optB || !optC || !optD) {
+          hasError = true;
+        }
         newQuestions.push({
           question: qText,
           options: [optA, optB, optC, optD],
           correct: correctIdx
         });
       });
+      if (hasError) {
+        showToast("Lengkapi semua field soal!", "error");
+        return;
+      }
       const targetMod = courseModules.find(m => m.id === modId);
       if (targetMod) {
         targetMod.quizQuestions = newQuestions;
