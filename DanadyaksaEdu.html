@@ -4,12 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>DanadyaksaEdu - Portal Edukasi Terpadu</title>
-  <!-- FAVICON YPI -->
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="shortcut icon" href="favicon.ico">
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -18,47 +16,34 @@
         extend: {
           colors: {
             brand: {
-              50: '#ecfeff',
-              100: '#cffafe',
-              500: '#06b6d4',
-              600: '#0891b2',
-              900: '#164e63',
+              50: '#ecfeff', 100: '#cffafe', 500: '#06b6d4', 600: '#0891b2', 900: '#164e63',
             }
           },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          }
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
         }
       }
     }
   </script>
-  <!-- Google Fonts & FontAwesome -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Firebase SDKs (Compatibility Version) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-  <!-- SheetJS untuk Export Excel -->
   <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+  <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
       background: radial-gradient(circle at top right, #0f172a, #020617, #090d16);
-      min-height: 100vh;
-      color: #f8fafc;
-      overflow-x: hidden;
+      min-height: 100vh; color: #f8fafc; overflow-x: hidden;
     }
     html:not(.dark) body {
       background: radial-gradient(circle at top right, #f0fdf4, #dcfce7, #bbf7d0);
       color: #064e3b;
     }
-    button, input, select, textarea {
-      outline: none !important;
-      -webkit-tap-highlight-color: transparent;
-    }
+    button, input, select, textarea { outline: none !important; -webkit-tap-highlight-color: transparent; }
     .glass-card {
-      background: rgba(15, 23, 42, 0.65);
-      backdrop-filter: blur(16px);
+      background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
@@ -69,8 +54,7 @@
       box-shadow: 0 8px 32px 0 rgba(16, 185, 129, 0.1);
     }
     .glass-sidebar {
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(16px);
+      background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-right: 1px solid rgba(255, 255, 255, 0.08);
     }
@@ -79,8 +63,7 @@
       border-right: 1px solid rgba(16, 185, 129, 0.2);
     }
     .glass-header {
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(12px);
+      background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
@@ -89,8 +72,7 @@
       border-bottom: 1px solid rgba(16, 185, 129, 0.2);
     }
     .glass-modal {
-      background: rgba(15, 23, 42, 0.94);
-      backdrop-filter: blur(20px);
+      background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(6, 182, 212, 0.25);
     }
@@ -98,208 +80,486 @@
       background: rgba(255, 255, 255, 0.96);
       border: 1px solid rgba(16, 185, 129, 0.35);
     }
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #020617;
-    }
-    html:not(.dark) ::-webkit-scrollbar-track {
-      background: #f0fdf4;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #1e293b;
-      border-radius: 4px;
-    }
-    html:not(.dark) ::-webkit-scrollbar-thumb {
-      background: #10b981;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #0891b2;
-    }
-    #app-sidebar {
-      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    #app-sidebar.collapsed {
-      width: 68px !important;
-    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #020617; }
+    html:not(.dark) ::-webkit-scrollbar-track { background: #f0fdf4; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    html:not(.dark) ::-webkit-scrollbar-thumb { background: #10b981; }
+    ::-webkit-scrollbar-thumb:hover { background: #0891b2; }
+    #app-sidebar { transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    #app-sidebar.collapsed { width: 68px !important; }
     #app-sidebar.collapsed .sidebar-hide-on-collapse {
-      opacity: 0;
-      pointer-events: none;
-      width: 0;
-      overflow: hidden;
+      opacity: 0; pointer-events: none; width: 0; overflow: hidden;
       transition: opacity 0.3s ease-out, width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    #app-sidebar .sidebar-hide-on-collapse {
-      transition: opacity 0.3s ease-in, width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+    #app-sidebar .sidebar-hide-on-collapse { transition: opacity 0.3s ease-in, width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
     #app-sidebar.collapsed .side-tab-btn {
-      justify-content: center;
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
+      justify-content: center; padding-left: 0.5rem; padding-right: 0.5rem;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    #app-sidebar.collapsed .side-tab-btn span {
-      display: none;
-    }
-    #app-sidebar.collapsed .side-tab-btn i {
-      margin-right: 0 !important;
-    }
-    #app-sidebar.collapsed .sidebar-header-inner {
-      justify-content: center;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    #app-sidebar.collapsed .sidebar-footer-inner {
-      justify-content: center;
-      text-align: center;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    #app-sidebar.collapsed #sidebar-collapse-btn i {
-      transform: rotate(180deg);
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    #sidebar-collapse-btn i {
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    #app-sidebar.collapsed .side-tab-btn {
-      position: relative;
-    }
+    #app-sidebar.collapsed .side-tab-btn span { display: none; }
+    #app-sidebar.collapsed .side-tab-btn i { margin-right: 0 !important; }
+    #app-sidebar.collapsed .sidebar-header-inner { justify-content: center; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    #app-sidebar.collapsed .sidebar-footer-inner { justify-content: center; text-align: center; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    #app-sidebar.collapsed #sidebar-collapse-btn i { transform: rotate(180deg); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    #sidebar-collapse-btn i { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    #app-sidebar.collapsed .side-tab-btn { position: relative; }
     #app-sidebar.collapsed .side-tab-btn::after {
-      content: attr(data-label);
-      position: absolute;
-      left: calc(100% + 12px);
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgb(15 23 42);
-      color: rgb(226 232 240);
-      padding: 0.35rem 0.65rem;
-      border-radius: 0.4rem;
-      font-size: 0.7rem;
-      font-weight: 600;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      z-index: 100;
+      content: attr(data-label); position: absolute;
+      left: calc(100% + 12px); top: 50%; transform: translateY(-50%);
+      background: rgb(15 23 42); color: rgb(226 232 240);
+      padding: 0.35rem 0.65rem; border-radius: 0.4rem;
+      font-size: 0.7rem; font-weight: 600; white-space: nowrap;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 100;
       border: 1px solid rgba(255,255,255,0.08);
     }
     html:not(.dark) #app-sidebar.collapsed .side-tab-btn::after {
-      background: white;
-      color: rgb(15 23 42);
+      background: white; color: rgb(15 23 42);
       border-color: rgba(16, 185, 129, 0.2);
     }
-    #app-sidebar.collapsed .side-tab-btn:hover::after {
-      opacity: 1;
-    }
-    #sidebar-expand-float {
-      transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-    #sidebar-expand-float:hover {
-      transform: scale(1.05);
-    }
-    #main-wrapper {
-      transition: padding-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+    #app-sidebar.collapsed .side-tab-btn:hover::after { opacity: 1; }
+    #sidebar-expand-float { transition: opacity 0.3s ease, transform 0.3s ease; }
+    #sidebar-expand-float:hover { transform: scale(1.05); }
+    #main-wrapper { transition: padding-left 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
     .stat-interactive-card {
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
     }
     .stat-interactive-card::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
+      content: ''; position: absolute; top: -50%; left: -50%;
+      width: 200%; height: 200%;
       background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-      opacity: 0;
-      transition: opacity 0.5s ease;
-      pointer-events: none;
+      opacity: 0; transition: opacity 0.5s ease; pointer-events: none;
     }
-    .stat-interactive-card:hover::before {
-      opacity: 1;
-    }
-    .stat-interactive-card:hover {
-      transform: translateY(-4px) scale(1.02);
-    }
-    .stat-interactive-card:active {
-      transform: translateY(-2px) scale(0.98);
-    }
-    .stat-interactive-card .stat-icon-wrapper {
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .stat-interactive-card:hover .stat-icon-wrapper {
-      transform: rotate(-8deg) scale(1.15);
-    }
-    .stat-interactive-card .stat-value {
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .stat-interactive-card:hover .stat-value {
-      transform: scale(1.08);
-    }
+    .stat-interactive-card:hover::before { opacity: 1; }
+    .stat-interactive-card:hover { transform: translateY(-4px) scale(1.02); }
+    .stat-interactive-card:active { transform: translateY(-2px) scale(0.98); }
+    .stat-interactive-card .stat-icon-wrapper { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+    .stat-interactive-card:hover .stat-icon-wrapper { transform: rotate(-8deg) scale(1.15); }
+    .stat-interactive-card .stat-value { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .stat-interactive-card:hover .stat-value { transform: scale(1.08); }
     .stat-interactive-card.active-filter {
       transform: translateY(-4px) scale(1.03);
       border-color: rgba(16, 185, 129, 0.6) !important;
       box-shadow: 0 0 20px rgba(16, 185, 129, 0.3) !important;
     }
-    @keyframes pulseBadge {
-      0%, 100% { box-shadow: 0 2px 8px rgba(16, 185, 129, 0.5); }
-      50% { box-shadow: 0 2px 16px rgba(16, 185, 129, 0.9); }
-    }
     @keyframes countUp {
       from { opacity: 0; transform: translateY(10px) scale(0.8); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
-    .stat-value-animate {
-      animation: countUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
+    .stat-value-animate { animation: countUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
     .stat-shimmer {
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
+      position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-      transition: left 0.8s ease;
-      pointer-events: none;
+      transition: left 0.8s ease; pointer-events: none;
     }
-    .stat-interactive-card:hover .stat-shimmer {
-      left: 100%;
-    }
+    .stat-interactive-card:hover .stat-shimmer { left: 100%; }
     .stat-tooltip {
-      position: absolute;
-      bottom: -28px;
-      left: 50%;
+      position: absolute; bottom: -28px; left: 50%;
       transform: translateX(-50%) translateY(4px);
-      background: rgba(15, 23, 42, 0.95);
-      color: rgb(16, 185, 129);
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 9px;
-      font-weight: 700;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      z-index: 20;
+      background: rgba(15, 23, 42, 0.95); color: rgb(16, 185, 129);
+      padding: 4px 10px; border-radius: 6px;
+      font-size: 9px; font-weight: 700; white-space: nowrap;
+      opacity: 0; pointer-events: none; transition: all 0.3s ease;
+      border: 1px solid rgba(16, 185, 129, 0.3); z-index: 20;
     }
-    html:not(.dark) .stat-tooltip {
+    html:not(.dark) .stat-tooltip { background: white; border-color: rgba(16, 185, 129, 0.3); }
+    .stat-interactive-card:hover .stat-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .attachment-preview-item { animation: slideIn 0.3s ease-out; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* PERBAIKAN: Custom styling untuk Quill Editor (mirip MS Word) */
+    .quill-wrapper {
       background: white;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      transition: all 0.2s ease;
+    }
+    html:not(.dark) .quill-wrapper {
       border-color: rgba(16, 185, 129, 0.3);
     }
-    .stat-interactive-card:hover .stat-tooltip {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
+    .quill-wrapper:focus-within {
+      border-color: rgb(6, 182, 212);
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
     }
+    .quill-wrapper .ql-toolbar {
+      border: none !important;
+      border-bottom: 1px solid rgba(6, 182, 212, 0.2) !important;
+      background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
+      padding: 0.5rem !important;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    html:not(.dark) .quill-wrapper .ql-toolbar {
+      background: linear-gradient(to bottom, #ecfdf5, #d1fae5);
+      border-bottom-color: rgba(16, 185, 129, 0.2) !important;
+    }
+    .quill-wrapper .ql-container {
+      border: none !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 14px !important;
+      min-height: 250px;
+      max-height: 450px;
+      overflow-y: auto;
+      background: white;
+    }
+    .quill-wrapper .ql-editor {
+      min-height: 250px;
+      padding: 1rem !important;
+      color: #0f172a;
+      line-height: 1.7;
+    }
+    .quill-wrapper .ql-editor.ql-blank::before {
+      color: #94a3b8 !important;
+      font-style: normal !important;
+      font-size: 13px;
+    }
+    .quill-wrapper .ql-editor h1 { font-size: 2em; font-weight: 800; margin: 0.8em 0 0.4em; color: #0f172a; }
+    .quill-wrapper .ql-editor h2 { font-size: 1.6em; font-weight: 700; margin: 0.7em 0 0.4em; color: #1e293b; }
+    .quill-wrapper .ql-editor h3 { font-size: 1.3em; font-weight: 600; margin: 0.6em 0 0.3em; color: #334155; }
+    .quill-wrapper .ql-editor p { margin: 0.5em 0; }
+    .quill-wrapper .ql-editor blockquote {
+      border-left: 4px solid #06b6d4;
+      padding-left: 1rem;
+      margin: 1em 0;
+      color: #475569;
+      font-style: italic;
+      background: #f0fdfa;
+      padding: 0.75rem 1rem;
+      border-radius: 0 0.5rem 0.5rem 0;
+    }
+    .quill-wrapper .ql-editor pre.ql-syntax {
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      overflow-x: auto;
+    }
+    .quill-wrapper .ql-editor img {
+      max-width: 100%;
+      border-radius: 0.5rem;
+      margin: 0.75em 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .quill-wrapper .ql-editor a {
+      color: #0891b2;
+      text-decoration: underline;
+    }
+    .quill-wrapper .ql-editor ul, .quill-wrapper .ql-editor ol {
+      padding-left: 1.5em;
+      margin: 0.5em 0;
+    }
+    .quill-wrapper .ql-editor li { margin: 0.25em 0; }
+
+    .quill-wrapper .ql-toolbar button {
+      width: 28px !important;
+      height: 28px !important;
+      padding: 4px !important;
+      margin: 1px !important;
+      border-radius: 4px !important;
+      transition: all 0.15s ease;
+    }
+    .quill-wrapper .ql-toolbar button:hover {
+      background: rgba(6, 182, 212, 0.15) !important;
+    }
+    .quill-wrapper .ql-toolbar button.ql-active {
+      background: rgba(6, 182, 212, 0.25) !important;
+      color: #0891b2 !important;
+    }
+    .quill-wrapper .ql-toolbar button.ql-active .ql-fill,
+    .quill-wrapper .ql-toolbar button.ql-active .ql-stroke.ql-fill {
+      fill: #0891b2 !important;
+    }
+    .quill-wrapper .ql-toolbar button.ql-active .ql-stroke {
+      stroke: #0891b2 !important;
+    }
+    .quill-wrapper .ql-toolbar .ql-picker {
+      height: 28px !important;
+      margin: 1px !important;
+    }
+    .quill-wrapper .ql-toolbar .ql-picker-label {
+      border-radius: 4px !important;
+      padding: 3px 8px !important;
+      border: 1px solid transparent !important;
+      transition: all 0.15s ease;
+    }
+    .quill-wrapper .ql-toolbar .ql-picker-label:hover {
+      background: rgba(6, 182, 212, 0.1) !important;
+      border-color: rgba(6, 182, 212, 0.3) !important;
+    }
+    .quill-wrapper .ql-toolbar .ql-picker-options {
+      border-radius: 8px !important;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important;
+      border: 1px solid rgba(6, 182, 212, 0.2) !important;
+      padding: 4px !important;
+      margin-top: 4px !important;
+    }
+    .quill-wrapper .ql-toolbar .ql-formats {
+      margin-right: 8px !important;
+    }
+    .quill-wrapper .ql-toolbar .ql-formats:not(:last-child)::after {
+      content: '';
+      display: inline-block;
+      width: 1px;
+      height: 20px;
+      background: rgba(6, 182, 212, 0.2);
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .quill-wrapper .ql-color-picker.ql-color .ql-picker-label,
+    .quill-wrapper .ql-color-picker.ql-background .ql-picker-label {
+      padding: 2px !important;
+    }
+    .quill-wrapper .ql-tooltip {
+      background: white !important;
+      border: 1px solid rgba(6, 182, 212, 0.3) !important;
+      border-radius: 8px !important;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important;
+      color: #0f172a !important;
+      padding: 8px 12px !important;
+    }
+    .quill-wrapper .ql-tooltip input[type=text] {
+      border: 1px solid #cbd5e1 !important;
+      border-radius: 6px !important;
+      padding: 6px 10px !important;
+      color: #0f172a !important;
+      font-size: 13px !important;
+    }
+    .quill-wrapper .ql-tooltip a.ql-action,
+    .quill-wrapper .ql-tooltip a.ql-remove {
+      color: #0891b2 !important;
+      font-weight: 600 !important;
+    }
+    html.dark .quill-wrapper .ql-editor { color: #0f172a; }
+
+    /* ============================================ */
+    /* PERBAIKAN BARU: Styling konten materi di reader (Modul & Materi) */
+    /* ============================================ */
+    .module-content-render {
+      color: #1e293b;
+      line-height: 1.75;
+      font-size: 14px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    html:not(.dark) .module-content-render {
+      color: #0f172a;
+    }
+    .module-content-render h1 {
+      font-size: 1.8em;
+      font-weight: 800;
+      margin: 1em 0 0.5em;
+      color: #0f172a;
+      line-height: 1.3;
+      border-bottom: 2px solid rgba(6, 182, 212, 0.2);
+      padding-bottom: 0.3em;
+    }
+    html:not(.dark) .module-content-render h1 {
+      color: #064e3b;
+      border-bottom-color: rgba(16, 185, 129, 0.3);
+    }
+    .module-content-render h2 {
+      font-size: 1.5em;
+      font-weight: 700;
+      margin: 0.9em 0 0.4em;
+      color: #1e293b;
+      line-height: 1.35;
+    }
+    html:not(.dark) .module-content-render h2 {
+      color: #065f46;
+    }
+    .module-content-render h3 {
+      font-size: 1.25em;
+      font-weight: 600;
+      margin: 0.8em 0 0.4em;
+      color: #334155;
+      line-height: 1.4;
+    }
+    html:not(.dark) .module-content-render h3 {
+      color: #047857;
+    }
+    .module-content-render p {
+      margin: 0.6em 0;
+      color: #334155;
+    }
+    html:not(.dark) .module-content-render p {
+      color: #1e293b;
+    }
+    .module-content-render strong, .module-content-render b {
+      font-weight: 700;
+      color: #0f172a;
+    }
+    html:not(.dark) .module-content-render strong,
+    html:not(.dark) .module-content-render b {
+      color: #064e3b;
+    }
+    .module-content-render em, .module-content-render i {
+      font-style: italic;
+    }
+    .module-content-render u {
+      text-decoration: underline;
+      text-decoration-color: rgba(6, 182, 212, 0.5);
+      text-underline-offset: 2px;
+    }
+    .module-content-render s, .module-content-render strike {
+      text-decoration: line-through;
+      color: #94a3b8;
+    }
+    .module-content-render blockquote {
+      border-left: 4px solid #06b6d4;
+      padding: 0.75rem 1rem;
+      margin: 1em 0;
+      color: #475569;
+      font-style: italic;
+      background: rgba(6, 182, 212, 0.08);
+      border-radius: 0 0.5rem 0.5rem 0;
+    }
+    html:not(.dark) .module-content-render blockquote {
+      border-left-color: #10b981;
+      background: rgba(16, 185, 129, 0.08);
+      color: #334155;
+    }
+    .module-content-render pre.ql-syntax,
+    .module-content-render pre {
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      overflow-x: auto;
+      margin: 1em 0;
+      border: 1px solid rgba(6, 182, 212, 0.2);
+    }
+    .module-content-render code {
+      background: rgba(6, 182, 212, 0.1);
+      color: #0891b2;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+    html:not(.dark) .module-content-render code {
+      background: rgba(16, 185, 129, 0.1);
+      color: #047857;
+    }
+    .module-content-render pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+    }
+    .module-content-render img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      margin: 0.75em 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: block;
+    }
+    .module-content-render a {
+      color: #0891b2;
+      text-decoration: underline;
+      text-decoration-color: rgba(6, 182, 212, 0.4);
+      text-underline-offset: 2px;
+      transition: all 0.2s ease;
+    }
+    html:not(.dark) .module-content-render a {
+      color: #047857;
+      text-decoration-color: rgba(16, 185, 129, 0.4);
+    }
+    .module-content-render a:hover {
+      color: #0e7490;
+      text-decoration-color: #0891b2;
+    }
+    html:not(.dark) .module-content-render a:hover {
+      color: #065f46;
+      text-decoration-color: #10b981;
+    }
+    .module-content-render ul, .module-content-render ol {
+      padding-left: 1.75em;
+      margin: 0.75em 0;
+    }
+    .module-content-render ul { list-style-type: disc; }
+    .module-content-render ol { list-style-type: decimal; }
+    .module-content-render li {
+      margin: 0.35em 0;
+      color: #334155;
+    }
+    html:not(.dark) .module-content-render li {
+      color: #1e293b;
+    }
+    .module-content-render li::marker {
+      color: #06b6d4;
+    }
+    html:not(.dark) .module-content-render li::marker {
+      color: #10b981;
+    }
+    .module-content-render ul ul, .module-content-render ol ol,
+    .module-content-render ul ol, .module-content-render ol ul {
+      margin: 0.25em 0;
+    }
+    .module-content-render table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 13px;
+      overflow-x: auto;
+      display: block;
+    }
+    .module-content-render th, .module-content-render td {
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      padding: 8px 12px;
+      text-align: left;
+    }
+    html:not(.dark) .module-content-render th,
+    html:not(.dark) .module-content-render td {
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+    .module-content-render th {
+      background: rgba(6, 182, 212, 0.15);
+      font-weight: 700;
+      color: #0f172a;
+    }
+    html:not(.dark) .module-content-render th {
+      background: rgba(16, 185, 129, 0.15);
+      color: #064e3b;
+    }
+    .module-content-render tr:nth-child(even) {
+      background: rgba(6, 182, 212, 0.04);
+    }
+    html:not(.dark) .module-content-render tr:nth-child(even) {
+      background: rgba(16, 185, 129, 0.04);
+    }
+    .module-content-render hr {
+      border: none;
+      border-top: 2px solid rgba(6, 182, 212, 0.2);
+      margin: 1.5em 0;
+    }
+    html:not(.dark) .module-content-render hr {
+      border-top-color: rgba(16, 185, 129, 0.3);
+    }
+    .module-content-render sub { vertical-align: sub; font-size: 0.8em; }
+    .module-content-render sup { vertical-align: super; font-size: 0.8em; }
+    .module-content-render .ql-align-center { text-align: center; }
+    .module-content-render .ql-align-right { text-align: right; }
+    .module-content-render .ql-align-justify { text-align: justify; }
+    .module-content-render .ql-indent-1 { margin-left: 2em; }
+    .module-content-render .ql-indent-2 { margin-left: 4em; }
+    .module-content-render .ql-indent-3 { margin-left: 6em; }
+    /* Color & background support */
+    .module-content-render span[style*="color"] { color: inherit; }
+    .module-content-render span[style*="background"] { padding: 1px 4px; border-radius: 3px; }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 antialiased selection:bg-cyan-500 selection:text-white">
-  <!-- SIDEBAR NAVIGATION (DESKTOP) -->
   <aside id="app-sidebar" class="fixed top-0 left-0 bottom-0 w-64 glass-sidebar z-40 hidden flex-col justify-between">
     <div>
       <div class="h-20 px-2 flex items-center justify-between border-b border-emerald-500/20 dark:border-slate-800/80">
@@ -509,7 +769,7 @@
                   DanadyaksaEdu - Membangun Generasi Cerdas
                 </span>
                 <h1 class="text-xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-2 sm:mt-3">
-                  Halo, <span id="dash-user-name" class="text-emerald-600 dark:text-cyan-400">Siswa</span>    👋
+                  Halo, <span id="dash-user-name" class="text-emerald-600 dark:text-cyan-400">Siswa</span>     👋
                 </h1>
                 <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
                   Selamat datang di DanadyaksaEdu! Portal edukasi terpadu yang menghubungkan Siswa dan Guru dalam satu ekosistem digital yang cerdas dan fleksibel.
@@ -851,7 +1111,7 @@
                 <form id="form-create-module" onsubmit="handleCreateModule(event)" class="space-y-3.5 text-xs">
                   <div>
                     <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Judul Modul</label>
-                    <input type="text" id="new-mod-title" required placeholder="Contoh: Pemrograman Web Lanjutan" class="w-full px-3 py-2.5 bg-white dark:bg-slate-900 border border-cyan-500/30  dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:border-cyan-500">
+                    <input type="text" id="new-mod-title" required placeholder="Contoh: Pemrograman Web Lanjutan" class="w-full px-3 py-2.5 bg-white dark:bg-slate-900 border border-cyan-500/30 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:border-cyan-500">
                   </div>
                   <div class="grid grid-cols-2 gap-2.5">
                     <div>
@@ -871,21 +1131,26 @@
                     <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Deskripsi Singkat</label>
                     <textarea id="new-mod-desc" rows="2" required placeholder="Rangkuman singkat isi modul..." class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-cyan-500/30 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:border-cyan-500"></textarea>
                   </div>
-                  <div class="p-3 rounded-xl bg-cyan-500/5 border border-cyan-500/20 space-y-1.5">
+                  <div class="p-3 rounded-xl bg-cyan-500/5 border border-cyan-500/20 space-y-2">
                     <label class="block font-bold text-cyan-600 dark:text-cyan-400 text-xs">
-                      <i class="fa-solid fa-file-arrow-up mr-1"></i> Upload Berkas Materi (Maks. 20MB)
+                      <i class="fa-solid fa-paperclip mr-1"></i> Lampiran Materi (Opsional, Maks. 20MB/file)
                     </label>
-                    <input type="file" id="new-mod-file" accept=".pdf,.docx,.doc,.pptx,.ppt,.txt,.html,.md,image/*" onchange="handleModuleFileUpload(event)" class="w-full text-[11px] text-slate-500 file:mr-2 file:py-1.5 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-cyan-500/20 file:text-cyan-700 dark:file:text-cyan-300 hover:file:bg-cyan-500/30 cursor-pointer">
-                    <div id="file-upload-status" class="hidden text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center justify-between pt-1 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">
-                      <span id="file-upload-status-text" class="truncate mr-2">File berhasil dimuat</span>
-                      <button type="button" onclick="removeUploadedModuleFile()" class="text-rose-500 p-1 focus:outline-none">
-                        <i class="fa-solid fa-trash-can"></i>
-                      </button>
-                    </div>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400">PDF, DOC, PPT, TXT, HTML, Gambar. Lampiran akan tampil terpisah di bawah materi.</p>
+                    <input type="file" id="new-mod-file" multiple accept=".pdf,.docx,.doc,.pptx,.ppt,.txt,.html,.md,image/*" onchange="handleModuleFileUpload(event)" class="w-full text-[11px] text-slate-500 file:mr-2 file:py-1.5 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-cyan-500/20 file:text-cyan-700 dark:file:text-cyan-300 hover:file:bg-cyan-500/30 cursor-pointer">
+                    <div id="file-upload-preview-list" class="space-y-1.5 mt-2"></div>
                   </div>
                   <div>
-                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Konten Materi</label>
-                    <textarea id="new-mod-content" rows="4" required placeholder="<h3 class='text-xl font-bold'>Judul</h3><p>Penjelasan...</p>" class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-cyan-500/30 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:border-cyan-500"></textarea>
+                    <div class="flex items-center justify-between mb-1.5">
+                      <label class="block font-semibold text-slate-700 dark:text-slate-300">
+                        <i class="fa-solid fa-pen-ruler text-cyan-600 dark:text-cyan-400 mr-1"></i> Konten Materi (Editor Visual)
+                      </label>
+                      <span class="text-[10px] text-slate-500 dark:text-slate-400">
+                        <i class="fa-solid fa-circle-info mr-0.5"></i> Format seperti MS Word
+                      </span>
+                    </div>
+                    <div class="quill-wrapper">
+                      <div id="new-mod-content-editor"></div>
+                    </div>
                   </div>
                   <button type="submit" class="w-full py-3 bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-bold rounded-xl shadow-lg transition-all">
                     <i class="fa-solid fa-plus-circle mr-1"></i> Publikasikan Modul
@@ -1119,7 +1384,6 @@
       </div>
     </main>
   </div>
-  <!-- MODAL READ MATERI & KUIS MODUL -->
   <div id="module-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm hidden">
     <div class="glass-modal w-full max-w-3xl max-h-[92vh] rounded-2xl sm:rounded-3xl p-4 sm:p-8 overflow-y-auto shadow-2xl relative flex flex-col">
       <button onclick="closeModuleModal()" class="absolute top-4 right-4 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-emerald-500/10 dark:bg-slate-800/60 p-2 rounded-full focus:outline-none">
@@ -1129,7 +1393,7 @@
     </div>
   </div>
   <div id="edit-module-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm hidden">
-    <div class="glass-modal w-full max-w-xl max-h-[90vh] rounded-2xl sm:rounded-3xl p-4 sm:p-8 overflow-y-auto shadow-2xl relative">
+    <div class="glass-modal w-full max-w-2xl max-h-[95vh] rounded-2xl sm:rounded-3xl p-4 sm:p-8 overflow-y-auto shadow-2xl relative">
       <div class="flex items-center justify-between mb-3 sm:mb-4 border-b border-cyan-500/20 pb-3">
         <h3 class="text-sm sm:text-base font-bold text-cyan-600 dark:text-cyan-400 flex items-center">
           <i class="fa-solid fa-pen-to-square mr-2"></i> Edit Modul Ajar
@@ -1166,9 +1430,20 @@
           <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Deskripsi Singkat</label>
           <textarea id="edit-mod-desc" rows="2" required class="w-full px-3.5 py-2.5 bg-white dark:bg-slate-900 border border-cyan-500/30 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none"></textarea>
         </div>
+        <div class="p-3 rounded-xl bg-cyan-500/5 border border-cyan-500/20 space-y-2">
+          <label class="block font-bold text-cyan-600 dark:text-cyan-400 text-xs">
+            <i class="fa-solid fa-paperclip mr-1"></i> Lampiran Materi
+          </label>
+          <input type="file" id="edit-mod-file" multiple accept=".pdf,.docx,.doc,.pptx,.ppt,.txt,.html,.md,image/*" onchange="handleEditModuleFileUpload(event)" class="w-full text-[11px] text-slate-500 file:mr-2 file:py-1.5 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-cyan-500/20 file:text-cyan-700 dark:file:text-cyan-300 hover:file:bg-cyan-500/30 cursor-pointer">
+          <div id="edit-file-upload-preview-list" class="space-y-1.5 mt-2"></div>
+        </div>
         <div>
-          <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Konten Materi</label>
-          <textarea id="edit-mod-content" rows="4" required class="w-full px-3.5 py-2.5 bg-white dark:bg-slate-900 border border-cyan-500/30 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none"></textarea>
+          <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <i class="fa-solid fa-pen-ruler text-cyan-600 dark:text-cyan-400 mr-1"></i> Konten Materi (Editor Visual)
+          </label>
+          <div class="quill-wrapper">
+            <div id="edit-mod-content-editor"></div>
+          </div>
         </div>
         <div class="pt-2 flex space-x-2">
           <button type="button" onclick="closeEditModuleModal()" class="flex-1 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold">Batal</button>
@@ -1218,7 +1493,6 @@
       </div>
     </div>
   </div>
-  <!-- MODAL SISWA - SUDAH DIPERBAIKI: menggunakan ID unik bukan indeks -->
   <div id="student-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm hidden">
     <div class="glass-modal w-full max-w-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-amber-500/30 shadow-2xl relative">
       <div class="flex items-center justify-between mb-3 border-b border-emerald-500/20 dark:border-slate-800 pb-3">
@@ -1230,7 +1504,6 @@
         </button>
       </div>
       <form id="form-student-modal" onsubmit="saveStudentForm(event)" class="space-y-3.5 text-xs">
-        <!-- Hidden field untuk menyimpan ID asli (untuk referensi edit) -->
         <input type="hidden" id="modal-student-id-data">
         <div>
           <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Nama Lengkap</label>
@@ -1273,9 +1546,7 @@
       appId: "1:104085747584:web:bb089fac9f63af86ee7365",
       measurementId: "G-CLMC1W55S3"
     };
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
+    if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
     const db = firebase.database();
     const DEFAULT_ACCOUNTS = [
       { name: "Muhammad Hilman Fasya, S.Pd.", id: "hilmanfasya90@gmail.com", pass: "guru123", role: "guru", status: "Aktif", grade: "Guru", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Guru" }
@@ -1290,15 +1561,80 @@
     let currentUser = null;
     let authRole = 'siswa';
     let authIsRegister = false;
-    // BUG FIX: Gunakan unique marker untuk konten file upload
-    let currentUploadMarker = "";
-    let activeQuizState = {
-      moduleId: null,
-      currentQuestionIndex: 0,
-      userAnswers: {}
-    };
+    let tempModuleAttachments = [];
+    let activeQuizState = { moduleId: null, currentQuestionIndex: 0, userAnswers: {} };
     let sidebarCollapsed = false;
     const SIDEBAR_STATE_KEY = 'inf12_sidebar_collapsed';
+    let quillCreate = null;
+    let quillEdit = null;
+    const quillToolbarOptions = [
+      [{ 'header': [1, 2, 3, false] }],
+      [{ 'font': ['Arial', 'Times New Roman', 'Courier New', 'Comic Sans MS', 'Georgia', 'Verdana'] }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],
+      [{ 'align': [] }],
+      ['blockquote', 'code-block'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'indent': '-1' }, { 'indent': '+1' }],
+      ['link', 'image', 'video'],
+      ['clean']
+    ];
+    function quillImageHandler() {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
+      input.click();
+      input.onchange = () => {
+        const file = input.files[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) {
+          showToast("Ukuran gambar maksimal 5MB!", "error");
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const range = this.quill.getSelection(true);
+          this.quill.insertEmbed(range.index, 'image', e.target.result);
+          this.quill.setSelection(range.index + 1);
+          showToast("Gambar ditambahkan ke materi.", "success");
+        };
+        reader.readAsDataURL(file);
+      };
+    }
+    function initQuillCreate() {
+      if (quillCreate) return quillCreate;
+      const container = document.getElementById('new-mod-content-editor');
+      if (!container) return null;
+      quillCreate = new Quill('#new-mod-content-editor', {
+        theme: 'snow',
+        modules: {
+          toolbar: {
+            container: quillToolbarOptions,
+            handlers: { image: quillImageHandler }
+          }
+        },
+        placeholder: 'Tulis konten materi di sini... Format teks seperti di MS Word.'
+      });
+      return quillCreate;
+    }
+    function initQuillEdit() {
+      if (quillEdit) return quillEdit;
+      const container = document.getElementById('edit-mod-content-editor');
+      if (!container) return null;
+      quillEdit = new Quill('#edit-mod-content-editor', {
+        theme: 'snow',
+        modules: {
+          toolbar: {
+            container: quillToolbarOptions,
+            handlers: { image: quillImageHandler }
+          }
+        },
+        placeholder: 'Tulis konten materi di sini...'
+      });
+      return quillEdit;
+    }
     function initSidebarState() {
       const saved = localStorage.getItem(SIDEBAR_STATE_KEY);
       sidebarCollapsed = saved === 'true';
@@ -1329,6 +1665,7 @@
       initTheme();
       initSidebarState();
       initRealtimeSync();
+      setTimeout(() => { initQuillCreate(); }, 300);
     };
     function initRealtimeSync() {
       const syncStatus = document.getElementById('firebase-sync-status');
@@ -1341,7 +1678,6 @@
           syncStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-400"></span> Disconnected`;
         }
       });
-      // BUG FIX: Sinkronisasi sesi - logout otomatis jika akun dihapus dari Firebase
       db.ref('danadyaksa/accounts').on('value', (snapshot) => {
         const val = snapshot.val();
         accounts = val ? (Array.isArray(val) ? val : Object.values(val)) : DEFAULT_ACCOUNTS;
@@ -1355,7 +1691,6 @@
               populateAllClassFilters();
             }
           } else {
-            // Akun dihapus oleh admin lain saat user masih login
             logout();
             showToast("Akun Anda telah dinonaktifkan atau dihapus oleh pengelola.", "warning");
           }
@@ -1391,9 +1726,7 @@
         taskSubmissions = val ? (Array.isArray(val) ? val : Object.values(val)) : [];
         renderAssignments();
         updateDashboardTaskStats();
-        if (currentUser && currentUser.role === 'guru') {
-          renderTeacherSubmissions();
-        }
+        if (currentUser && currentUser.role === 'guru') { renderTeacherSubmissions(); }
       });
       db.ref('danadyaksa/quizResults').on('value', (snapshot) => {
         const val = snapshot.val();
@@ -1464,12 +1797,8 @@
     }
     function checkSession() {
       const savedUser = localStorage.getItem('inf12_current_user');
-      if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        setupLoggedInState();
-      } else {
-        setupLoggedOutState();
-      }
+      if (savedUser) { currentUser = JSON.parse(savedUser); setupLoggedInState(); }
+      else { setupLoggedOutState(); }
     }
     function setAuthRole(role) {
       authRole = role;
@@ -1480,13 +1809,11 @@
       if (role === 'siswa') {
         btnSiswa.className = "flex-1 py-2 rounded-lg text-xs font-bold transition-all duration-200 bg-emerald-600 dark:bg-cyan-500 text-white dark:text-slate-950 shadow-md focus:outline-none";
         btnGuru.className = "flex-1 py-2 rounded-lg text-xs font-bold transition-all duration-200 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white focus:outline-none";
-        lblId.textContent = "Username";
-        inputId.placeholder = "Masukkan Username";
+        lblId.textContent = "Username"; inputId.placeholder = "Masukkan Username";
       } else {
         btnGuru.className = "flex-1 py-2 rounded-lg text-xs font-bold transition-all duration-200 bg-indigo-600 text-white shadow-md focus:outline-none";
         btnSiswa.className = "flex-1 py-2 rounded-lg text-xs font-bold transition-all duration-200 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white focus:outline-none";
-        lblId.textContent = "Username";
-        inputId.placeholder = "Masukkan Username";
+        lblId.textContent = "Username"; inputId.placeholder = "Masukkan Username";
       }
     }
     function toggleAuthMode() {
@@ -1496,27 +1823,18 @@
       const switchText = document.getElementById('auth-switch-text');
       const btnSwitch = document.getElementById('btn-switch-auth');
       if (authIsRegister) {
-        formLogin.classList.add('hidden');
-        formReg.classList.remove('hidden');
-        switchText.textContent = "Sudah punya akun?";
-        btnSwitch.textContent = "Masuk Portal";
+        formLogin.classList.add('hidden'); formReg.classList.remove('hidden');
+        switchText.textContent = "Sudah punya akun?"; btnSwitch.textContent = "Masuk Portal";
       } else {
-        formLogin.classList.remove('hidden');
-        formReg.classList.add('hidden');
-        switchText.textContent = "Belum punya akun?";
-        btnSwitch.textContent = "Daftar Akun";
+        formLogin.classList.remove('hidden'); formReg.classList.add('hidden');
+        switchText.textContent = "Belum punya akun?"; btnSwitch.textContent = "Daftar Akun";
       }
     }
     function togglePasswordVisibility(inputId, iconId) {
       const input = document.getElementById(inputId);
       const icon = document.getElementById(iconId);
-      if (input.type === 'password') {
-        input.type = 'text';
-        icon.classList.replace('fa-eye', 'fa-eye-slash');
-      } else {
-        input.type = 'password';
-        icon.classList.replace('fa-eye-slash', 'fa-eye');
-      }
+      if (input.type === 'password') { input.type = 'text'; icon.classList.replace('fa-eye', 'fa-eye-slash'); }
+      else { input.type = 'password'; icon.classList.replace('fa-eye-slash', 'fa-eye'); }
     }
     function handleLogin(e) {
       e.preventDefault();
@@ -1537,16 +1855,9 @@
       const name = document.getElementById('reg-name').value.trim();
       const id = document.getElementById('reg-identifier').value.trim();
       const pass = document.getElementById('reg-password').value;
-      if (accounts.some(a => a.id === id)) {
-        showToast("Username sudah terdaftar!", "error");
-        return;
-      }
+      if (accounts.some(a => a.id === id)) { showToast("Username sudah terdaftar!", "error"); return; }
       const newUser = {
-        name: name,
-        id: id,
-        pass: pass,
-        role: authRole,
-        status: "Aktif",
+        name, id, pass, role: authRole, status: "Aktif",
         grade: "Kelas 10 (Sepuluh)",
         avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(name)}`
       };
@@ -1569,15 +1880,10 @@
       const sidebar = document.getElementById('app-sidebar');
       const header = document.getElementById('app-header');
       const mainWrapper = document.getElementById('main-wrapper');
-      sidebar.classList.remove('hidden');
-      sidebar.classList.add('md:flex');
-      header.classList.remove('hidden');
-      header.classList.add('flex');
-      if (sidebarCollapsed) {
-        mainWrapper.style.paddingLeft = '68px';
-      } else {
-        mainWrapper.classList.add('md:pl-64');
-      }
+      sidebar.classList.remove('hidden'); sidebar.classList.add('md:flex');
+      header.classList.remove('hidden'); header.classList.add('flex');
+      if (sidebarCollapsed) mainWrapper.style.paddingLeft = '68px';
+      else mainWrapper.classList.add('md:pl-64');
       document.getElementById('user-profile-widget').classList.remove('hidden');
       document.getElementById('user-display-name').textContent = currentUser.name;
       document.getElementById('dash-user-name').textContent = currentUser.name;
@@ -1592,14 +1898,10 @@
         idBadge.textContent = currentUser.id;
         document.getElementById('side-tab-pengelolaan').classList.remove('hidden');
         document.getElementById('mobile-tab-pengelolaan').classList.remove('hidden');
-        renderStudentTable();
-        renderTeacherLeaderboard();
-        renderTeacherQuizResultsTable();
-        renderTeacherSubmissions();
-        renderManageModulesList();
-        renderManageTaskContainer();
-        populateModuleDropdown();
-        populateAllClassFilters();
+        renderStudentTable(); renderTeacherLeaderboard();
+        renderTeacherQuizResultsTable(); renderTeacherSubmissions();
+        renderManageModulesList(); renderManageTaskContainer();
+        populateModuleDropdown(); populateAllClassFilters();
       } else {
         badge.textContent = 'SISWA';
         badge.className = "px-1.5 py-0.2 text-[8px] sm:text-[9px] font-bold uppercase rounded-full bg-emerald-500/20 text-emerald-700 dark:text-cyan-300 border border-emerald-500/30";
@@ -1607,25 +1909,17 @@
         document.getElementById('side-tab-pengelolaan').classList.add('hidden');
         document.getElementById('mobile-tab-pengelolaan').classList.add('hidden');
       }
-      updateUserDashboardQuizStats();
-      updateDashboardTaskStats();
-      renderStudentQuizHistory();
-      renderAssignments();
-      renderModules();
-      renderAnnouncementsAndSchedules();
-      applySidebarState();
-      switchTab('dashboard');
+      updateUserDashboardQuizStats(); updateDashboardTaskStats();
+      renderStudentQuizHistory(); renderAssignments(); renderModules();
+      renderAnnouncementsAndSchedules(); applySidebarState(); switchTab('dashboard');
     }
     function setupLoggedOutState() {
       const sidebar = document.getElementById('app-sidebar');
       const header = document.getElementById('app-header');
       const mainWrapper = document.getElementById('main-wrapper');
-      sidebar.classList.add('hidden');
-      sidebar.classList.remove('md:flex');
-      header.classList.add('hidden');
-      header.classList.remove('flex');
-      mainWrapper.classList.remove('md:pl-64');
-      mainWrapper.style.paddingLeft = '';
+      sidebar.classList.add('hidden'); sidebar.classList.remove('md:flex');
+      header.classList.add('hidden'); header.classList.remove('flex');
+      mainWrapper.classList.remove('md:pl-64'); mainWrapper.style.paddingLeft = '';
       document.getElementById('auth-section').classList.remove('hidden');
       document.getElementById('app-content').classList.add('hidden');
       document.getElementById('user-profile-widget').classList.add('hidden');
@@ -1708,9 +2002,7 @@
       container.innerHTML = html;
       document.getElementById('activity-modal').classList.remove('hidden');
     }
-    function closeActivityModal() {
-      document.getElementById('activity-modal').classList.add('hidden');
-    }
+    function closeActivityModal() { document.getElementById('activity-modal').classList.add('hidden'); }
     function renderStudentQuizHistory() {
       const container = document.getElementById('student-quiz-history-list');
       if (!container || !currentUser) return;
@@ -1738,9 +2030,7 @@
       select.innerHTML = `<option value="ALL">Semua Modul (Rata-rata)</option>` + courseModules.map(m => `
         <option value="${m.id}">${m.badge} - ${m.title}</option>
       `).join('');
-      if (currentValue && select.querySelector(`option[value="${currentValue}"]`)) {
-        select.value = currentValue;
-      }
+      if (currentValue && select.querySelector(`option[value="${currentValue}"]`)) select.value = currentValue;
     }
     function populateAllClassFilters() {
       const students = accounts.filter(a => a.role === 'siswa');
@@ -1762,9 +2052,7 @@
         const countText = uniqueClasses.length > 0 ? ` (${uniqueClasses.length})` : '';
         select.innerHTML = `<option value="ALL">${labelPrefix}${countText}</option>` +
           uniqueClasses.map(cls => `<option value="${cls}">${cls}</option>`).join('');
-        if (currentValue && (currentValue === 'ALL' || uniqueClasses.includes(currentValue))) {
-          select.value = currentValue;
-        }
+        if (currentValue && (currentValue === 'ALL' || uniqueClasses.includes(currentValue))) select.value = currentValue;
       };
       populateSelect('student-class-filter', 'Semua Kelas');
       populateSelect('leaderboard-class-filter', 'Semua Kelas');
@@ -1778,32 +2066,23 @@
       const selectedMod = filterModEl ? filterModEl.value : 'ALL';
       const selectedClass = filterClassEl ? filterClassEl.value : 'ALL';
       let students = accounts.filter(a => a.role === 'siswa');
-      if (selectedClass !== 'ALL') {
-        students = students.filter(s => (s.grade || "Kelas 10 (Sepuluh)") === selectedClass);
-      }
+      if (selectedClass !== 'ALL') students = students.filter(s => (s.grade || "Kelas 10 (Sepuluh)") === selectedClass);
       if (students.length === 0) {
         tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-slate-500 italic">${selectedClass !== 'ALL' ? 'Tidak ada siswa di kelas ini.' : 'Belum ada akun siswa.'}</td></tr>`;
         return;
       }
       const leaderboardData = students.map(s => {
         let studentQuizzes = quizResults.filter(q => q.studentId === s.id);
-        if (selectedMod !== 'ALL') {
-          studentQuizzes = studentQuizzes.filter(q => q.moduleId === selectedMod);
-        }
-        let totalScore = 0;
-        let avgScore = 0;
-        let quizzesDoneCount = studentQuizzes.length;
+        if (selectedMod !== 'ALL') studentQuizzes = studentQuizzes.filter(q => q.moduleId === selectedMod);
+        let totalScore = 0, avgScore = 0, quizzesDoneCount = studentQuizzes.length;
         if (quizzesDoneCount > 0) {
           totalScore = studentQuizzes.reduce((sum, q) => sum + q.score, 0);
           avgScore = parseFloat((totalScore / quizzesDoneCount).toFixed(1));
         }
         return {
-          id: s.id,
-          name: s.name,
-          grade: s.grade || "Kelas 10 (Sepuluh)",
+          id: s.id, name: s.name, grade: s.grade || "Kelas 10 (Sepuluh)",
           avatar: s.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(s.name)}`,
-          count: quizzesDoneCount,
-          score: avgScore
+          count: quizzesDoneCount, score: avgScore
         };
       });
       leaderboardData.sort((a, b) => b.score - a.score || b.count - a.count);
@@ -1822,13 +2101,9 @@
         }
         let categoryTag = `<span class="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-slate-500/20 text-slate-400">Belum Kuis</span>`;
         if (item.count > 0) {
-          if (item.score >= 85) {
-            categoryTag = `<span class="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-emerald-500/20 text-emerald-700 dark:text-cyan-300 border border-emerald-500/30">Predikat A</span>`;
-          } else if (item.score >= 75) {
-            categoryTag = `<span class="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-teal-500/20 text-teal-700 dark:text-indigo-300 border border-teal-500/30">Predikat B</span>`;
-          } else {
-            categoryTag = `<span class="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-amber-500/20 text-amber-600 border border-amber-500/30">Predikat C</span>`;
-          }
+          if (item.score >= 85) categoryTag = `<span class="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-emerald-500/20 text-emerald-700 dark:text-cyan-300 border border-emerald-500/30">Predikat A</span>`;
+          else if (item.score >= 75) categoryTag = `<span class="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-teal-500/20 text-teal-700 dark:text-indigo-300 border border-teal-500/30">Predikat B</span>`;
+          else categoryTag = `<span class="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-amber-500/20 text-amber-600 border border-amber-500/30">Predikat C</span>`;
         }
         return `
           <tr class="${rankBg} hover:bg-emerald-500/5 dark:hover:bg-slate-900/50 transition-colors">
@@ -1877,9 +2152,7 @@
         const studentAcc = accounts.find(a => a.id === q.studentId);
         if (!studentAcc || studentAcc.role !== 'siswa') return;
         const grade = studentAcc && studentAcc.grade ? studentAcc.grade : "Kelas Umum / Lainnya";
-        if (!grouped[grade]) {
-          grouped[grade] = [];
-        }
+        if (!grouped[grade]) grouped[grade] = [];
         grouped[grade].push(q);
       });
       const sortedGrades = Object.keys(grouped).sort((a, b) => {
@@ -1938,13 +2211,8 @@
       const selectedMod = filterModEl ? filterModEl.value : 'ALL';
       const selectedClass = filterClassEl ? filterClassEl.value : 'ALL';
       let students = accounts.filter(a => a.role === 'siswa');
-      if (selectedClass !== 'ALL') {
-        students = students.filter(s => (s.grade || "Kelas 10 (Sepuluh)") === selectedClass);
-      }
-      if (students.length === 0) {
-        showToast("Tidak ada data untuk diunduh!", "warning");
-        return;
-      }
+      if (selectedClass !== 'ALL') students = students.filter(s => (s.grade || "Kelas 10 (Sepuluh)") === selectedClass);
+      if (students.length === 0) { showToast("Tidak ada data untuk diunduh!", "warning"); return; }
       let modulLabel = "Semua Modul (Rata-rata)";
       if (selectedMod !== 'ALL') {
         const mod = courseModules.find(m => m.id === selectedMod);
@@ -1952,12 +2220,8 @@
       }
       const leaderboardData = students.map(s => {
         let studentQuizzes = quizResults.filter(q => q.studentId === s.id);
-        if (selectedMod !== 'ALL') {
-          studentQuizzes = studentQuizzes.filter(q => q.moduleId === selectedMod);
-        }
-        let totalScore = 0;
-        let avgScore = 0;
-        let quizzesDoneCount = studentQuizzes.length;
+        if (selectedMod !== 'ALL') studentQuizzes = studentQuizzes.filter(q => q.moduleId === selectedMod);
+        let totalScore = 0, avgScore = 0, quizzesDoneCount = studentQuizzes.length;
         if (quizzesDoneCount > 0) {
           totalScore = studentQuizzes.reduce((sum, q) => sum + q.score, 0);
           avgScore = parseFloat((totalScore / quizzesDoneCount).toFixed(1));
@@ -1968,14 +2232,7 @@
           else if (avgScore >= 75) predikat = "Predikat B";
           else predikat = "Predikat C";
         }
-        return {
-          nama: s.name,
-          username: s.id,
-          kelas: s.grade || "Kelas 10 (Sepuluh)",
-          kuisSelesai: quizzesDoneCount,
-          nilaiSkor: quizzesDoneCount > 0 ? avgScore : "-",
-          predikat: predikat
-        };
+        return { nama: s.name, username: s.id, kelas: s.grade || "Kelas 10 (Sepuluh)", kuisSelesai: quizzesDoneCount, nilaiSkor: quizzesDoneCount > 0 ? avgScore : "-", predikat };
       });
       leaderboardData.sort((a, b) => {
         const scoreA = typeof a.nilaiSkor === 'number' ? a.nilaiSkor : -1;
@@ -1983,47 +2240,25 @@
         return scoreB - scoreA || b.kuisSelesai - a.kuisSelesai;
       });
       const finalData = leaderboardData.map((item, idx) => ({
-        "Peringkat": idx + 1,
-        "Nama Siswa": item.nama,
-        "Username": item.username,
-        "Kelas": item.kelas,
-        "Kuis Selesai": item.kuisSelesai,
-        "Nilai Skor": item.nilaiSkor,
-        "Predikat": item.predikat
+        "Peringkat": idx + 1, "Nama Siswa": item.nama, "Username": item.username,
+        "Kelas": item.kelas, "Kuis Selesai": item.kuisSelesai,
+        "Nilai Skor": item.nilaiSkor, "Predikat": item.predikat
       }));
       const combinedData = [
-        ["DANADYAKSA EDU - LEADERBOARD BELAJAR SISWA"],
-        [""],
+        ["DANADYAKSA EDU - LEADERBOARD BELAJAR SISWA"], [""],
         ["Tanggal Unduh", new Date().toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'short' })],
         ["Filter Kelas", selectedClass === 'ALL' ? 'Semua Kelas' : selectedClass],
-        ["Filter Modul", modulLabel],
-        ["Total Siswa", students.length],
-        ["Diunduh Oleh", currentUser ? currentUser.name : "-"],
-        [""],
+        ["Filter Modul", modulLabel], ["Total Siswa", students.length],
+        ["Diunduh Oleh", currentUser ? currentUser.name : "-"], [""],
         ["PERINGKAT BELAJAR SISWA"]
       ];
       const finalCombined = [...combinedData, ...finalData.map(row => [
-        row["Peringkat"],
-        row["Nama Siswa"],
-        row["Username"],
-        row["Kelas"],
-        row["Kuis Selesai"],
-        row["Nilai Skor"],
-        row["Predikat"]
+        row["Peringkat"], row["Nama Siswa"], row["Username"], row["Kelas"],
+        row["Kuis Selesai"], row["Nilai Skor"], row["Predikat"]
       ])];
       const wsFinal = XLSX.utils.aoa_to_sheet(finalCombined);
-      wsFinal['!cols'] = [
-        { wch: 12 },
-        { wch: 35 },
-        { wch: 28 },
-        { wch: 22 },
-        { wch: 14 },
-        { wch: 12 },
-        { wch: 14 }
-      ];
-      wsFinal['!merges'] = [
-        { s: { r: 0, c: 0 }, e: { r: 0, c: 6 } }
-      ];
+      wsFinal['!cols'] = [{ wch: 12 }, { wch: 35 }, { wch: 28 }, { wch: 22 }, { wch: 14 }, { wch: 12 }, { wch: 14 }];
+      wsFinal['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 6 } }];
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, wsFinal, "Leaderboard");
       const classLabel = selectedClass === 'ALL' ? 'Semua_Kelas' : selectedClass.replace(/\s+/g, '_');
@@ -2038,10 +2273,7 @@
         const studentAcc = accounts.find(a => a.id === q.studentId);
         return studentAcc && studentAcc.role === 'siswa';
       });
-      if (studentOnlyResults.length === 0) {
-        showToast("Belum ada data kuis untuk diunduh!", "warning");
-        return;
-      }
+      if (studentOnlyResults.length === 0) { showToast("Belum ada data kuis untuk diunduh!", "warning"); return; }
       let filteredResults = studentOnlyResults;
       if (selectedClass !== 'ALL') {
         filteredResults = studentOnlyResults.filter(q => {
@@ -2050,10 +2282,7 @@
           return studentGrade === selectedClass;
         });
       }
-      if (filteredResults.length === 0) {
-        showToast("Tidak ada data kuis untuk filter ini!", "warning");
-        return;
-      }
+      if (filteredResults.length === 0) { showToast("Tidak ada data kuis untuk filter ini!", "warning"); return; }
       const grouped = {};
       filteredResults.forEach(q => {
         const studentAcc = accounts.find(a => a.id === q.studentId);
@@ -2082,17 +2311,7 @@
         combinedData.push(["No", "Nama Siswa", "Username", "Modul", "Skor", "Jawaban Benar", "Total Soal", "Persentase", "Waktu Pengerjaan"]);
         results.forEach((q, idx) => {
           const percentage = q.totalQuestions > 0 ? Math.round((q.correctCount / q.totalQuestions) * 100) + '%' : '0%';
-          combinedData.push([
-            idx + 1,
-            q.studentName,
-            q.studentId,
-            q.moduleTitle,
-            q.score,
-            q.correctCount,
-            q.totalQuestions,
-            percentage,
-            q.timestamp
-          ]);
+          combinedData.push([idx + 1, q.studentName, q.studentId, q.moduleTitle, q.score, q.correctCount, q.totalQuestions, percentage, q.timestamp]);
         });
         const scores = results.map(r => r.score);
         const avgScore = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1);
@@ -2100,21 +2319,10 @@
         const minScore = Math.min(...scores);
         combinedData.push([""]);
         combinedData.push(["STATISTIK KELAS", `Rata-rata: ${avgScore}`, `Tertinggi: ${maxScore}`, `Terendah: ${minScore}`]);
-        combinedData.push([""]);
-        combinedData.push([""]);
+        combinedData.push([""]); combinedData.push([""]);
       });
       const ws = XLSX.utils.aoa_to_sheet(combinedData);
-      ws['!cols'] = [
-        { wch: 6 },
-        { wch: 30 },
-        { wch: 25 },
-        { wch: 30 },
-        { wch: 10 },
-        { wch: 14 },
-        { wch: 12 },
-        { wch: 12 },
-        { wch: 20 }
-      ];
+      ws['!cols'] = [{ wch: 6 }, { wch: 30 }, { wch: 25 }, { wch: 30 }, { wch: 10 }, { wch: 14 }, { wch: 12 }, { wch: 12 }, { wch: 20 }];
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Rekapitulasi Kuis");
       const classLabel = selectedClass === 'ALL' ? 'Semua_Kelas' : selectedClass.replace(/\s+/g, '_');
@@ -2128,18 +2336,12 @@
         const contentEl = document.getElementById(`tab-content-${t}`);
         const btnEl = document.getElementById(`side-tab-${t}`);
         if (contentEl) {
-          if (t === tabKey) {
-            contentEl.classList.remove('hidden');
-          } else {
-            contentEl.classList.add('hidden');
-          }
+          if (t === tabKey) contentEl.classList.remove('hidden');
+          else contentEl.classList.add('hidden');
         }
         if (btnEl && t !== 'pengelolaan' && t !== 'profil') {
-          if (t === tabKey) {
-            btnEl.className = "side-tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold transition-all duration-200 text-emerald-700 dark:text-cyan-400 bg-emerald-500/10 dark:bg-slate-800/80 shadow-md border border-emerald-500/20 dark:border-cyan-500/20 focus:outline-none focus:ring-0";
-          } else {
-            btnEl.className = "side-tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold transition-all duration-200 text-slate-600 dark:text-slate-400 hover:text-emerald-800  dark:hover:text-white hover:bg-emerald-500/10 dark:hover:bg-slate-800/40 border border-transparent focus:outline-none focus:ring-0";
-          }
+          if (t === tabKey) btnEl.className = "side-tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold transition-all duration-200 text-emerald-700 dark:text-cyan-400 bg-emerald-500/10 dark:bg-slate-800/80 shadow-md border border-emerald-500/20 dark:border-cyan-500/20 focus:outline-none focus:ring-0";
+          else btnEl.className = "side-tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold transition-all duration-200 text-slate-600 dark:text-slate-400 hover:text-emerald-800 dark:hover:text-white hover:bg-emerald-500/10 dark:hover:bg-slate-800/40 border border-transparent focus:outline-none focus:ring-0";
         }
       });
       const profilBtn = document.getElementById('side-tab-profil');
@@ -2156,14 +2358,10 @@
         guruPengelolaanBtn.classList.remove('hidden');
         if (tabKey === 'pengelolaan') {
           guruPengelolaanBtn.className = "side-tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold transition-all duration-200 text-slate-950 bg-amber-400 shadow-md mt-4 border border-amber-400 focus:outline-none focus:ring-0";
-          loadExistingQuizForModule();
-          renderTeacherLeaderboard();
-          renderTeacherQuizResultsTable();
-          renderTeacherSubmissions();
-          renderManageModulesList();
-          renderManageTaskContainer();
-          populateModuleDropdown();
-          populateAllClassFilters();
+          loadExistingQuizForModule(); renderTeacherLeaderboard();
+          renderTeacherQuizResultsTable(); renderTeacherSubmissions();
+          renderManageModulesList(); renderManageTaskContainer();
+          populateModuleDropdown(); populateAllClassFilters();
         } else {
           guruPengelolaanBtn.className = "side-tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold transition-all duration-200 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 border border-amber-500/30 mt-4 focus:outline-none focus:ring-0";
         }
@@ -2177,27 +2375,23 @@
       const btnSiswa = document.getElementById('sub-btn-siswa');
       const btnModul = document.getElementById('sub-btn-modul');
       const btnInfo = document.getElementById('sub-btn-info');
-      contentSiswa.classList.add('hidden');
-      contentModul.classList.add('hidden');
-      contentInfo.classList.add('hidden');
+      contentSiswa.classList.add('hidden'); contentModul.classList.add('hidden'); contentInfo.classList.add('hidden');
       btnSiswa.className = "flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center justify-center space-x-2 focus:outline-none";
       btnModul.className = "flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center justify-center space-x-2 focus:outline-none";
       btnInfo.className = "flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center justify-center space-x-2 focus:outline-none";
       if (subKey === 'sub-siswa') {
         contentSiswa.classList.remove('hidden');
         btnSiswa.className = "flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 bg-amber-500 text-slate-950 shadow-md flex items-center justify-center space-x-2 focus:outline-none";
-        renderTeacherLeaderboard();
-        renderTeacherQuizResultsTable();
+        renderTeacherLeaderboard(); renderTeacherQuizResultsTable();
       } else if (subKey === 'sub-modul') {
         contentModul.classList.remove('hidden');
         btnModul.className = "flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 bg-cyan-500 text-slate-950 shadow-md flex items-center justify-center space-x-2 focus:outline-none";
-        renderManageModulesList();
-        populateModuleDropdown();
+        renderManageModulesList(); populateModuleDropdown();
+        setTimeout(() => { initQuillCreate(); }, 200);
       } else if (subKey === 'sub-info') {
         contentInfo.classList.remove('hidden');
         btnInfo.className = "flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 bg-indigo-600 text-white shadow-md flex items-center justify-center space-x-2 focus:outline-none";
-        renderTeacherSubmissions();
-        renderManageTaskContainer();
+        renderTeacherSubmissions(); renderManageTaskContainer();
       }
     }
     function toggleMobileMenu() {
@@ -2206,9 +2400,7 @@
       if (mobileSidebar.classList.contains('-translate-x-full')) {
         mobileSidebar.classList.remove('-translate-x-full');
         backdrop.classList.remove('hidden');
-      } else {
-        closeMobileMenu();
-      }
+      } else closeMobileMenu();
     }
     function closeMobileMenu() {
       const mobileSidebar = document.getElementById('mobile-sidebar');
@@ -2228,11 +2420,7 @@
     function handleAvatarFileSelect(event) {
       const file = event.target.files[0];
       if (file) {
-        if (file.size > 2 * 1024 * 1024) {
-          showToast("Ukuran foto maksimal 2MB!", "error");
-          event.target.value = "";
-          return;
-        }
+        if (file.size > 2 * 1024 * 1024) { showToast("Ukuran foto maksimal 2MB!", "error"); event.target.value = ""; return; }
         const reader = new FileReader();
         reader.onload = function(e) {
           tempAvatarBase64 = e.target.result;
@@ -2256,17 +2444,12 @@
       const newPass = document.getElementById('profile-input-pass').value;
       const oldId = currentUser.id;
       const existingAccount = accounts.find(a => a.id === newId && a.id !== oldId);
-      if (existingAccount) {
-        showToast("Username sudah digunakan akun lain!", "error");
-        return;
-      }
+      if (existingAccount) { showToast("Username sudah digunakan akun lain!", "error"); return; }
       const accountIndex = accounts.findIndex(a => a.id === oldId);
       if (accountIndex !== -1) {
         accounts[accountIndex].name = newName;
         accounts[accountIndex].id = newId;
-        if (newPass && newPass.trim() !== "") {
-          accounts[accountIndex].pass = newPass;
-        }
+        if (newPass && newPass.trim() !== "") accounts[accountIndex].pass = newPass;
         accounts[accountIndex].avatar = tempAvatarBase64;
         currentUser = accounts[accountIndex];
       } else {
@@ -2274,15 +2457,10 @@
         if (nameIndex !== -1) {
           accounts[nameIndex].name = newName;
           accounts[nameIndex].id = newId;
-          if (newPass && newPass.trim() !== "") {
-            accounts[nameIndex].pass = newPass;
-          }
+          if (newPass && newPass.trim() !== "") accounts[nameIndex].pass = newPass;
           accounts[nameIndex].avatar = tempAvatarBase64;
           currentUser = accounts[nameIndex];
-        } else {
-          showToast("Akun tidak ditemukan di database!", "error");
-          return;
-        }
+        } else { showToast("Akun tidak ditemukan di database!", "error"); return; }
       }
       saveToFirebase('accounts', accounts);
       localStorage.setItem('inf12_current_user', JSON.stringify(currentUser));
@@ -2293,9 +2471,8 @@
     function renderAnnouncementsAndSchedules() {
       const dashAnnContainer = document.getElementById('dashboard-announcement-list');
       if (dashAnnContainer) {
-        if (announcements.length === 0) {
-          dashAnnContainer.innerHTML = `<p class="text-xs text-slate-500 italic p-3">Belum ada pengumuman.</p>`;
-        } else {
+        if (announcements.length === 0) dashAnnContainer.innerHTML = `<p class="text-xs text-slate-500 italic p-3">Belum ada pengumuman.</p>`;
+        else {
           dashAnnContainer.innerHTML = announcements.map(a => `
             <div class="p-3 sm:p-4 rounded-xl bg-emerald-500/5 dark:bg-slate-900/60 border border-emerald-500/20 dark:border-slate-800">
               <div class="flex items-center justify-between">
@@ -2310,9 +2487,8 @@
       }
       const dashSchContainer = document.getElementById('dashboard-schedule-list');
       if (dashSchContainer) {
-        if (schedules.length === 0) {
-          dashSchContainer.innerHTML = `<p class="text-xs text-slate-500 italic p-3">Belum ada jadwal.</p>`;
-        } else {
+        if (schedules.length === 0) dashSchContainer.innerHTML = `<p class="text-xs text-slate-500 italic p-3">Belum ada jadwal.</p>`;
+        else {
           dashSchContainer.innerHTML = schedules.map(s => `
             <div class="p-2.5 sm:p-3 rounded-xl bg-emerald-500/5 dark:bg-slate-900/80 border-l-4 border-emerald-500 flex justify-between items-center gap-2">
               <div class="overflow-hidden">
@@ -2327,9 +2503,8 @@
       const manageAnnContainer = document.getElementById('announcement-manage-list');
       if (manageAnnContainer) {
         const myAnn = getMyAnnouncements();
-        if (myAnn.length === 0) {
-          manageAnnContainer.innerHTML = `<p class="text-xs text-slate-500 italic p-2">Belum ada pengumuman yang Anda buat.</p>`;
-        } else {
+        if (myAnn.length === 0) manageAnnContainer.innerHTML = `<p class="text-xs text-slate-500 italic p-2">Belum ada pengumuman yang Anda buat.</p>`;
+        else {
           manageAnnContainer.innerHTML = myAnn.map(a => `
             <div class="p-2.5 rounded-xl bg-white/80 dark:bg-slate-900/60 border border-indigo-500/20 dark:border-slate-800 flex justify-between items-center text-xs gap-2">
               <div class="overflow-hidden">
@@ -2347,9 +2522,8 @@
       const manageSchContainer = document.getElementById('schedule-manage-list');
       if (manageSchContainer) {
         const mySch = getMySchedules();
-        if (mySch.length === 0) {
-          manageSchContainer.innerHTML = `<p class="text-xs text-slate-500 italic p-2">Belum ada jadwal yang Anda buat.</p>`;
-        } else {
+        if (mySch.length === 0) manageSchContainer.innerHTML = `<p class="text-xs text-slate-500 italic p-2">Belum ada jadwal yang Anda buat.</p>`;
+        else {
           manageSchContainer.innerHTML = mySch.map(s => `
             <div class="p-2.5 rounded-xl bg-white/80 dark:bg-slate-900/60 border border-emerald-500/20 dark:border-slate-800 flex justify-between items-center text-xs gap-2">
               <div class="overflow-hidden">
@@ -2370,10 +2544,7 @@
       const manageTaskContainer = document.getElementById('task-manage-list');
       if (manageTaskContainer) {
         const myTasks = getMyAssignments();
-        if (myTasks.length === 0) {
-          manageTaskContainer.innerHTML = `<p class="text-xs text-slate-500 italic p-2">Belum ada tugas yang Anda buat.</p>`;
-          return;
-        }
+        if (myTasks.length === 0) { manageTaskContainer.innerHTML = `<p class="text-xs text-slate-500 italic p-2">Belum ada tugas yang Anda buat.</p>`; return; }
         manageTaskContainer.innerHTML = myTasks.map(t => `
           <div class="p-2.5 rounded-xl bg-white/80 dark:bg-slate-900/60 border border-teal-500/20 dark:border-slate-800 flex justify-between items-center text-xs gap-2">
             <div class="overflow-hidden">
@@ -2396,23 +2567,12 @@
       const due = document.getElementById('task-due').value.trim();
       if (editId) {
         const idx = assignments.findIndex(t => t.id === editId);
-        if (idx !== -1) {
-          assignments[idx].title = title;
-          assignments[idx].due = due;
-          showToast("Tugas diperbarui!", "success");
-        }
+        if (idx !== -1) { assignments[idx].title = title; assignments[idx].due = due; showToast("Tugas diperbarui!", "success"); }
       } else {
-        const newTask = {
-          id: `t-${Date.now()}`,
-          teacherId: currentUser.id,
-          title: title,
-          due: due
-        };
-        assignments.push(newTask);
-        showToast("Tugas baru ditambahkan!", "success");
+        const newTask = { id: `t-${Date.now()}`, teacherId: currentUser.id, title, due };
+        assignments.push(newTask); showToast("Tugas baru ditambahkan!", "success");
       }
-      saveToFirebase('assignments', assignments);
-      resetTaskForm();
+      saveToFirebase('assignments', assignments); resetTaskForm();
     }
     function editTask(id) {
       const target = assignments.find(t => t.id === id);
@@ -2424,8 +2584,7 @@
     }
     function deleteTask(id) {
       assignments = assignments.filter(t => t.id !== id);
-      saveToFirebase('assignments', assignments);
-      showToast("Tugas dihapus.", "warning");
+      saveToFirebase('assignments', assignments); showToast("Tugas dihapus.", "warning");
     }
     function resetTaskForm() {
       document.getElementById('task-edit-id').value = "";
@@ -2475,12 +2634,8 @@
       const scoreInput = prompt(`Masukkan nilai (0-100) untuk "${sub.taskTitle}" (${sub.studentName}):`, sub.score !== null && sub.score !== undefined ? sub.score : 85);
       if (scoreInput !== null) {
         const scoreNum = parseInt(scoreInput);
-        if (isNaN(scoreNum) || scoreNum < 0 || scoreNum > 100) {
-          showToast("Masukkan angka nilai 0 - 100!", "error");
-          return;
-        }
-        sub.score = scoreNum;
-        sub.status = "Dinilai";
+        if (isNaN(scoreNum) || scoreNum < 0 || scoreNum > 100) { showToast("Masukkan angka nilai 0 - 100!", "error"); return; }
+        sub.score = scoreNum; sub.status = "Dinilai";
         saveToFirebase('taskSubmissions', taskSubmissions);
         showToast(`Nilai ${scoreNum} disimpan!`, "success");
       }
@@ -2495,21 +2650,12 @@
       const desc = document.getElementById('ann-content').value.trim();
       if (editId) {
         const idx = announcements.findIndex(a => a.id === editId);
-        if (idx !== -1) {
-          announcements[idx] = { id: editId, teacherId: currentUser.id, title, category, date, desc };
-          showToast("Pengumuman diperbarui!", "success");
-        }
+        if (idx !== -1) { announcements[idx] = { id: editId, teacherId: currentUser.id, title, category, date, desc }; showToast("Pengumuman diperbarui!", "success"); }
       } else {
-        const newAnn = {
-          id: `ann-${Date.now()}`,
-          teacherId: currentUser.id,
-          title, category, date, desc
-        };
-        announcements.unshift(newAnn);
-        showToast("Pengumuman dipublikasikan!", "success");
+        const newAnn = { id: `ann-${Date.now()}`, teacherId: currentUser.id, title, category, date, desc };
+        announcements.unshift(newAnn); showToast("Pengumuman dipublikasikan!", "success");
       }
-      saveToFirebase('announcements', announcements);
-      resetAnnForm();
+      saveToFirebase('announcements', announcements); resetAnnForm();
     }
     function editAnnouncement(id) {
       const target = announcements.find(a => a.id === id);
@@ -2523,8 +2669,7 @@
     }
     function deleteAnnouncement(id) {
       announcements = announcements.filter(a => a.id !== id);
-      saveToFirebase('announcements', announcements);
-      showToast("Pengumuman dihapus.", "warning");
+      saveToFirebase('announcements', announcements); showToast("Pengumuman dihapus.", "warning");
     }
     function resetAnnForm() {
       document.getElementById('ann-edit-id').value = "";
@@ -2543,21 +2688,12 @@
       const room = document.getElementById('sch-room').value.trim();
       if (editId) {
         const idx = schedules.findIndex(s => s.id === editId);
-        if (idx !== -1) {
-          schedules[idx] = { id: editId, teacherId: currentUser.id, subject, time, room };
-          showToast("Jadwal diperbarui!", "success");
-        }
+        if (idx !== -1) { schedules[idx] = { id: editId, teacherId: currentUser.id, subject, time, room }; showToast("Jadwal diperbarui!", "success"); }
       } else {
-        const newSch = {
-          id: `sch-${Date.now()}`,
-          teacherId: currentUser.id,
-          subject, time, room
-        };
-        schedules.push(newSch);
-        showToast("Jadwal ditambahkan!", "success");
+        const newSch = { id: `sch-${Date.now()}`, teacherId: currentUser.id, subject, time, room };
+        schedules.push(newSch); showToast("Jadwal ditambahkan!", "success");
       }
-      saveToFirebase('schedules', schedules);
-      resetSchForm();
+      saveToFirebase('schedules', schedules); resetSchForm();
     }
     function editSchedule(id) {
       const target = schedules.find(s => s.id === id);
@@ -2570,8 +2706,7 @@
     }
     function deleteSchedule(id) {
       schedules = schedules.filter(s => s.id !== id);
-      saveToFirebase('schedules', schedules);
-      showToast("Jadwal dihapus.", "warning");
+      saveToFirebase('schedules', schedules); showToast("Jadwal dihapus.", "warning");
     }
     function resetSchForm() {
       document.getElementById('sch-edit-id').value = "";
@@ -2590,12 +2725,14 @@
       }
       container.innerHTML = courseModules.map(m => {
         const questionCount = (m.quizQuestions && m.quizQuestions.length) ? m.quizQuestions.length : 0;
+        const attachmentCount = (m.attachments && m.attachments.length) ? m.attachments.length : 0;
+        const attachmentBadge = attachmentCount > 0 ? `<span class="ml-1 px-1.5 py-0.5 text-[8px] font-bold rounded-full bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/30"><i class="fa-solid fa-paperclip"></i> ${attachmentCount}</span>` : '';
         return `
           <div class="glass-card rounded-2xl p-4 sm:p-6 border border-emerald-500/20 dark:border-slate-800 hover:border-emerald-500/40 transition-all group flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between mb-3 sm:mb-4">
                 <span class="px-2 py-0.5 text-[9px] sm:text-[10px] font-bold uppercase rounded-full bg-${m.color || 'emerald'}-500/10 text-${m.color || 'emerald'}-700 dark:text-${m.color || 'emerald'}-400 border border-${m.color || 'emerald'}-500/20">
-                  ${m.badge} (${questionCount} Soal)
+                  ${m.badge} (${questionCount} Soal)${attachmentBadge}
                 </span>
                 <i class="fa-solid ${m.icon || 'fa-book'} text-xl sm:text-2xl text-${m.color || 'emerald'}-600 dark:text-${m.color || 'emerald'}-400 group-hover:scale-110 transition-transform"></i>
               </div>
@@ -2610,24 +2747,56 @@
         `;
       }).join('');
     }
+    function renderAttachmentsSection(attachments) {
+      if (!attachments || attachments.length === 0) return '';
+      let html = `
+        <div class="mt-5 p-4 sm:p-5 rounded-2xl bg-cyan-500/5 dark:bg-slate-900/60 border border-cyan-500/30">
+          <h4 class="font-bold text-xs sm:text-sm text-cyan-700 dark:text-cyan-400 mb-3 flex items-center">
+            <i class="fa-solid fa-paperclip mr-2"></i> Lampiran Materi (${attachments.length} Berkas)
+          </h4>
+          <div class="space-y-2">
+      `;
+      attachments.forEach(att => {
+        const isImage = att.type === 'image';
+        if (isImage) {
+          html += `
+            <div class="p-2 rounded-xl bg-white/50 dark:bg-slate-800/50 border border-cyan-500/20">
+              <img src="${att.data}" alt="${att.name}" class="max-w-full h-auto rounded-lg mx-auto max-h-[300px] object-contain">
+              <p class="text-[10px] text-slate-500 mt-1.5 text-center">${att.name}</p>
+            </div>
+          `;
+        } else {
+          html += `
+            <div class="p-3 rounded-xl bg-white/80 dark:bg-slate-800/60 border border-cyan-500/20 flex items-center justify-between gap-2">
+              <div class="flex items-center space-x-2.5 overflow-hidden">
+                <i class="fa-solid ${att.iconClass} text-xl shrink-0"></i>
+                <div class="truncate">
+                  <h5 class="font-bold text-xs text-slate-800 dark:text-slate-100 truncate">${att.name}</h5>
+                  <p class="text-[9px] text-slate-500">${att.fileDesc}</p>
+                </div>
+              </div>
+              <a href="${att.data}" download="${att.name}" class="px-2.5 py-1 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-[10px] shadow shrink-0">
+                <i class="fa-solid fa-download mr-1"></i> Unduh
+              </a>
+            </div>
+          `;
+        }
+      });
+      html += `</div></div>`;
+      return html;
+    }
     function openModuleReader(moduleId) {
       const mod = courseModules.find(m => m.id === moduleId);
       if (!mod) return;
-      activeQuizState = {
-        moduleId: moduleId,
-        currentQuestionIndex: 0,
-        userAnswers: {}
-      };
+      activeQuizState = { moduleId, currentQuestionIndex: 0, userAnswers: {} };
       if (currentUser && currentUser.role === 'siswa') {
         const alreadyDone = quizResults.find(q => q.studentId === currentUser.id && q.moduleId === moduleId);
-        if (alreadyDone) {
-          openModuleReaderCompleted(mod, alreadyDone);
-          return;
-        }
+        if (alreadyDone) { openModuleReaderCompleted(mod, alreadyDone); return; }
       }
       renderModuleReaderContent();
       document.getElementById('module-modal').classList.remove('hidden');
     }
+    // PERBAIKAN: Gunakan class module-content-render untuk styling konten
     function openModuleReaderCompleted(mod, record) {
       const container = document.getElementById('module-modal-content');
       container.innerHTML = `
@@ -2635,10 +2804,11 @@
           <span class="text-xs font-bold uppercase text-emerald-700 dark:text-cyan-400">${mod.badge}</span>
           <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-0.5">${mod.title}</h2>
         </div>
-        <div class="prose dark:prose-invert max-w-none text-xs sm:text-sm text-slate-700 dark:text-slate-300 border-t border-emerald-500/20 dark:border-slate-800 pt-3 mb-4 sm:mb-6">
-          ${mod.content}
+        <div class="module-content-render border-t border-emerald-500/20 dark:border-slate-800 pt-3 mb-4 sm:mb-6">
+          ${mod.content || '<p class="italic text-slate-500">Konten materi belum tersedia.</p>'}
         </div>
-        <div class="p-4 sm:p-6 rounded-2xl bg-amber-500/10 dark:bg-slate-900 border border-amber-500/30 text-center space-y-2.5">
+        ${renderAttachmentsSection(mod.attachments)}
+        <div class="p-4 sm:p-6 rounded-2xl bg-amber-500/10 dark:bg-slate-900 border border-amber-500/30 text-center space-y-2.5 mt-4">
           <div class="inline-flex p-2.5 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 text-lg">
             <i class="fa-solid fa-triangle-exclamation"></i>
           </div>
@@ -2652,6 +2822,7 @@
       `;
       document.getElementById('module-modal').classList.remove('hidden');
     }
+    // PERBAIKAN: Gunakan class module-content-render untuk styling konten
     function renderModuleReaderContent() {
       const mod = courseModules.find(m => m.id === activeQuizState.moduleId);
       if (!mod) return;
@@ -2673,8 +2844,7 @@
               const isSelected = selectedOpt === idx;
               return `
                 <button onclick="selectQuizAnswer(${qIdx}, ${idx})" class="w-full text-left p-2.5 sm:p-3 rounded-xl text-xs transition-all border ${
-                  isSelected
-                    ? 'bg-emerald-500/20 dark:bg-cyan-500/20 border-emerald-500 text-emerald-800 dark:text-cyan-300 font-bold'
+                  isSelected ? 'bg-emerald-500/20 dark:bg-cyan-500/20 border-emerald-500 text-emerald-800 dark:text-cyan-300 font-bold'
                     : 'bg-white dark:bg-slate-800/80 hover:bg-emerald-500/10 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border-emerald-500/20 dark:border-slate-700'
                 }">
                   ${String.fromCharCode(65 + idx)}. ${opt}
@@ -2703,10 +2873,11 @@
           <span class="text-xs font-bold uppercase text-emerald-700 dark:text-cyan-400">${mod.badge}</span>
           <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-0.5">${mod.title}</h2>
         </div>
-        <div class="prose dark:prose-invert max-w-none text-xs sm:text-sm text-slate-700 dark:text-slate-300 border-t border-emerald-500/20 dark:border-slate-800 pt-3 mb-5">
-          ${mod.content}
+        <div class="module-content-render border-t border-emerald-500/20 dark:border-slate-800 pt-3 mb-5">
+          ${mod.content || '<p class="italic text-slate-500">Konten materi belum tersedia.</p>'}
         </div>
-        <div class="p-3.5 sm:p-5 rounded-2xl bg-emerald-500/5 dark:bg-slate-900 border border-emerald-500/30">
+        ${renderAttachmentsSection(mod.attachments)}
+        <div class="p-3.5 sm:p-5 rounded-2xl bg-emerald-500/5 dark:bg-slate-900 border border-emerald-500/30 mt-4">
           <h4 class="font-bold text-xs sm:text-sm text-emerald-700 dark:text-cyan-400 mb-2.5 flex items-center">
             <i class="fa-solid fa-circle-question mr-2"></i> Kuis Modul (${questions.length} Soal)
           </h4>
@@ -2732,47 +2903,25 @@
       }
     }
     function submitQuizAnswers() {
-      if (!currentUser) {
-        showToast("Silakan login!", "error");
-        return;
-      }
+      if (!currentUser) { showToast("Silakan login!", "error"); return; }
       const mod = courseModules.find(m => m.id === activeQuizState.moduleId);
       if (!mod) return;
       const alreadyDone = quizResults.find(q => q.studentId === currentUser.id && q.moduleId === mod.id);
-      if (alreadyDone) {
-        showToast("Anda sudah mengerjakan kuis ini!", "error");
-        closeModuleModal();
-        return;
-      }
+      if (alreadyDone) { showToast("Anda sudah mengerjakan kuis ini!", "error"); closeModuleModal(); return; }
       const questions = mod.quizQuestions || [];
-      if (questions.length === 0) {
-        showToast("Modul ini belum memiliki soal kuis!", "warning");
-        return;
-      }
+      if (questions.length === 0) { showToast("Modul ini belum memiliki soal kuis!", "warning"); return; }
       const unanswered = questions.filter((_, idx) => activeQuizState.userAnswers[idx] === undefined);
       if (unanswered.length > 0) {
-        if (!confirm(`Masih ada ${unanswered.length} soal belum dijawab. Tetap kirim?`)) {
-          return;
-        }
+        if (!confirm(`Masih ada ${unanswered.length} soal belum dijawab. Tetap kirim?`)) return;
       }
       let correctCount = 0;
-      questions.forEach((q, idx) => {
-        if (activeQuizState.userAnswers[idx] === q.correct) {
-          correctCount++;
-        }
-      });
+      questions.forEach((q, idx) => { if (activeQuizState.userAnswers[idx] === q.correct) correctCount++; });
       const score = Math.round((correctCount / questions.length) * 100);
       const nowFormatted = new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
       const newRecord = {
-        id: `qr-${Date.now()}`,
-        studentId: currentUser.id,
-        studentName: currentUser.name,
-        moduleId: mod.id,
-        moduleTitle: mod.title,
-        score: score,
-        correctCount: correctCount,
-        totalQuestions: questions.length,
-        timestamp: nowFormatted
+        id: `qr-${Date.now()}`, studentId: currentUser.id, studentName: currentUser.name,
+        moduleId: mod.id, moduleTitle: mod.title, score, correctCount,
+        totalQuestions: questions.length, timestamp: nowFormatted
       };
       quizResults.unshift(newRecord);
       saveToFirebase('quizResults', quizResults);
@@ -2787,13 +2936,9 @@
         `;
       }
       showToast(`Kuis selesai! Skor: ${score}`, "success");
-      setTimeout(() => {
-        closeModuleModal();
-      }, 2500);
+      setTimeout(() => { closeModuleModal(); }, 2500);
     }
-    function closeModuleModal() {
-      document.getElementById('module-modal').classList.add('hidden');
-    }
+    function closeModuleModal() { document.getElementById('module-modal').classList.add('hidden'); }
     function renderAssignments() {
       const container = document.getElementById('assignment-list');
       if (!container) return;
@@ -2838,9 +2983,7 @@
       document.getElementById('upload-note').value = '';
       document.getElementById('upload-modal').classList.remove('hidden');
     }
-    function closeUploadModal() {
-      document.getElementById('upload-modal').classList.add('hidden');
-    }
+    function closeUploadModal() { document.getElementById('upload-modal').classList.add('hidden'); }
     function handleUploadSubmit(e) {
       e.preventDefault();
       if (!currentUser) return;
@@ -2853,21 +2996,14 @@
       const nowFormatted = new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
       const subData = {
         id: existingSubIndex !== -1 ? taskSubmissions[existingSubIndex].id : `sub-${Date.now()}`,
-        studentId: currentUser.id,
-        studentName: currentUser.name,
-        taskId: taskId,
-        taskTitle: targetTask.title,
-        link: link,
-        note: note,
+        studentId: currentUser.id, studentName: currentUser.name,
+        taskId, taskTitle: targetTask.title, link, note,
         status: "Menunggu Penilaian",
         score: existingSubIndex !== -1 ? taskSubmissions[existingSubIndex].score : null,
         timestamp: nowFormatted
       };
-      if (existingSubIndex !== -1) {
-        taskSubmissions[existingSubIndex] = subData;
-      } else {
-        taskSubmissions.unshift(subData);
-      }
+      if (existingSubIndex !== -1) taskSubmissions[existingSubIndex] = subData;
+      else taskSubmissions.unshift(subData);
       saveToFirebase('taskSubmissions', taskSubmissions);
       closeUploadModal();
       showToast("Tugas dikirim ke server Realtime!", "success");
@@ -2898,9 +3034,7 @@
       } else if (type === 'kelas') {
         if (classFilter) {
           classFilter.focus();
-          if (classFilter.options.length === 2) {
-            classFilter.value = classFilter.options[1].value;
-          }
+          if (classFilter.options.length === 2) classFilter.value = classFilter.options[1].value;
         }
         document.getElementById('stat-card-kelas').classList.add('active-filter');
         showToast("Pilih kelas dari dropdown", "info");
@@ -2924,16 +3058,11 @@
         const easeProgress = 1 - Math.pow(1 - progress, 3);
         const currentValue = Math.floor(startValue + (safeTarget - startValue) * easeProgress);
         element.textContent = currentValue;
-        if (progress < 1) {
-          requestAnimationFrame(update);
-        } else {
-          element.textContent = safeTarget;
-          element.classList.add('stat-value-animate');
-        }
+        if (progress < 1) requestAnimationFrame(update);
+        else { element.textContent = safeTarget; element.classList.add('stat-value-animate'); }
       }
       requestAnimationFrame(update);
     }
-    // BUG FIX: Menggunakan ID unik (s.id) sebagai referensi, bukan indeks array
     function renderStudentTable() {
       const students = accounts.filter(a => a.role === 'siswa');
       const tbody = document.getElementById('student-table-body');
@@ -2977,8 +3106,7 @@
           </tr>
         `;
       }).join('');
-      populateAllClassFilters();
-      filterStudentTable();
+      populateAllClassFilters(); filterStudentTable();
     }
     function resetStudentFilters() {
       const searchInput = document.getElementById('student-search-input');
@@ -2988,8 +3116,7 @@
       if (statusFilter) statusFilter.value = "ALL";
       if (classFilter) classFilter.value = "ALL";
       document.querySelectorAll('.stat-interactive-card').forEach(c => c.classList.remove('active-filter'));
-      filterStudentTable();
-      showToast("Filter direset", "info");
+      filterStudentTable(); showToast("Filter direset", "info");
     }
     function filterStudentTable() {
       const query = document.getElementById('student-search-input').value.toLowerCase();
@@ -3009,7 +3136,6 @@
         if (isVisible) visibleCount++;
       });
     }
-    // BUG FIX: Menggunakan ID unik untuk referensi
     function openAddStudentModal() {
       document.getElementById('student-modal-title').innerHTML = `<i class="fa-solid fa-user-plus mr-2"></i> Tambah Siswa`;
       document.getElementById('modal-student-id-data').value = "-1";
@@ -3021,10 +3147,7 @@
     }
     function openEditStudentModal(studentId) {
       const s = accounts.find(a => a.id === studentId);
-      if (!s) {
-        showToast("Data siswa tidak ditemukan!", "error");
-        return;
-      }
+      if (!s) { showToast("Data siswa tidak ditemukan!", "error"); return; }
       document.getElementById('student-modal-title').innerHTML = `<i class="fa-solid fa-user-pen mr-2"></i> Edit Siswa`;
       document.getElementById('modal-student-id-data').value = s.id;
       document.getElementById('modal-student-name').value = s.name;
@@ -3041,82 +3164,51 @@
       const status = document.getElementById('modal-student-status').value;
       const grade = document.getElementById('modal-student-grade').value;
       const duplicateAccount = accounts.find(a => a.id === newId && a.id !== originalId);
-      if (duplicateAccount) {
-        showToast("Username sudah digunakan akun lain!", "error");
-        return;
-      }
+      if (duplicateAccount) { showToast("Username sudah digunakan akun lain!", "error"); return; }
       if (originalId === "-1") {
-        if (accounts.some(a => a.id === newId)) {
-          showToast("Username sudah terdaftar!", "error");
-          return;
-        }
+        if (accounts.some(a => a.id === newId)) { showToast("Username sudah terdaftar!", "error"); return; }
         accounts.push({
-          name: name,
-          id: newId,
-          pass: "siswa123",
-          role: "siswa",
-          status: status,
-          grade: grade,
+          name, id: newId, pass: "siswa123", role: "siswa", status, grade,
           avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(name)}`
         });
         showToast("Siswa ditambahkan!", "success");
       } else {
         const idx = accounts.findIndex(a => a.id === originalId);
         if (idx !== -1) {
-          accounts[idx].name = name;
-          accounts[idx].id = newId;
-          accounts[idx].status = status;
-          accounts[idx].grade = grade;
+          accounts[idx].name = name; accounts[idx].id = newId;
+          accounts[idx].status = status; accounts[idx].grade = grade;
           showToast("Data siswa diperbarui!", "success");
         }
       }
       saveToFirebase('accounts', accounts);
-      populateAllClassFilters();
-      closeStudentModal();
+      populateAllClassFilters(); closeStudentModal();
     }
     function resetStudentPassword(studentId) {
       const idx = accounts.findIndex(a => a.id === studentId);
-      if (idx === -1) {
-        showToast("Data siswa tidak ditemukan!", "error");
-        return;
-      }
+      if (idx === -1) { showToast("Data siswa tidak ditemukan!", "error"); return; }
       accounts[idx].pass = "siswa123";
       saveToFirebase('accounts', accounts);
       showToast(`Password ${accounts[idx].name} di-reset ke 'siswa123'`, "info");
     }
     function deleteStudent(studentId) {
       const idx = accounts.findIndex(a => a.id === studentId);
-      if (idx === -1) {
-        showToast("Data siswa tidak ditemukan!", "error");
-        return;
-      }
+      if (idx === -1) { showToast("Data siswa tidak ditemukan!", "error"); return; }
       const studentName = accounts[idx].name;
-      if (!confirm(`Hapus siswa "${studentName}"? Tindakan ini tidak dapat dibatalkan.`)) {
-        return;
-      }
+      if (!confirm(`Hapus siswa "${studentName}"? Tindakan ini tidak dapat dibatalkan.`)) return;
       accounts.splice(idx, 1);
       saveToFirebase('accounts', accounts);
       populateAllClassFilters();
       showToast(`Siswa ${studentName} dihapus.`, "warning");
     }
-    function closeStudentModal() {
-      document.getElementById('student-modal').classList.add('hidden');
-    }
+    function closeStudentModal() { document.getElementById('student-modal').classList.add('hidden'); }
     function populateModuleDropdown() {
       const select = document.getElementById('quiz-target-module');
       if (!select) return;
       const myMods = getMyModules();
       const currentValue = select.value;
-      if (myMods.length === 0) {
-        select.innerHTML = `<option value="">-- Tidak ada modul buatan Anda --</option>`;
-        return;
-      }
-      select.innerHTML = myMods.map(m => `
-        <option value="${m.id}">${m.badge} - ${m.title}</option>
-      `).join('');
-      if (currentValue && select.querySelector(`option[value="${currentValue}"]`)) {
-        select.value = currentValue;
-      }
+      if (myMods.length === 0) { select.innerHTML = `<option value="">-- Tidak ada modul buatan Anda --</option>`; return; }
+      select.innerHTML = myMods.map(m => `<option value="${m.id}">${m.badge} - ${m.title}</option>`).join('');
+      if (currentValue && select.querySelector(`option[value="${currentValue}"]`)) select.value = currentValue;
     }
     function renderManageModulesList() {
       const listContainer = document.getElementById('manage-modules-list');
@@ -3126,27 +3218,31 @@
         listContainer.innerHTML = `<div class="col-span-2 text-center p-4 text-slate-500 text-xs">Belum ada modul yang Anda buat.</div>`;
         return;
       }
-      listContainer.innerHTML = myMods.map(m => `
-        <div class="p-3.5 rounded-2xl bg-white/80 dark:bg-slate-900/60 border border-cyan-500/25 dark:border-slate-800 flex items-center justify-between gap-2 shadow-sm">
-          <div class="flex items-center space-x-2.5 overflow-hidden">
-            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-${m.color || 'cyan'}-500/10 text-${m.color || 'cyan'}-600 dark:text-${m.color || 'cyan'}-400 flex items-center justify-center shrink-0">
-              <i class="fa-solid ${m.icon || 'fa-book'} text-xs sm:text-base"></i>
+      listContainer.innerHTML = myMods.map(m => {
+        const attCount = (m.attachments && m.attachments.length) ? m.attachments.length : 0;
+        const attBadge = attCount > 0 ? `<span class="px-1.5 py-0.5 text-[8px] font-bold rounded-full bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/30"><i class="fa-solid fa-paperclip"></i> ${attCount}</span>` : '';
+        return `
+          <div class="p-3.5 rounded-2xl bg-white/80 dark:bg-slate-900/60 border border-cyan-500/25 dark:border-slate-800 flex items-center justify-between gap-2 shadow-sm">
+            <div class="flex items-center space-x-2.5 overflow-hidden">
+              <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-${m.color || 'cyan'}-500/10 text-${m.color || 'cyan'}-600 dark:text-${m.color || 'cyan'}-400 flex items-center justify-center shrink-0">
+                <i class="fa-solid ${m.icon || 'fa-book'} text-xs sm:text-base"></i>
+              </div>
+              <div class="truncate">
+                <span class="text-[9px] font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider block">${m.badge} ${attBadge}</span>
+                <h4 class="font-bold text-xs text-slate-900 dark:text-slate-200 truncate">${m.title}</h4>
+              </div>
             </div>
-            <div class="truncate">
-              <span class="text-[9px] font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider block">${m.badge}</span>
-              <h4 class="font-bold text-xs text-slate-900 dark:text-slate-200 truncate">${m.title}</h4>
+            <div class="flex items-center space-x-1 shrink-0">
+              <button onclick="openEditModuleModal('${m.id}')" title="Edit Modul" class="p-2 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 focus:outline-none">
+                <i class="fa-solid fa-pen-to-square text-xs"></i>
+              </button>
+              <button onclick="deleteModule('${m.id}')" title="Hapus Modul" class="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-500 focus:outline-none">
+                <i class="fa-solid fa-trash text-xs"></i>
+              </button>
             </div>
           </div>
-          <div class="flex items-center space-x-1 shrink-0">
-            <button onclick="openEditModuleModal('${m.id}')" title="Edit Modul" class="p-2 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 focus:outline-none">
-              <i class="fa-solid fa-pen-to-square text-xs"></i>
-            </button>
-            <button onclick="deleteModule('${m.id}')" title="Hapus Modul" class="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-500 focus:outline-none">
-              <i class="fa-solid fa-trash text-xs"></i>
-            </button>
-          </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
     function getAutoIcon(title) {
       const lower = title.toLowerCase();
@@ -3161,89 +3257,141 @@
       const defaultIcons = ['fa-laptop-code', 'fa-book-open', 'fa-graduation-cap', 'fa-microchip', 'fa-cubes'];
       return defaultIcons[Math.floor(Math.random() * defaultIcons.length)];
     }
-    // BUG FIX: Menggunakan unique marker untuk konten file upload
-    function handleModuleFileUpload(event) {
-      const file = event.target.files[0];
-      const statusBox = document.getElementById('file-upload-status');
-      const statusText = document.getElementById('file-upload-status-text');
-      const textarea = document.getElementById('new-mod-content');
-      if (!file) {
-        currentUploadMarker = "";
-        if (statusBox) statusBox.classList.add('hidden');
+    function getFileMeta(fileName, fileExt) {
+      if (['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp'].includes(fileExt)) {
+        return { type: 'image', iconClass: 'fa-image text-pink-500', fileDesc: 'Gambar' };
+      } else if (fileExt === 'pdf') {
+        return { type: 'file', iconClass: 'fa-file-pdf text-rose-500', fileDesc: 'Dokumen PDF' };
+      } else if (['doc', 'docx'].includes(fileExt)) {
+        return { type: 'file', iconClass: 'fa-file-word text-blue-500', fileDesc: 'Dokumen Word' };
+      } else if (['ppt', 'pptx'].includes(fileExt)) {
+        return { type: 'file', iconClass: 'fa-file-powerpoint text-amber-500', fileDesc: 'Berkas PPT' };
+      } else if (['txt', 'md', 'json'].includes(fileExt)) {
+        return { type: 'text', iconClass: 'fa-file-lines text-slate-500', fileDesc: 'Berkas Teks' };
+      } else if (['html', 'htm'].includes(fileExt)) {
+        return { type: 'text', iconClass: 'fa-file-code text-indigo-500', fileDesc: 'Berkas HTML' };
+      }
+      return { type: 'file', iconClass: 'fa-file text-slate-500', fileDesc: 'Berkas' };
+    }
+    function renderAttachmentPreviewList(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      if (tempModuleAttachments.length === 0) {
+        container.innerHTML = `<p class="text-[10px] text-slate-500 italic">Belum ada lampiran ditambahkan.</p>`;
         return;
       }
-      if (file.size > 20 * 1024 * 1024) {
-        showToast("Maksimal berkas 20MB!", "error");
-        event.target.value = "";
-        return;
-      }
-      const fileName = file.name;
-      const fileExt = fileName.split('.').pop().toLowerCase();
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        if (currentUploadMarker && textarea.value.includes(currentUploadMarker)) {
-          textarea.value = textarea.value.replace(currentUploadMarker, '').trim();
-        }
-        const fileData = e.target.result;
-        let contentToInsert = "";
-        if (['txt', 'html', 'htm', 'md', 'json'].includes(fileExt)) {
-          contentToInsert = fileData;
-          showToast(`File teks ${fileName} diimpor.`, "success");
-        } else if (['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp'].includes(fileExt)) {
-          contentToInsert = `<div class="my-4 text-center"><img src="${fileData}" alt="${fileName}" class="max-w-full h-auto rounded-xl mx-auto shadow-md border border-cyan-500/20"><p class="text-[10px] text-slate-500 mt-1">Gambar: ${fileName}</p></div>`;
-          showToast(`Gambar ${fileName} dilampirkan.`, "success");
-        } else {
-          let iconClass = "fa-file-pdf text-rose-500";
-          let fileDesc = "Dokumen PDF";
-          if (['doc', 'docx'].includes(fileExt)) {
-            iconClass = "fa-file-word text-blue-500";
-            fileDesc = "Dokumen Word";
-          } else if (['ppt', 'pptx'].includes(fileExt)) {
-            iconClass = "fa-file-powerpoint text-amber-500";
-            fileDesc = "Berkas PPT";
-          }
-          contentToInsert = `
-            <div class="p-3 sm:p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/30 my-3 flex items-center justify-between gap-2">
-              <div class="flex items-center space-x-2.5 overflow-hidden">
-                <i class="fa-solid ${iconClass} text-xl shrink-0"></i>
-                <div class="truncate">
-                  <h5 class="font-bold text-xs text-slate-800 dark:text-slate-100 truncate">${fileName}</h5>
-                  <p class="text-[9px] text-slate-500">${fileDesc}</p>
-                </div>
+      container.innerHTML = tempModuleAttachments.map((att, idx) => {
+        const isImage = att.type === 'image';
+        if (isImage) {
+          return `
+            <div class="attachment-preview-item p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center gap-2">
+              <img src="${att.data}" class="w-10 h-10 rounded object-cover shrink-0 border border-cyan-500/30">
+              <div class="flex-1 min-w-0">
+                <p class="text-[11px] font-bold text-slate-800 dark:text-slate-200 truncate">${att.name}</p>
+                <p class="text-[9px] text-slate-500">Gambar</p>
               </div>
-              <a href="${fileData}" download="${fileName}" class="px-2.5 py-1 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-[10px] shadow shrink-0">
-                <i class="fa-solid fa-download mr-1"></i> Unduh
-              </a>
+              <button type="button" onclick="removeTempAttachment(${idx}, '${containerId}')" class="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 shrink-0">
+                <i class="fa-solid fa-trash text-xs"></i>
+              </button>
             </div>
           `;
-          showToast(`Berkas ${fileName} dilampirkan.`, "success");
         }
-        currentUploadMarker = `\n\n<!-- UNIQUE_FILE_UPLOAD_${Date.now()}_${Math.random().toString(36).substring(7)} -->\n${contentToInsert}\n<!-- END_UNIQUE_FILE_UPLOAD -->\n\n`;
-        textarea.value = textarea.value ? (textarea.value + currentUploadMarker) : currentUploadMarker;
-        if (statusBox) statusBox.classList.remove('hidden');
-        if (statusText) statusText.textContent = `"${fileName}" dimuat!`;
-      };
-      reader.onerror = function() {
-        showToast("Gagal membaca file!", "error");
-        event.target.value = "";
-      };
-      if (['txt', 'html', 'htm', 'md', 'json'].includes(fileExt)) {
-        reader.readAsText(file);
-      } else {
-        reader.readAsDataURL(file);
-      }
+        return `
+          <div class="attachment-preview-item p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center gap-2">
+            <i class="fa-solid ${att.iconClass} text-lg shrink-0"></i>
+            <div class="flex-1 min-w-0">
+              <p class="text-[11px] font-bold text-slate-800 dark:text-slate-200 truncate">${att.name}</p>
+              <p class="text-[9px] text-slate-500">${att.fileDesc}</p>
+            </div>
+            <button type="button" onclick="removeTempAttachment(${idx}, '${containerId}')" class="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 shrink-0">
+              <i class="fa-solid fa-trash text-xs"></i>
+            </button>
+          </div>
+        `;
+      }).join('');
     }
-    function removeUploadedModuleFile() {
-      const fileInput = document.getElementById('new-mod-file');
-      const statusBox = document.getElementById('file-upload-status');
-      const textarea = document.getElementById('new-mod-content');
-      if (fileInput) fileInput.value = "";
-      if (statusBox) statusBox.classList.add('hidden');
-      if (currentUploadMarker && textarea && textarea.value.includes(currentUploadMarker)) {
-        textarea.value = textarea.value.replace(currentUploadMarker, '').trim();
-      }
-      currentUploadMarker = "";
-      showToast("File lampiran dihapus.", "warning");
+    function handleModuleFileUpload(event) {
+      const files = Array.from(event.target.files);
+      if (!files || files.length === 0) return;
+      let processedCount = 0;
+      files.forEach(file => {
+        if (file.size > 20 * 1024 * 1024) {
+          showToast(`File "${file.name}" melebihi 20MB, dilewati.`, "error");
+          processedCount++;
+          return;
+        }
+        const fileName = file.name;
+        const fileExt = fileName.split('.').pop().toLowerCase();
+        const meta = getFileMeta(fileName, fileExt);
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const fileData = e.target.result;
+          tempModuleAttachments.push({
+            id: `att-${Date.now()}-${Math.random().toString(36).substring(7)}`,
+            name: fileName,
+            type: meta.type,
+            iconClass: meta.iconClass,
+            fileDesc: meta.fileDesc,
+            data: fileData
+          });
+          processedCount++;
+          renderAttachmentPreviewList('file-upload-preview-list');
+          if (processedCount === files.length) {
+            showToast(`${files.length} file ditambahkan ke lampiran.`, "success");
+          }
+        };
+        reader.onerror = function() {
+          showToast(`Gagal membaca file "${fileName}"`, "error");
+          processedCount++;
+        };
+        if (['txt', 'html', 'htm', 'md', 'json'].includes(fileExt)) reader.readAsText(file);
+        else reader.readAsDataURL(file);
+      });
+      event.target.value = "";
+    }
+    function handleEditModuleFileUpload(event) {
+      const files = Array.from(event.target.files);
+      if (!files || files.length === 0) return;
+      let processedCount = 0;
+      files.forEach(file => {
+        if (file.size > 20 * 1024 * 1024) {
+          showToast(`File "${file.name}" melebihi 20MB, dilewati.`, "error");
+          processedCount++;
+          return;
+        }
+        const fileName = file.name;
+        const fileExt = fileName.split('.').pop().toLowerCase();
+        const meta = getFileMeta(fileName, fileExt);
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const fileData = e.target.result;
+          tempModuleAttachments.push({
+            id: `att-${Date.now()}-${Math.random().toString(36).substring(7)}`,
+            name: fileName,
+            type: meta.type,
+            iconClass: meta.iconClass,
+            fileDesc: meta.fileDesc,
+            data: fileData
+          });
+          processedCount++;
+          renderAttachmentPreviewList('edit-file-upload-preview-list');
+          if (processedCount === files.length) {
+            showToast(`${files.length} file ditambahkan ke lampiran.`, "success");
+          }
+        };
+        reader.onerror = function() {
+          showToast(`Gagal membaca file "${fileName}"`, "error");
+          processedCount++;
+        };
+        if (['txt', 'html', 'htm', 'md', 'json'].includes(fileExt)) reader.readAsText(file);
+        else reader.readAsDataURL(file);
+      });
+      event.target.value = "";
+    }
+    function removeTempAttachment(index, containerId) {
+      tempModuleAttachments.splice(index, 1);
+      renderAttachmentPreviewList(containerId);
+      showToast("Lampiran dihapus.", "warning");
     }
     function handleCreateModule(e) {
       e.preventDefault();
@@ -3253,22 +3401,24 @@
       const color = document.getElementById('new-mod-color').value;
       const icon = getAutoIcon(title);
       const desc = document.getElementById('new-mod-desc').value.trim();
-      const content = document.getElementById('new-mod-content').value.trim();
+      const content = quillCreate ? quillCreate.root.innerHTML : '';
+      if (!content || content === '<p><br></p>') {
+        showToast("Konten materi tidak boleh kosong!", "error");
+        return;
+      }
       const newModule = {
-        id: `mod-${Date.now()}`,
-        teacherId: currentUser.id,
+        id: `mod-${Date.now()}`, teacherId: currentUser.id,
         title, desc, badge, icon, color, content,
-        quizQuestions: []
+        quizQuestions: [],
+        attachments: [...tempModuleAttachments]
       };
       courseModules.push(newModule);
       saveToFirebase('modules', courseModules);
       showToast(`Modul baru berhasil ditambahkan!`, "success");
       e.target.reset();
-      const fileInput = document.getElementById('new-mod-file');
-      if (fileInput) fileInput.value = "";
-      currentUploadMarker = "";
-      const statusBox = document.getElementById('file-upload-status');
-      if (statusBox) statusBox.classList.add('hidden');
+      if (quillCreate) quillCreate.setText('');
+      tempModuleAttachments = [];
+      renderAttachmentPreviewList('file-upload-preview-list');
     }
     function openEditModuleModal(modId) {
       const mod = courseModules.find(m => m.id === modId);
@@ -3279,11 +3429,19 @@
       document.getElementById('edit-mod-color').value = mod.color || 'emerald';
       document.getElementById('edit-mod-icon').value = mod.icon || 'fa-book';
       document.getElementById('edit-mod-desc').value = mod.desc;
-      document.getElementById('edit-mod-content').value = mod.content;
+      const quill = initQuillEdit();
+      if (quill && mod.content) {
+        setTimeout(() => {
+          quill.clipboard.dangerouslyPasteHTML(mod.content);
+        }, 100);
+      }
+      tempModuleAttachments = mod.attachments ? [...mod.attachments] : [];
+      renderAttachmentPreviewList('edit-file-upload-preview-list');
       document.getElementById('edit-module-modal').classList.remove('hidden');
     }
     function closeEditModuleModal() {
       document.getElementById('edit-module-modal').classList.add('hidden');
+      tempModuleAttachments = [];
     }
     function handleEditModuleSubmit(e) {
       e.preventDefault();
@@ -3295,7 +3453,8 @@
         courseModules[modIndex].color = document.getElementById('edit-mod-color').value;
         courseModules[modIndex].icon = document.getElementById('edit-mod-icon').value.trim();
         courseModules[modIndex].desc = document.getElementById('edit-mod-desc').value.trim();
-        courseModules[modIndex].content = document.getElementById('edit-mod-content').value.trim();
+        courseModules[modIndex].content = quillEdit ? quillEdit.root.innerHTML : '';
+        courseModules[modIndex].attachments = [...tempModuleAttachments];
         saveToFirebase('modules', courseModules);
         closeEditModuleModal();
         showToast("Modul diperbarui!", "success");
@@ -3304,9 +3463,7 @@
     function deleteModule(modId) {
       const targetMod = courseModules.find(m => m.id === modId);
       if (!targetMod) return;
-      if (!confirm(`Hapus modul "${targetMod.title}"? Semua soal kuis terkait juga akan terhapus.`)) {
-        return;
-      }
+      if (!confirm(`Hapus modul "${targetMod.title}"? Semua soal kuis & lampiran terkait juga akan terhapus.`)) return;
       courseModules = courseModules.filter(m => m.id !== modId);
       saveToFirebase('modules', courseModules);
       showToast(`Modul "${targetMod.title}" dihapus!`, "warning");
@@ -3320,12 +3477,8 @@
       container.innerHTML = "";
       const targetMod = courseModules.find(m => m.id === modId);
       if (targetMod && targetMod.quizQuestions && targetMod.quizQuestions.length > 0) {
-        targetMod.quizQuestions.forEach((qData) => {
-          addQuizQuestionItem(qData);
-        });
-      } else {
-        addQuizQuestionItem();
-      }
+        targetMod.quizQuestions.forEach((qData) => addQuizQuestionItem(qData));
+      } else addQuizQuestionItem();
     }
     function addQuizQuestionItem(data = null) {
       const container = document.getElementById('quiz-questions-builder-container');
@@ -3383,10 +3536,7 @@
     }
     function removeQuizQuestionItem(btn) {
       const itemCard = btn.closest('.quiz-question-item');
-      if (itemCard) {
-        itemCard.remove();
-        reindexQuizQuestions();
-      }
+      if (itemCard) { itemCard.remove(); reindexQuizQuestions(); }
     }
     function reindexQuizQuestions() {
       const items = document.querySelectorAll('#quiz-questions-builder-container .quiz-question-item');
@@ -3398,37 +3548,22 @@
     function handleAddQuizQuestion(e) {
       e.preventDefault();
       const modId = document.getElementById('quiz-target-module').value;
-      if (!modId) {
-        showToast("Pilih modul terlebih dahulu!", "error");
-        return;
-      }
+      if (!modId) { showToast("Pilih modul terlebih dahulu!", "error"); return; }
       const items = document.querySelectorAll('#quiz-questions-builder-container .quiz-question-item');
-      if (items.length === 0) {
-        showToast("Tambahkan minimal 1 soal kuis!", "error");
-        return;
-      }
+      if (items.length === 0) { showToast("Tambahkan minimal 1 soal kuis!", "error"); return; }
       const newQuestions = [];
       let hasError = false;
-      items.forEach((item, idx) => {
+      items.forEach((item) => {
         const qText = item.querySelector('.quiz-q-text').value.trim();
         const optA = item.querySelector('.quiz-opt-a').value.trim();
         const optB = item.querySelector('.quiz-opt-b').value.trim();
         const optC = item.querySelector('.quiz-opt-c').value.trim();
         const optD = item.querySelector('.quiz-opt-d').value.trim();
         const correctIdx = parseInt(item.querySelector('.quiz-correct-idx').value);
-        if (!qText || !optA || !optB || !optC || !optD) {
-          hasError = true;
-        }
-        newQuestions.push({
-          question: qText,
-          options: [optA, optB, optC, optD],
-          correct: correctIdx
-        });
+        if (!qText || !optA || !optB || !optC || !optD) hasError = true;
+        newQuestions.push({ question: qText, options: [optA, optB, optC, optD], correct: correctIdx });
       });
-      if (hasError) {
-        showToast("Lengkapi semua field soal!", "error");
-        return;
-      }
+      if (hasError) { showToast("Lengkapi semua field soal!", "error"); return; }
       const targetMod = courseModules.find(m => m.id === modId);
       if (targetMod) {
         targetMod.quizQuestions = newQuestions;
@@ -3442,21 +3577,11 @@
       const toast = document.createElement('div');
       let bgColors = "bg-white dark:bg-slate-900 border-emerald-500/30 dark:border-slate-700 text-slate-800 dark:text-slate-100";
       let icon = "fa-circle-info text-emerald-600 dark:text-cyan-400";
-      if (type === 'success') {
-        bgColors = "bg-white/95 dark:bg-slate-900/95 border-emerald-500/40 text-emerald-800 dark:text-emerald-200";
-        icon = "fa-circle-check text-emerald-600 dark:text-cyan-400";
-      } else if (type === 'error') {
-        bgColors = "bg-white/95 dark:bg-slate-900/95 border-rose-500/40 text-rose-800 dark:text-rose-200";
-        icon = "fa-triangle-exclamation text-rose-600 dark:text-rose-400";
-      } else if (type === 'warning') {
-        bgColors = "bg-white/95 dark:bg-slate-900/95 border-amber-500/40 text-amber-800 dark:text-amber-200";
-        icon = "fa-circle-exclamation text-amber-600 dark:text-amber-200";
-      }
+      if (type === 'success') { bgColors = "bg-white/95 dark:bg-slate-900/95 border-emerald-500/40 text-emerald-800 dark:text-emerald-200"; icon = "fa-circle-check text-emerald-600 dark:text-cyan-400"; }
+      else if (type === 'error') { bgColors = "bg-white/95 dark:bg-slate-900/95 border-rose-500/40 text-rose-800 dark:text-rose-200"; icon = "fa-triangle-exclamation text-rose-600 dark:text-rose-400"; }
+      else if (type === 'warning') { bgColors = "bg-white/95 dark:bg-slate-900/95 border-amber-500/40 text-amber-800 dark:text-amber-200"; icon = "fa-circle-exclamation text-amber-600 dark:text-amber-200"; }
       toast.className = `p-3 sm:p-4 rounded-xl sm:rounded-2xl border shadow-xl flex items-center space-x-2.5 sm:space-x-3 text-xs font-semibold backdrop-blur-md transform transition-all duration-300 pointer-events-auto ${bgColors}`;
-      toast.innerHTML = `
-        <i class="fa-solid ${icon} text-base sm:text-lg shrink-0"></i>
-        <span>${message}</span>
-      `;
+      toast.innerHTML = `<i class="fa-solid ${icon} text-base sm:text-lg shrink-0"></i><span>${message}</span>`;
       container.appendChild(toast);
       setTimeout(() => {
         toast.classList.add('opacity-0', 'translate-y-2');
